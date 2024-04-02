@@ -1,7 +1,6 @@
 <template>
-    <footer
-        class="bg-[linear-gradient(179.25deg,_rgba(245,_127,_32,_0.24)_0.47%,_rgba(234,_234,_234,_0.24)_99.17%)] pt-5">
-        <div class="container flex ms-auto ">
+    <footer class="bg-[linear-gradient(179.25deg,_rgba(245,_127,_32,_0.24)_0.47%,_rgba(234,_234,_234,_0.24)_99.17%)] pt-5">
+        <div class="max-w-screen-2xl mx-auto px-4 py-9">
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-y-11 lg:grid-cols-5 ms-auto pb-5 ">
 
                 <div>

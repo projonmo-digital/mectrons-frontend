@@ -50,17 +50,17 @@ const passHideShow1 = ref(false);
 </script>
 <template>
     <div class="mx-auto w-full max-w-3xl my-4">
+        <div>
+            <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center">Registation</h5>
+            <div class="flex justify-center items-center gap-x-3 text-gray-400 mt-2">
+                <hr class="border-gray-400 w-12">
+                <p class="text-center text-sm">&#10051;</p>
+                <hr class="border-gray-400 w-12">
+            </div>
+        </div>
         <div class="flex gap-x-3 bg-white rounded shadow">
-            <div class="mx-auto w-full max-w-sm p-4 bg-gray-100 border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+            <div class="mx-auto w-full max-w-sm p-4">
                 <form class="space-y-6" @submit.prevent="handleSubmit">
-                    <div>
-                        <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center">Registation</h5>
-                        <div class="flex justify-center items-center gap-x-3 text-gray-400 mt-2">
-                            <hr class="border-gray-400 w-12">
-                            <p class="text-center text-sm">&#10051;</p>
-                            <hr class="border-gray-400 w-12">
-                        </div>
-                    </div>
                     <div>
                         <FormLabel for="name">Name</FormLabel>
                         <FormInput type="name" name="name" id="name" placeholder="Your name" v-model="form.name"/>
@@ -127,19 +127,10 @@ const passHideShow1 = ref(false);
                 </form>
             </div>
 
-            <div class="mx-auto w-full max-w-sm ">
-                <div class="flex flex-col gap-x-5 px-4 py-3">
+            <div class="mx-auto w-full max-w-sm">
+                <div class="flex flex-col gap-x-5 px-4 py-3 space-y-6">
+                    <SocialLogin></SocialLogin>
                     <img class="w-60 mx-auto mb-6" src="assets/images/auth/auth.png" alt="Auth Image"/>
-                    <div class="shadow-md p-4 rounded-lg bg-gray-100">
-                        <h4 class="text-md font-semibold mb-2">Stay Safe</h4>
-                        <hr class="h-px my-3 bg-gray-300 border-0 dark:bg-gray-700">
-                        <p class="mb-2 text-sm leading-6 text-gray-500">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
-                        <p class="mb-2 text-sm leading-6 text-gray-500">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>

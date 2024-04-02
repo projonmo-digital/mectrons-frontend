@@ -3,7 +3,7 @@ const toaster = useToasterStore();
 
 </script>
 <template>
-    <div class="fixed top-16 right-3 z-40">
+    <div class="fixed top-8 right-3 z-40">
         <div v-if="toaster.info.length > 0">
             <div v-for="(item,index) in toaster.info" :key="index" class="ease-in-out duration-300">
                 <div v-if="toaster.info[index]" id="toast-info" class="flex items-center w-full max-w-xs p-4 mb-3 text-gray-500 bg-blue-500 rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">

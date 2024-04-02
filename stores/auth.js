@@ -40,7 +40,7 @@ export const useAuthStore = defineStore('auth', {
             token.setToken(data.token);
             this.user = data.user;
             toaster.addSuccess(data.message);
-            if(auth.user.email == 'admin@admin.com'){
+            if(this.user.email == 'admin@admin'){
                 return navigateTo('/admin/dashboard');
             }else{
                 return navigateTo('/user/dashboard');

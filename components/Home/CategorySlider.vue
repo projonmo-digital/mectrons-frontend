@@ -34,7 +34,7 @@ const getCetagories = async(typeId) => {
         <aside id="default-sidebar" class=" z-40 w-64 h-auto " aria-label="Sidebar">
             <div class="h-full px-3 py-4 bg-[rgba(239,_133,_48,_0.24)]">
                 <div class="flex justify-center">
-                    <h1 class="font-bold text-2xl text-[rgba(245,_127,_32,_1)]">Categories</h1>
+                    <h2 class="font-bold text-2xl text-[rgba(245,_127,_32,_1)]">Categories</h2>
                 </div>
                 <ul class="space-y-2 font-medium mt-3">
                     <li v-for="(type,index) in adstype" :key="type.id">
@@ -54,7 +54,7 @@ const getCetagories = async(typeId) => {
                                         </div>
                                     </li>
                                     <li v-else v-for="(cat,index) in categories" :key="index">
-                                        <a href="#" class="block px-4 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-700">{{ cat.name }}</a>
+                                        <nuxt-link :to="`/category/${cat?.id}`" class="block px-4 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-700">{{ cat.name }}</nuxt-link>
                                     </li>
                                 </ul>
                             </div>

@@ -80,9 +80,9 @@ const BuyNowBtn = (product) => {
 
 </script>
 <template>
-<div class="flex">
-    <div class="font-[sans-serif]">
-        <div class="p-6 lg:max-w-7xl max-w-2xl max-lg:mx-auto">
+<div class="max-w-screen-2xl mx-auto px-4 py-9">
+    <div class="flex">
+        <div class="font-[sans-serif]">
             <div class="grid items-start grid-cols-1 lg:grid-cols-2 gap-10">
                 <div class="w-full lg:sticky top-0 ">
                     <div class="h-96 shadow rounded-lg overflow-hidden">
@@ -179,504 +179,116 @@ const BuyNowBtn = (product) => {
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
-            <div class="flex justify-between">
-                
-                   
+
+<div class="max-w-screen-2xl mx-auto px-4 py-9">
+    <div class="flex gap-x-8">
+        <div class="w-full md:w-9/12">
+
+            <div class="flex justify-center mb-4 border-b border-gray-200 dark:border-gray-700">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-styled-tab" data-tabs-target="#styled-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Description</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-styled-tab" data-tabs-target="#styled-dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Specification</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-styled-tab" data-tabs-target="#styled-settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Reviews</button>
+                    </li>
+
+                </ul>
+            </div>
+            <div id="default-styled-tab-content">
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ productview?.description }}</p>
+                </div>
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        <tr class="border-gray-200 dark:border-gray-700 flex">
+                            <th scope="row" class="px-6 py-2 w-28 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Category : 
+                            </th>
+                            <td class="px-6 py-2">
+                                {{ productview?.category?.name }}
+                            </td>
+                        </tr>
+                        <tr class="border-gray-200 dark:border-gray-700 flex">
+                            <th scope="row" class="px-6 py-2 w-28 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Condition : 
+                            </th>
+                            <td class="px-6 py-2">
+                                {{ productview?.condition?.name }}
+                            </td>
+                        </tr>
+                        <!-- <tr class="border-gray-200 dark:border-gray-700 flex">
+                            <td class="px-6 py-4 w-full flex items-center justify-center gap-x-2" colspan="2">
+                                <span class="font-medium text-gray-900">Show More Details</span>
+                                <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
+                                </svg>
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+                </div>
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-settings" role="tabpanel" aria-labelledby="settings-tab">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="w-full md:w-3/12 mt-3 gap-4">
+            <h2 class="font-bold text-xl text-center mb-6 border-b border-gray-200 pb-3">Products from Seller</h2>
+
+            <div class="flex flex-col gap-y-4">
+                <ProductCard2></ProductCard2>
+                <ProductCard2></ProductCard2>
             </div>
         </div>
     </div>
 
-    <div class="p-6 ">
-        <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <a href="#">
-                <h5 class="mb-2 text-xl font-bold ">Stay Safe</h5>
-            </a>
-            <hr class="mb-2">
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Torem ipsum dolor sit amet, consectetur adipiscing
-                elit. </p>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"> Nunc vulputate libero et velit interdum, ac
-                aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra </p>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"> Nunc vulputate libero et velit interdum, ac
-                aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra </p>
 
-            <a href="#" class="inline-flex items-center  text-xl font-medium text-center">
-                Read more
-                <i class="fa-solid fa-angle-right ms-3 mt-1"></i>
-            </a>
+    <div class="flex justify-between items-center mt-10">
+        <h2 class="font-bold text-xl">Related Products</h2>
+        <div class="flex justify-end gap-2">
+            <button class="group prev relative inline-flex items-center justify-center ease-in-out duration-300" data-filter="all">
+                <span class="relative z-10 text-sm font-medium text-white w-8 h-6 flex justify-center items-center">
+                    <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+                    </svg>
+                </span>
+                <span class="skew absolute w-8 h-6 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-[#F57F20] group-hover:bg-[#F57F20] z-0 -skew-x-12"></span>
+            </button>
+    
+            <button class="group next relative inline-flex items-center justify-center ease-in-out duration-300" data-filter="all">
+                <span class="relative z-10 text-sm font-medium text-white w-8 h-6 flex justify-center items-center">
+                    <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                    </svg>
+                </span>
+                <span class="skew absolute w-8 h-6 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-[#F57F20] group-hover:bg-[#F57F20] z-0 -skew-x-12"></span>
+            </button>
         </div>
-        <div class="py-6 px-3 mt-5  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-
-            <figcaption class="flex items-center justify-start ">
-                <img class="rounded-full w-10 h-10 " src="assets/images/shipping.png" alt="profile picture">
-                <div class="space-y-0.5  dark:text-white text-left rtl:text-right ms-3">
-                    <div>Free Shipping</div>
-                    <div class=" text-gray-500 dark:text-gray-400">For orders from $50</div>
-                </div>
-            </figcaption>
-            <figcaption class="flex items-center justify-start mt-5 mb-5">
-                <img class="rounded-full w-10 h-10 " src="assets/images/247.png" alt="profile picture">
-                <div class="space-y-0.5  dark:text-white text-left rtl:text-right ms-3">
-                    <div>Support 24/7</div>
-                    <div class=" text-gray-500 dark:text-gray-400">Call us anytime</div>
-                </div>
-            </figcaption>
-            <figcaption class="flex items-center justify-start ">
-                <img class="rounded-full w-10 h-10 " src="assets/images/percent.png" alt="profile picture">
-                <div class="space-y-0.5  dark:text-white text-left rtl:text-right ms-3">
-                    <div>100% Safety</div>
-                    <div class=" text-gray-500 dark:text-gray-400">Only Secure payments</div>
-                </div>
-            </figcaption>
-
+    </div>
+    <hr class="mb-5 mt-1">
+    <!-- Carousel wrapper -->
+    <div class=" rounded-lg md:h-128 lg:h-full mb-5">
+        <!-- Item 1 -->
+        <div class="">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6">
+                <ProductCard v-for="(product,index) of productsuggestion" :key="product.id" :product="product"></ProductCard>
+            </div>
         </div>
-
+        <!-- Item 2 -->
         
     </div>
 </div>
-
-<div class="flex  gap-x-8">
-    <div class="w-full md:w-9/12">
-
-        <div class="flex justify-center mb-4 border-b border-gray-200 dark:border-gray-700">
-            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
-                <li class="me-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-styled-tab" data-tabs-target="#styled-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Description</button>
-                </li>
-                <li class="me-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-styled-tab" data-tabs-target="#styled-dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Specification</button>
-                </li>
-                <li class="me-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-styled-tab" data-tabs-target="#styled-settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Reviews</button>
-                </li>
-
-            </ul>
-        </div>
-        <div id="default-styled-tab-content">
-            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab">
-                <p class="text-sm text-gray-500 dark:text-gray-400">{{ productview?.description }}</p>
-            </div>
-            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <tbody>
-                    <tr class="border-gray-200 dark:border-gray-700 flex">
-                        <th scope="row" class="px-6 py-2 w-28 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Category : 
-                        </th>
-                        <td class="px-6 py-2">
-                            {{ productview?.category?.name }}
-                        </td>
-                    </tr>
-                    <tr class="border-gray-200 dark:border-gray-700 flex">
-                        <th scope="row" class="px-6 py-2 w-28 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Condition : 
-                        </th>
-                        <td class="px-6 py-2">
-                            {{ productview?.condition?.name }}
-                        </td>
-                    </tr>
-                    <!-- <tr class="border-gray-200 dark:border-gray-700 flex">
-                        <td class="px-6 py-4 w-full flex items-center justify-center gap-x-2" colspan="2">
-                            <span class="font-medium text-gray-900">Show More Details</span>
-                            <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
-                            </svg>
-                        </td>
-                    </tr> -->
-                </tbody>
-            </table>
-            </div>
-            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-settings" role="tabpanel" aria-labelledby="settings-tab">
-                <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-            </div>
-
-        </div>
-
-    </div>
-    <div class="w-full md:w-3/12 mt-3 gap-4">
-        <div class="text-xl font-bold flex justify-center ">Products from Seller </div>
-        <div class="card-1 all Tips mx-4  mt-4">
-            <div class=" relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                <a class="relative  flex h-60 overflow-hidden  justify-center bg-[rgba(239,_239,_239,_1)]" href="#">
-                    <img class="object-cover" src="assets/images/product-2.png" alt="product image" />
-                    <span class="absolute top-0 left-0 m-2 rounded-full px-2 text-center text-2xl font-medium">
-                        <i class="fa-solid fa-heart"></i></span>
-                </a>
-                <div class="mt-4 px-5 pb-5">
-                    <div class="flex items-center">
-                        <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
-                        <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
-                        <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
-                        <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
-                        <svg aria-hidden="true" class="h-5 w-5 text-[rgba(239,_239,_239,_1)]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
-                        <span class="rounded  px-2.5 py-0.5 text-xs font-semibold">(75)</span>
-                        <a href="#">
-
-                        </a>
-                    </div>
-                    <hr class="mt-3">
-                    <div class="flex items-center mt-3">
-
-                        <a href="#">
-                            <h5 class="text-sl font-bold tracking-tight ">Apollo 2 wheel Tyre</h5>
-                        </a>
-                    </div>
-                    <hr class="mt-3">
-                    <div class="mt-3 mb-5 flex items-center justify-between">
-
-                        <p>
-                            <span class="text-xl  bg-[rgba(245,_127,_32,_1)] text-white">-30%</span>
-                            <span class="text-xl font-bold  text-[rgba(215,_14,_14,_1)] ms-2">$100.00</span>
-                            <span class="text-xl line-through ms-2">$180.00</span>
-                        </p>
-
-                    </div>
-                    <a href="#" class="flex items-center justify-center font-bold mx-4 rounded-full bg-[rgba(239,_239,_239,_1)] text-[rgba(0,_0,_0,_0.52)] px-5 py-2.5 text-center text-sm font-medium hover:text-white hover:bg-[rgba(245,_127,_32,_1)] focus:outline-none focus:ring-4 focus:ring-blue-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        ADD TO CART </a>
-                </div>
-            </div>
-
-        </div>
-        <div class="card-1 all Tips mx-4  mt-4">
-            <div class=" relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                <a class="relative  flex h-60 overflow-hidden  justify-center bg-[rgba(239,_239,_239,_1)]" href="#">
-                    <img class="object-cover" src="assets/images/product-2.png" alt="product image" />
-                    <span class="absolute top-0 left-0 m-2 rounded-full px-2 text-center text-2xl font-medium">
-                        <i class="fa-solid fa-heart"></i></span>
-                </a>
-                <div class="mt-4 px-5 pb-5">
-                    <div class="flex items-center">
-                        <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
-                        <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
-                        <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
-                        <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
-                        <svg aria-hidden="true" class="h-5 w-5 text-[rgba(239,_239,_239,_1)]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
-                        <span class="rounded  px-2.5 py-0.5 text-xs font-semibold">(75)</span>
-                        <a href="#">
-
-                        </a>
-                    </div>
-                    <hr class="mt-3">
-                    <div class="flex items-center mt-3">
-
-                        <a href="#">
-                            <h5 class="text-sl font-bold tracking-tight ">Apollo 2 wheel Tyre</h5>
-                        </a>
-                    </div>
-                    <hr class="mt-3">
-                    <div class="mt-3 mb-5 flex items-center justify-between">
-
-                        <p>
-                            <span class="text-xl  bg-[rgba(245,_127,_32,_1)] text-white">-30%</span>
-                            <span class="text-xl font-bold  text-[rgba(215,_14,_14,_1)] ms-2">$100.00</span>
-                            <span class="text-xl line-through ms-2">$180.00</span>
-                        </p>
-
-                    </div>
-                    <a href="#" class="flex items-center justify-center font-bold mx-4 rounded-full bg-[rgba(239,_239,_239,_1)] text-[rgba(0,_0,_0,_0.52)] px-5 py-2.5 text-center text-sm font-medium hover:text-white hover:bg-[rgba(245,_127,_32,_1)] focus:outline-none focus:ring-4 focus:ring-blue-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        ADD TO CART </a>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-<div class="mx-6 text-xl font-bold">Related Products</div>
-<div class="flex justify-end gap-2 mx-16 ">
-    <button class="btn bg-[rgba(245,_127,_32,_1)] text-white w-6"><i class="fa-solid fa-angle-left"></i></button>
-    <button class="btn bg-[rgba(245,_127,_32,_1)] text-white w-6"><i class="fa-solid fa-angle-right"></i></button>
-</div>
-<hr class="mb-5 mt-1 mx-6">
-<!-- Carousel wrapper -->
-<div class=" rounded-lg md:h-128 lg:h-full mb-5">
-    <!-- Item 1 -->
-    <div class="">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  mx-10">
-            <div class="card-1 all Tips mx-4">
-                <div class=" relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                    <a class="relative  flex h-60 overflow-hidden  justify-center bg-[rgba(239,_239,_239,_1)]" href="#">
-                        <img class="object-cover" src="assets/images/product-2.png" alt="product image" />
-                        <span class="absolute top-0 left-0 m-2 rounded-full px-2 text-center text-2xl font-medium">
-                            <i class="fa-solid fa-heart"></i></span>
-                    </a>
-                    <div class="mt-4 px-5 pb-5">
-                        <div class="flex items-center">
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-[rgba(239,_239,_239,_1)]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <span class="rounded  px-2.5 py-0.5 text-xs font-semibold">(75)</span>
-                            <a href="#">
-
-                            </a>
-                        </div>
-                        <hr class="mt-3">
-                        <div class="flex items-center mt-3">
-
-                            <a href="#">
-                                <h5 class="text-sl font-bold tracking-tight ">Apollo 2 wheel Tyre</h5>
-                            </a>
-                        </div>
-                        <hr class="mt-3">
-                        <div class="mt-3 mb-5 flex items-center justify-between">
-
-                            <p>
-                                <span class="text-xl  bg-[rgba(245,_127,_32,_1)] text-white">-30%</span>
-                                <span class="text-xl font-bold  text-[rgba(215,_14,_14,_1)] ms-2">$100.00</span>
-                                <span class="text-xl line-through ms-2">$180.00</span>
-                            </p>
-
-                        </div>
-                        <a href="#" class="flex items-center justify-center font-bold mx-4 rounded-full bg-[rgba(239,_239,_239,_1)] text-[rgba(0,_0,_0,_0.52)] px-5 py-2.5 text-center text-sm font-medium hover:text-white hover:bg-[rgba(245,_127,_32,_1)] focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            ADD TO CART </a>
-                    </div>
-                </div>
-
-            </div>
-            <div class="card-1 all Tips mx-4">
-                <div class=" relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                    <a class="relative  flex h-60 overflow-hidden  justify-center bg-[rgba(239,_239,_239,_1)]" href="#">
-                        <img class="object-cover" src="assets/images/product-2.png" alt="product image" />
-                        <span class="absolute top-0 left-0 m-2 rounded-full px-2 text-center text-2xl font-medium">
-                            <i class="fa-solid fa-heart"></i></span>
-                    </a>
-                    <div class="mt-4 px-5 pb-5">
-                        <div class="flex items-center">
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-[rgba(239,_239,_239,_1)]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <span class="rounded  px-2.5 py-0.5 text-xs font-semibold">(75)</span>
-                            <a href="#">
-
-                            </a>
-                        </div>
-                        <hr class="mt-3">
-                        <div class="flex items-center mt-3">
-
-                            <a href="#">
-                                <h5 class="text-sl font-bold tracking-tight ">Apollo 2 wheel Tyre</h5>
-                            </a>
-                        </div>
-                        <hr class="mt-3">
-                        <div class="mt-3 mb-5 flex items-center justify-between">
-
-                            <p>
-                                <span class="text-xl  bg-[rgba(245,_127,_32,_1)] text-white">-30%</span>
-                                <span class="text-xl font-bold  text-[rgba(215,_14,_14,_1)] ms-2">$100.00</span>
-                                <span class="text-xl line-through ms-2">$180.00</span>
-                            </p>
-
-                        </div>
-                        <a href="#" class="flex items-center justify-center font-bold mx-4 rounded-full bg-[rgba(239,_239,_239,_1)] text-[rgba(0,_0,_0,_0.52)] px-5 py-2.5 text-center text-sm font-medium hover:text-white hover:bg-[rgba(245,_127,_32,_1)] focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            ADD TO CART </a>
-                    </div>
-                </div>
-
-            </div>
-            <div class="card-1 all Tips mx-4">
-                <div class=" relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                    <a class="relative  flex h-60 overflow-hidden  justify-center bg-[rgba(239,_239,_239,_1)]" href="#">
-                        <img class="object-cover" src="assets/images/product-2.png" alt="product image" />
-                        <span class="absolute top-0 left-0 m-2 rounded-full px-2 text-center text-2xl font-medium">
-                            <i class="fa-solid fa-heart"></i></span>
-                    </a>
-                    <div class="mt-4 px-5 pb-5">
-                        <div class="flex items-center">
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-[rgba(239,_239,_239,_1)]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <span class="rounded  px-2.5 py-0.5 text-xs font-semibold">(75)</span>
-                            <a href="#">
-
-                            </a>
-                        </div>
-                        <hr class="mt-3">
-                        <div class="flex items-center mt-3">
-
-                            <a href="#">
-                                <h5 class="text-sl font-bold tracking-tight ">Apollo 2 wheel Tyre</h5>
-                            </a>
-                        </div>
-                        <hr class="mt-3">
-                        <div class="mt-3 mb-5 flex items-center justify-between">
-
-                            <p>
-                                <span class="text-xl  bg-[rgba(245,_127,_32,_1)] text-white">-30%</span>
-                                <span class="text-xl font-bold  text-[rgba(215,_14,_14,_1)] ms-2">$100.00</span>
-                                <span class="text-xl line-through ms-2">$180.00</span>
-                            </p>
-
-                        </div>
-                        <a href="#" class="flex items-center justify-center font-bold mx-4 rounded-full bg-[rgba(239,_239,_239,_1)] text-[rgba(0,_0,_0,_0.52)] px-5 py-2.5 text-center text-sm font-medium hover:text-white hover:bg-[rgba(245,_127,_32,_1)] focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            ADD TO CART </a>
-                    </div>
-                </div>
-
-            </div>
-            <div class="card-1 all Tips mx-4">
-                <div class=" relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                    <a class="relative  flex h-60 overflow-hidden  justify-center bg-[rgba(239,_239,_239,_1)]" href="#">
-                        <img class="object-cover" src="assets/images/product-2.png" alt="product image" />
-                        <span class="absolute top-0 left-0 m-2 rounded-full px-2 text-center text-2xl font-medium">
-                            <i class="fa-solid fa-heart"></i></span>
-                    </a>
-                    <div class="mt-4 px-5 pb-5">
-                        <div class="flex items-center">
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" class="h-5 w-5 text-[rgba(239,_239,_239,_1)]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                </path>
-                            </svg>
-                            <span class="rounded  px-2.5 py-0.5 text-xs font-semibold">(75)</span>
-                            <a href="#">
-
-                            </a>
-                        </div>
-                        <hr class="mt-3">
-                        <div class="flex items-center mt-3">
-
-                            <a href="#">
-                                <h5 class="text-sl font-bold tracking-tight ">Apollo 2 wheel Tyre</h5>
-                            </a>
-                        </div>
-                        <hr class="mt-3">
-                        <div class="mt-3 mb-5 flex items-center justify-between">
-
-                            <p>
-                                <span class="text-xl  bg-[rgba(245,_127,_32,_1)] text-white">-30%</span>
-                                <span class="text-xl font-bold  text-[rgba(215,_14,_14,_1)] ms-2">$100.00</span>
-                                <span class="text-xl line-through ms-2">$180.00</span>
-                            </p>
-
-                        </div>
-                        <a href="#" class="flex items-center justify-center font-bold mx-4 rounded-full bg-[rgba(239,_239,_239,_1)] text-[rgba(0,_0,_0,_0.52)] px-5 py-2.5 text-center text-sm font-medium hover:text-white hover:bg-[rgba(245,_127,_32,_1)] focus:outline-none focus:ring-4 focus:ring-blue-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            ADD TO CART </a>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-    <!-- Item 2 -->
-    
-</div>
-<!-- Slider controls -->
 
 
 </template>

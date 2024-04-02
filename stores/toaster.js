@@ -64,17 +64,20 @@ export const useToasterStore = defineStore('toaster', {
         },
 
         // Delete
-        addDelete() {
+        addDelete(msg) {
             this.delete.push(true);
+            this.deletemsg.push(msg);
             this.removeDeleteAuto(this.delete.length-1);
         },
         removeDeleteAuto(index) {
             setTimeout(() => {
                 this.delete[index] = false;
+                this.deletemsg[index] = '';
             },4000)
         },
         removeDelete(index) {
             this.delete[index] = false;
+            this.deletemsg[index] = '';
         },
     },
 })
