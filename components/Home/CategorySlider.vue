@@ -25,7 +25,7 @@ const getCetagories = async(typeId) => {
             loading.value = false;
         }
     }catch(error){
-        console.log('Somthing Wrong!');
+        console.log(error);
     }
 }
 </script>
