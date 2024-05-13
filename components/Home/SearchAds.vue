@@ -1,14 +1,14 @@
 <template>
-    <div class="flex justify-between">
-        <div class="">
-            <img src="assets/images/ads-1.png" alt="" srcset="">
+    <div class="flex justify-between ">
+        <div>
+            <img src="assets/images/ad1.png" alt="" srcset="" class="lg:w-[285px] lg:h-[285px]">
         </div>
-        <div class="-mt-8 z-20">
-            <nav class=" border-gray-200 dark:bg-gray-900">
+        <div class="mt-8 z-20 relative top-[-50px]">
+            <nav class="w-full border-gray-200 dark:bg-gray-900 bg-[#F85606] rounded-lg">
 
-                <div class="flex flex-wrap items-center justify-center  ">
+                <div class="w-full">
                     <div id="mega-menu"
-                        class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 gap-1 bg-[linear-gradient(180deg,_#F57F20_0%,_#C95E08_100%)] px-10 py-5">
+                        class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 gap-1  px-10 py-5">
 
                         <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
                             class=" bg-[#FFFFFF] focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -200,7 +200,7 @@
             <!-- ========== Start Section ========== -->
 
             <div
-                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 lg:flex lg:justify-center gap-x-5 gap-y-5 mx-5">
+                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 lg:flex lg:justify-between gap-x-5 gap-y-5">
                 <figure
                     class="flex flex-col items-center justify-center p-8 text-center bg-white border-gray-200 rounded-b-lg md:rounded-se-lg dark:bg-gray-800 dark:border-gray-700">
 
@@ -238,13 +238,14 @@
                     </figcaption>
                 </figure>
             </div>
+            
             <div class="">
-                <img src="assets/images/ads-2.png" alt="" srcset="" class="">
+                <img src="assets/images/ad2.png" alt="" srcset="">
             </div>
         </div>
 
-        <div class="">
-            <img src="assets/images/ads-1.png" alt="" srcset="">
+        <div>
+            <img src="assets/images/ad1.png" alt="" srcset="" class="lg:w-[285px] lg:h-[285px]">
         </div>
 
     </div>

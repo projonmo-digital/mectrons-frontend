@@ -27,10 +27,10 @@ const loginToggleBtnFun = async(value) => {
 
 </script>
 <template>
-    <header class="bg-[linear-gradient(180deg,_#F57F20_0%,_#C95E08_100%)] ">
-        <div class="max-w-screen-2xl mx-auto px-4 py-9">
-            <div class="flex justify-between text-white py-2 ">
-                <div class="flex  ms-12">
+    <header class="bg-[#F85606]">
+        <div class="max-w-screen-2xl mx-auto pb-2">
+            <div class="flex justify-between text-white py-2 bg-opacity[95%] bg-[#f2b99d24]">
+                <div class="flex">
                     <button id="sellerLoginButton" data-dropdown-toggle="sellerLogin" class="font-medium  text-sm px-4 py-2 md:px-5 md:py-2 ">Seller Login</button>
                     <div id="sellerLogin" class="z-50 hidden bg-white divide-y divide-gray-100 w-full max-w-sm rounded-lg shadow dark:bg-gray-700">
                         <div aria-labelledby="sellerLoginButton">
@@ -40,7 +40,7 @@ const loginToggleBtnFun = async(value) => {
                     <a href="#" class=" font-medium  text-sm px-4 py-2 md:px-5 md:py-2">Track Order</a>
                     <div class=""></div>
                 </div>
-                <div class="flex mt-1 gap-x-4 me-12">
+                <div class="flex mt-1 gap-x-4 me-6">
                     <span><i class="fa-solid fa-location-dot me-2"></i>L14, 233 Castlereagh Street, Sydney NSW 2000</span>
                     <span><i class="fa-solid fa-phone me-2"></i>017************</span>
                 </div>
@@ -53,12 +53,10 @@ const loginToggleBtnFun = async(value) => {
                 <div class="flex items-center justify-between gap-x-5 h-16">
 
                     <div class="flex  h-[calc(100%-8px)]">
-                        <nuxt-link to="/" class="flex items-center bg-white">
-                            <img src="assets/images/mectron-logo.png" alt="">
+                        <nuxt-link to="/" class="flex items-center">
+                            <img src="assets/images/logo.png" alt="" class="w-32 h-6">
                         </nuxt-link>
                     </div>
-
-
 
                     <div class="w-2/3">
                         <div class="flex mx-5">
@@ -67,7 +65,7 @@ const loginToggleBtnFun = async(value) => {
                                     class="block p-2  py-3 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                                     placeholder="Search all parts here" required />
                                 <button type="submit"
-                                    class="absolute top-0 end-0 w-16 flex items-center justify-center text-sm font-medium h-full text-white bg-[linear-gradient(180deg,_#F57F20_0%,_#C95E08_100%)]  border border-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    class="absolute top-0 end-0 w-20 flex items-center justify-center text-sm font-medium h-full text-white bg-[linear-gradient(180deg,_#F85606E5_0%,_#F85606E5_0%)]  border border-white hover:bg-blue-800 focus:ring-4 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 rounded-e-lg">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 20 20">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
