@@ -80,7 +80,7 @@ const loginToggleBtnFun = async(value) => {
 
                     <div class="flex items-center gap-x-2 text-white">
                         <button id="userLoginButton" data-dropdown-toggle="userLogin" class="flex items-center gap-x-1 font-medium rounded-lg text-sm px-2 py-2 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><i class="fa-solid fa-user me-2"></i>Login</button>
-                        <div id="userLogin" class="z-50 hidden bg-white divide-y divide-gray-100 w-full max-w-sm rounded-lg shadow dark:bg-gray-700">
+                        <div id="userLogin" class="z-50 hidden bg-white divide-y divide-gray-100 w-full max-w-sm rounded-lg shadow  dark:bg-gray-700">
                             <div aria-labelledby="userLoginButton">
                                 <LoginForm :toggleBtn="`userLogin`" @loginToggleBtn="loginToggleBtnFun($event)"></LoginForm>
                             </div>
@@ -132,3 +132,9 @@ const loginToggleBtnFun = async(value) => {
         </div>
     </header>
 </template>
+
+<style lang="css" scoped>
+#userLogin{
+    left: -40px !important;
+}
+</style>

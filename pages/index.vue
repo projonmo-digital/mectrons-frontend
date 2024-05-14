@@ -1,31 +1,28 @@
 <template>
+  <!-- ========== Start Category and Slider Section ========== -->
+  <HomeCategorySlider></HomeCategorySlider>
 
+  <!-- ========== Start Search and Ads Section ========== -->
+  <HomeSearchAds></HomeSearchAds>
 
-    <!-- ========== Start Category and Slider Section ========== -->
-    <HomeCategorySlider></HomeCategorySlider>
+  <!-- ========== Hot Sale Section ========== -->
+  <HomeHotSale></HomeHotSale>
 
+  <!-- ========== Start Featured Products Section ========== -->
+  <HomeFeaturedProducts></HomeFeaturedProducts>
 
-    <!-- ========== Start Search and Ads Section ========== -->
-    <HomeSearchAds></HomeSearchAds>
-    
-    
-    <!-- ========== Start Featured Products Section ========== -->
-    <HomeFeaturedProducts></HomeFeaturedProducts>
+  <!-- ========== Best Sale Section ========== -->
+  <HomeBestSale></HomeBestSale>
 
+  <!-- ========== Home Deals Month Section ========== -->
+  <HomeDealsofMonth></HomeDealsofMonth>
 
-    <!-- ========== Best Sale Section ========== -->
-    <HomeBestSale></HomeBestSale>
+  <!-- ========== Electronic Products Section ========== -->
+  <HomeElectronicProducts></HomeElectronicProducts>
 
+  <!-- ========== PopularAds Section ========== -->
+  <HomePopularAds></HomePopularAds>
 
-    <!-- ========== Home Deals Month Section ========== -->
-    <HomeDealsofMonth></HomeDealsofMonth>
-    
-
-    <!-- ========== Electronic Products Section ========== -->
-    <HomeElectronicProducts></HomeElectronicProducts>
-
-
-    <!-- ========== Home Brands Section ========== -->
-    <HomeBrands></HomeBrands>
-
+  <!-- ========== Home Brands Section ========== -->
+  <HomeBrands></HomeBrands>
 </template>

@@ -46,7 +46,7 @@ const getCetagories = async (typeId) => {
           <li>
             <a
               href="#"
-              class="group relative mb-3 md:mb-0 w-full justify-between bg-white hover:bg-[rgba(245,_127,_32,_1)] hover:text-white focus:ring-4 focus:outline-nonefont-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+              class="group relative mb-3 md:mb-0 w-full justify-between bg-white hover:bg-[rgba(245,_127,_32,_1)] hover:text-white focus:ring-4 focus:outline-nonefont-medium rounded-xl text-sm px-5 py-2.5 text-center inline-flex items-center"
             >
               <span class="flex gap-1"><img src="assets/images/disc-brake-1.svg" alt="" />Demo 1</span>
               <svg
