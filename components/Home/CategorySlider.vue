@@ -45,13 +45,15 @@ const getCetagories = async (typeId) => {
           </h2>
         </div>
         <ul class="space-y-2 font-medium mt-3">
-          <li>
+          <li v-for="(type, index) in adstype" :key="type.id">
             <a
               href="#"
-              class="group relative mb-3 md:mb-0 w-full justify-between bg-white hover:bg-[rgba(245,_127,_32,_1)] hover:text-white focus:ring-4 focus:outline-nonefont-medium rounded-xl text-sm px-5 py-2.5 text-center inline-flex items-center"
+              @mouseover="getCetagories(type.id)"
+              class="group relative mb-3 md:mb-0 w-full justify-between bg-white hover:bg-[rgba(245,_127,_32,_1)] hover:text-white focus:ring-4 focus:outline-nonefont-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
             >
-              <span class="flex gap-1"
-                ><img :src="catImage" alt="" />Demo 1</span
+              <span
+                ><i class="fa-solid fa-compact-disc me-3"></i>{{ type.name }}
+                {{ type.id }}</span
               >
               <svg
                 class="w-2.5 h-2.5 ms-3 rtl:rotate-180"
@@ -72,37 +74,20 @@ const getCetagories = async (typeId) => {
                 class="hidden group-hover:block absolute left-full top-0 z-50 bg-white shadow rounded-lg py-1.5"
               >
                 <ul class="menu font-normal text-gray-600">
-                  <!-- <li v-if="loading">
-                                <div class="flex justify-center w-10">
-                                    <img src="assets/images/loader.gif" alt="Loading..." class="flex w-6">
-                                </div>
-                            </li> -->
-                  <li>
-                    <nuxt-link
-                      :to="`/category`"
-                      class="block px-4 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-700"
-                      >Sub 1</nuxt-link
-                    >
+                  <li v-if="loading">
+                    <div class="flex justify-center w-10">
+                      <img
+                        src="assets/images/loader.gif"
+                        alt="Loading..."
+                        class="flex w-6"
+                      />
+                    </div>
                   </li>
-                  <li>
+                  <li v-else v-for="(cat, index) in categories" :key="index">
                     <nuxt-link
-                      :to="`/category`"
+                      :to="`/category/${cat?.id}`"
                       class="block px-4 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-700"
-                      >Sub 1</nuxt-link
-                    >
-                  </li>
-                  <li>
-                    <nuxt-link
-                      :to="`/category`"
-                      class="block px-4 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-700"
-                      >Sub 1</nuxt-link
-                    >
-                  </li>
-                  <li>
-                    <nuxt-link
-                      :to="`/category`"
-                      class="block px-4 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-700"
-                      >Sub 1</nuxt-link
+                      >{{ cat.name }}</nuxt-link
                     >
                   </li>
                 </ul>

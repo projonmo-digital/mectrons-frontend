@@ -21,10 +21,10 @@ getProducts();
 </script>
 
 <template>
-  <div class="mx-10">
+  <div class="px-10 pb-8 bg-[#d9d9d96c]">
     <div class="my-5">
       <!-- title area start -->
-      <div class="relative flex justify-center mx-auto text-center">
+      <div class="relative flex justify-center mx-auto text-center py-8">
         <div class="inline-flex flex-col items-end justify-center w-full me-12">
           <hr
             class="w-64 h-[2px] my-1 bg-gray-200 border-0 rounded dark:bg-gray-700"

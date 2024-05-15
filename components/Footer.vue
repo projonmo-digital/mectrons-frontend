@@ -1,10 +1,9 @@
 <template>
-    <div class="footer-design">
-        <div class="mt-3">
-        <img class="w-full" src="assets/images/Vector 21.svg" alt="">
+  <div class="footer-design">
+    <div class="mt-3">
+      <img class="w-full" src="assets/images/Vector 21.svg" alt="" />
     </div>
-   
-    </div>
+  </div>
   <footer
     class="bg-[linear-gradient(179.25deg,_rgba(245,_127,_32,_0.24)_0.47%,_rgba(234,_234,_234,_0.24)_99.17%)] pt-5"
   >

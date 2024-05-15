@@ -21,7 +21,7 @@ getProducts();
 </script>
 <template>
   <SectionTitle />
-  <div class="bg-[url('assets/images/car.jpeg')] py-16">
+  <div class="bg-[url('assets/images/car.jpeg')] pb-16 pt-32">
     <div
       class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-12 mt-4 mx-20 text-white"
     >
