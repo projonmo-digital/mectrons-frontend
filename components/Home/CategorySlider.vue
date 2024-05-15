@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
-// import catImage from `../../assets/images/disc-brake-1.svg`;
+import catImage from "../../assets/images/disc-brake-1.svg";
+
+// const catImage = "assets/images/disc-brake-1.svg";
 
 const adstype = ref([]);
 const adsType = async () => {
@@ -48,7 +50,9 @@ const getCetagories = async (typeId) => {
               href="#"
               class="group relative mb-3 md:mb-0 w-full justify-between bg-white hover:bg-[rgba(245,_127,_32,_1)] hover:text-white focus:ring-4 focus:outline-nonefont-medium rounded-xl text-sm px-5 py-2.5 text-center inline-flex items-center"
             >
-              <span class="flex gap-1"><img src="assets/images/disc-brake-1.svg" alt="" />Demo 1</span>
+              <span class="flex gap-1"
+                ><img :src="catImage" alt="" />Demo Item</span
+              >
               <svg
                 class="w-2.5 h-2.5 ms-3 rtl:rotate-180"
                 aria-hidden="true"
