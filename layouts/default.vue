@@ -1,8 +1,9 @@
 <template>
-  <div class="relative">
+  <div class="relative poppins-regular ">
     <Header></Header>
     <slot />
     <Footer></Footer>
     <ToasterAlert></ToasterAlert>
+    <Toaster />
   </div>
 </template>

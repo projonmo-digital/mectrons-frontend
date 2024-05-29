@@ -2,14 +2,14 @@
 import { onMounted } from 'vue'
 import { Modal, initFlowbite } from 'flowbite';
 
-const auth = useAuthStore();
+// const auth = useAuthStore();
 
-onMounted(() => {
-    initFlowbite();
-})
-definePageMeta({
-  middleware: ["auth"]
-})
+// onMounted(() => {
+//     initFlowbite();
+// })
+// definePageMeta({
+//   middleware: ["auth"]
+// })
 
 </script>
 <template>    

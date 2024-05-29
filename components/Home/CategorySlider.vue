@@ -1,11 +1,22 @@
-<script setup>
+<script setup lang="ts">
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+
 const adstype = ref([]);
-const adsType = async() => {
+const categoryData = ref([])
+const sideBarCategory = ref([])
+const adsType = async () => {
     refreshNuxtData();
-    try{
+    try {
         const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/types`);
         adstype.value = data.value.data;
-    }catch(error){
+    } catch (error) {
         console.log(error);
     }
 }
@@ -14,56 +25,104 @@ adsType();
 
 const categories = ref([]);
 const loading = ref(true);
-const getCetagories = async(typeId) => {
-    try{
-        const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/categories/types/${typeId}`);
-        if(data.value.data.length > 0){
-            categories.value = data.value.data;
-            loading.value = false;
-        }else{
-            categories.value = null;
-            loading.value = false;
-        }
-    }catch(error){
-        console.log(error);
-    }
+const getCetagories = async () => {
+    const res = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`)
+
+    categoryData.value = res.data.value
+    sideBarCategory.value = res.data.value.categories.slice(0, 5)
+    console.log(sideBarCategory.value)
+
 }
+
+getCetagories()
+
 </script>
 <template>
-    <div class="flex">
-        <aside id="default-sidebar" class=" z-40 w-64 h-auto " aria-label="Sidebar">
-            <div class="h-full px-3 py-4 bg-[rgba(239,_133,_48,_0.24)]">
-                <div class="flex justify-center">
-                    <h2 class="font-bold text-2xl text-[rgba(245,_127,_32,_1)]">Categories</h2>
-                </div>
-                <ul class="space-y-2 font-medium mt-3">
-                    <li v-for="(type,index) in adstype" :key="type.id">
-                        <a href="#" @mouseover="getCetagories(type.id)" class="group relative mb-3 md:mb-0 w-full justify-between bg-white hover:bg-[rgba(245,_127,_32,_1)] hover:text-white focus:ring-4 focus:outline-nonefont-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
-                            <span><i class="fa-solid fa-compact-disc me-3"></i>{{ type.name }} {{type.id}}</span>
-                            <svg
-                                class="w-2.5 h-2.5 ms-3 rtl:rotate-180" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m1 9 4-4-4-4" />
-                            </svg>
-                            <div class="hidden group-hover:block absolute left-full top-0 z-50 bg-white shadow rounded-lg py-1.5">
-                                <ul class="menu font-normal text-gray-600">
-                                    <li v-if="loading">
-                                        <div class="flex justify-center w-10">
-                                            <img src="assets/images/loader.gif" alt="Loading..." class="flex w-6">
+    <div class="lg:flex">
+        <aside id="default-sidebar" class="lg:block hidden z-40 w-64 h-auto " aria-label="Sidebar">
+            <div class="h-full bg-[#EAE5E2] px-3 py-4 ">
+                <div class="flex justify-center ">
+                    <div class=" ">
+                        <div class="w-full   bg-[#EAE5E2]/50 p-4 flex flex-col gap-2 ">
+                            <h1 class="text-center text-2xl font-bold text-primary">Categories</h1>
+
+                            <DropdownMenu class="bg-white" v-for="(i, j) in sideBarCategory">
+                                <DropdownMenuTrigger class="px-2" v-if="j <= 4" as-child>
+                                    <Button
+                                        class=" flex w-full p-x-2 justify-between h-auto text-sm bg-white text-black">
+                                        <div class=" text-start text-wrap text-xs">
+                                            {{ i.name }}
                                         </div>
-                                    </li>
-                                    <li v-else v-for="(cat,index) in categories" :key="index">
-                                        <nuxt-link :to="`/category/${cat?.id}`" class="block px-4 py-1.5 rounded-lg whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-700">{{ cat.name }}</nuxt-link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
+                                        <Icon name=">" class="text-5xl font-bold"> </Icon>
+                                    </Button>
+                                </DropdownMenuTrigger>
+
+                                <DropdownMenuContent class="w-56 bg-white">
+                                    <DropdownMenuItem v-for="(j, index2) in i.children" :key="index2">
+
+                                        <Button class=" flex justify-between w-full h-auto text-sm bg-white text-black">
+                                            <div class="text-wrap text-xs">
+                                                {{ j.name }}
+                                            </div>
+                                            <Icon name=">" class="text-5xl font-bold"> </Icon>
+                                        </Button>
+                                    </DropdownMenuItem>
+
+
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
             </div>
 
         </aside>
+
+        <Sheet>
+            <SheetTrigger class="lg:hidden " as-child>
+                <Button variant="outline">
+                    <Icon name="mdi:menu" class="text-2xl"></Icon>
+                </Button>
+            </SheetTrigger>
+            <SheetContent class="bg-[#EAE5E2]/50">
+                <div class="w-full  p-4 flex flex-col gap-2 ">
+                    <h1 class="text-center text-2xl font-bold text-primary">Categories</h1>
+
+                    <DropdownMenu class="bg-white" v-for="(i, j) in sideBarCategory">
+                        <DropdownMenuTrigger class="px-2" v-if="j <= 4" as-child>
+                            <Button class=" flex w-full p-x-2 justify-between h-auto text-sm bg-white text-black">
+                                <div class=" text-start text-wrap text-xs">
+                                    {{ i.name }}
+                                </div>
+                                <Icon name=">" class="text-5xl font-bold"> </Icon>
+                            </Button>
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent class="w-56 bg-white">
+                            <DropdownMenuItem v-for="(j, index2) in i.children" :key="index2">
+
+                                <Button class=" flex justify-between w-full h-auto text-sm bg-white text-black">
+                                    <div class="text-wrap text-xs">
+                                        {{ j.name }}
+                                    </div>
+                                    <Icon name=">" class="text-5xl font-bold"> </Icon>
+                                </Button>
+                            </DropdownMenuItem>
+
+
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
+                </div>
+            </SheetContent>
+        </Sheet>
 
 
         <div id="indicators-carousel" class="relative w-full z-10" data-carousel="static">
