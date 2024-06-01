@@ -49,11 +49,12 @@ getCetagories()
                             <DropdownMenu class="bg-white" v-for="(i, j) in sideBarCategory">
                                 <DropdownMenuTrigger class="px-2" v-if="j <= 4" as-child>
                                     <Button
-                                        class=" flex w-full p-x-2 justify-between h-auto text-sm bg-white text-black">
-                                        <div class=" text-start text-wrap text-xs">
-                                            {{ i.name }}
-                                        </div>
-                                        <Icon name=">" class="text-5xl font-bold"> </Icon>
+                                        class=" flex w-full p-x-2 justify-between rounded-full h-auto hover:text-white text-sm bg-white text-black">
+                                        <h1 class=" font-bold text-start text-wrap text-xs">
+                                            {{ i.name.slice(0, 14) }}.....
+
+                                        </h1>
+                                        <Icon name="mdi:chevron-right" class="text-xl font-bold"> </Icon>
                                     </Button>
                                 </DropdownMenuTrigger>
 
@@ -64,13 +65,28 @@ getCetagories()
                                             <div class="text-wrap text-xs">
                                                 {{ j.name }}
                                             </div>
-                                            <Icon name=">" class="text-5xl font-bold"> </Icon>
+                                            <Icon name="mdi:chevron-right" class="text-2xl font-bold"> </Icon>
                                         </Button>
                                     </DropdownMenuItem>
 
 
                                 </DropdownMenuContent>
                             </DropdownMenu>
+                            <DropdownMenu class="bg-white">
+                                <DropdownMenuTrigger class="px-2" as-child>
+                                    <Button
+                                        class=" flex w-full p-x-2 justify-between rounded-full h-auto hover:text-white text-sm bg-white text-black">
+                                        <h1 class=" font-bold text-start text-wrap text-xs">
+                                            All Categories
+
+                                        </h1>
+                                        <Icon name="mdi:chevron-right" class="text-2xl font-bold"> </Icon>
+                                    </Button>
+                                </DropdownMenuTrigger>
+
+
+                            </DropdownMenu>
+
 
                         </div>
                     </div>

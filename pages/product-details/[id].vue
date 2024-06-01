@@ -77,12 +77,33 @@ const BuyNowBtn = (product) => {
 }
 
 
+const features = [
+    {
+        icon: "mdi:truck-delivery",
+        text: " For orders from $50",
+        title: "FREE Shipping"
+    },
+    {
+        icon: "mdi:hours-24",
+        text: "Call us anytime",
+        title: "Support 24/7 "
+    },
+    {
+        icon: "fluent:shield-task-48-filled",
+        text: " Only Secure payments",
+        title: "100% Safety"
+    }
+];
+
+
+
+
 
 </script>
 <template>
     <div class="max-w-screen-2xl mx-auto px-4 py-9">
         <div class="flex">
-            <div class="font-[sans-serif]">
+            <div class="">
                 <div class="grid items-start grid-cols-1 lg:grid-cols-2 gap-10">
                     <div class="w-full lg:sticky top-0 ">
                         <div class="h-96 shadow rounded-lg overflow-hidden">
@@ -107,110 +128,170 @@ const BuyNowBtn = (product) => {
                             </div>
                         </div>
                     </div>
-                    <div class="mx-8">
-                        <div class="flex flex-wrap items-start gap-4">
-                            <div>
-                                <h2 class="text-xl font-bold text-gray-800">{{ productview?.title }}</h2>
+                    <div class="w-full">
+                        <div class="flex w-full gap-x-4">
+                            <div class="w-[60%]">
+                                <div class="flex flex-wrap items-start gap-4">
+                                    <div>
+                                        <h2 class="text-xl font-bold text-gray-800">{{ productview?.title }}</h2>
+                                    </div>
+
+                                </div>
+                                <hr class="my-4" />
+                                <div class="flex flex-wrap gap-4 mt-5">
+
+                                    <figure class="max-w-screen-md">
+                                        <div class="flex items-center mb-4  gap-2">
+                                            <i class="fa-solid fa-star text-yellow-300"></i>
+                                            <i class="fa-solid fa-star text-yellow-300"></i>
+                                            <i class="fa-solid fa-star text-yellow-300"></i>
+                                            <i class="fa-solid fa-star text-yellow-300"></i>
+                                            <i class="fa-solid fa-star text-[rgba(217,_217,_217,_1)]"></i>
+                                            <button type="button" class="text-gray-400"> 1 Reviews </button>
+                                        </div>
+
+                                    </figure>
+
+                                </div>
+                                <hr class="my-3" />
+                                <div class="flex flex-wrap gap-x-3 items-start">
+                                    <span class="text-primary text-2xl font-bold">{{
+                                        productview?.currency?.symbol }}{{ productview?.price }}</span>
+                                    <span class="text-lg line-through text-gray-400">$180.00</span>
+                                </div>
+                                <div class="items-start mt-4">
+                                    <div>
+                                        <span class=" text-[rgba(0,_0,_0,_0.46)]">Brand:</span>
+                                        <span class="">Toyota</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <span class=" text-[rgba(0,_0,_0,_0.46)]">Availability:</span>
+                                        <span class="text-primary">In Stock</span>
+                                    </div>
+                                </div>
+                                <div class="inline-flex items-center mt-5">
+                                    <span class=" dark:text-gray-300 font-bold me-5">Qty :</span>
+                                    <div class="relative flex items-center max-w-[7rem]">
+                                        <button @click="Decrement" type="button" id="decrement-button"
+                                            data-input-counter-decrement="quantity-input"
+                                            class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg px-2 py-2 h-8 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                                            </svg>
+                                        </button>
+                                        <input type="text" v-model="quantity" id="quantity-input" data-input-counter
+                                            aria-describedby="helper-text-explanation"
+                                            class="bg-gray-50 border-x-0 border-gray-300 h-8 text-center text-gray-900 text-sm border-t border-b border-gray-300 focus:ring-blue-500 focus:border-blue-500 block w-full px-1.5 py-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="1" required />
+                                        <button @click="Increment" type="button" id="increment-button"
+                                            data-input-counter-increment="quantity-input"
+                                            class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg px-2 py-2 h-8 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <button class="bg-gray-200 w-8 h-8 rounded-full ms-5 me-5"><i
+                                            class="fa-solid fa-heart"></i></button>
+                                    <button class="bg-primary text-white w-8 h-8 rounded-lg"><i
+                                            class="fa-solid fa-cart-shopping"></i></button>
+                                </div>
+                                <div class="flex flex-wrap  mt-12">
+                                    <button @click=BuyNowBtn(productview) type="button"
+                                        class="w-full rounded-xl px-4 py-3 bg-primary hover:bg-gray-900 text-white text-sm font-bold ">BUY
+                                        IT NOW</button>
+                                </div>
+                            </div>
+                            <div class="w-[30%] flex flex-col gap-2 h-[335px] p-2 rounded-xl border shadow">
+                                <h1 class=" text-xl font-bold">Stay Safe</h1>
+                                <div class=" flex items-center">
+                                    <hr class="h-2px w-full">
+                                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="24" cy="24" r="23.5" fill="#D96A10" stroke="black" />
+                                        <path
+                                            d="M32.318 15.982L24.3539 13.268C24.2578 13.2352 24.1289 13.2188 24 13.2188C23.8711 13.2188 23.7422 13.2352 23.6461 13.268L15.682 15.982C15.4875 16.0477 15.3281 16.2727 15.3281 16.4789V27.7852C15.3281 27.9914 15.4617 28.2633 15.6234 28.3922L23.7023 34.6875C23.7844 34.7508 23.8898 34.7836 23.9977 34.7836C24.1055 34.7836 24.2133 34.7508 24.293 34.6875L32.3719 28.3922C32.5336 28.2656 32.6672 27.9937 32.6672 27.7852V16.4789C32.6719 16.2727 32.5125 16.05 32.318 15.982ZM28.2773 19.9852L23.2945 26.8453C23.2595 26.8933 23.2137 26.9323 23.1607 26.9591C23.1078 26.986 23.0492 27 22.9898 27C22.9305 27 22.8719 26.986 22.819 26.9591C22.766 26.9323 22.7202 26.8933 22.6852 26.8453L19.7227 22.7672C19.6336 22.643 19.7227 22.4695 19.875 22.4695H21.1688C21.2883 22.4695 21.4031 22.5281 21.4734 22.6242L22.9898 24.7102L26.5266 19.8398C26.5969 19.7437 26.7094 19.6852 26.8312 19.6852H28.125C28.2773 19.6875 28.3664 19.8609 28.2773 19.9852Z"
+                                            fill="#F8F8F8" />
+                                    </svg>
+
+                                </div>
+                                <p class=" text-sm">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto
+                                    laborum,
+                                    tempora, in cum tenetur
+                                    enim voluptatibus beatae nobis saepe assumenda at eius voluptatum soluta ea incidunt
+                                    quidem numquam
+                                    a quos accusa</p>
+                                <span class=" text-lg font-bold">Read more <Icon name="mdi:chevron-right"
+                                        class=" text-xl"></Icon></span>
                             </div>
 
                         </div>
-                        <hr class="my-4" />
-                        <div class="flex flex-wrap gap-4 mt-5">
 
-                            <figure class="max-w-screen-md">
-                                <div class="flex items-center mb-4  gap-2">
-                                    <i class="fa-solid fa-star text-yellow-300"></i>
-                                    <i class="fa-solid fa-star text-yellow-300"></i>
-                                    <i class="fa-solid fa-star text-yellow-300"></i>
-                                    <i class="fa-solid fa-star text-yellow-300"></i>
-                                    <i class="fa-solid fa-star text-[rgba(217,_217,_217,_1)]"></i>
-                                    <button type="button" class="text-gray-400"> 1 Reviews </button>
+                        <div class=" flex gap-x-4">
+                            <div class=" w-[60%]">
+                                <div class="flex justify-between items-center mt-6">
+                                    <h1>Sold By</h1>
+                                    <div>
+                                        <h1>
+                                            <Icon name="mdi:chat-processing" class=" text-4xl text-primary"></Icon>
+                                            Chat Now
+                                        </h1>
+                                        <h1>
+                                            <Icon name="fluent:location-12-filled" class=" text-4xl text-primary">
+                                            </Icon>
+                                            Location
+                                        </h1>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-x-3 mt-4">
+                                    <img class="w-12 h-12 rounded-full" v-if="productview?.user?.profile_picture"
+                                        :src="common?.defaultProfilePic(productview?.user?.profile_picture) == 0 ? productview?.user?.profile_picture : useRuntimeConfig().public.imageUrl + productview?.user?.profile_picture"
+                                        alt="profile picture">
+                                    <div class="font-medium text-gray-900 dark:text-white">
+                                        <nuxt-link
+                                            :to="`/${productview?.user?.name?.replaceAll(' ', '-')}/${productview?.user?.id}/products`">{{
+                                                productview?.user?.name }}</nuxt-link>
+                                    </div>
+                                </div>
+                                <hr class="mt-10" />
+                                <div class="grid grid-cols-3 place-items-center p-4  border-t-">
+                                    <div class=" flex flex-col items-center ">
+                                        <span> Postive Seller Ratings</span>
+                                        <span class="font-bold text-2xl text- mt-2">83%</span>
+                                    </div>
+                                    <div class=" flex flex-col border-r border-l p-2 items-center ">
+                                        <span class="">Ship on Time</span>
+
+                                        <span class="font-bold text-2xl mt-2">90%</span>
+                                    </div>
+                                    <div class=" flex flex-col items-center ">
+                                        <span>Chat Response Rate</span>
+                                        <span class="font-bold  mt-2 text-2xl">100%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" w-[30%] p-4 border rounded-lg flex flex-col gap-2  justify-between ">
+                                <div v-for=" i in features " class=" flex gap-x-2">
+                                    <Icon :name="i.icon" class="text-6xl text-primary"></Icon>
+                                    <div>
+                                        <h1 class=" font-bold ">{{ i.title }}</h1>
+                                        <p class=" text-xs">{{ i.text }}</p>
+                                    </div>
+
                                 </div>
 
-                            </figure>
-
-                        </div>
-                        <hr class="my-3" />
-                        <div class="flex flex-wrap gap-x-3 items-start">
-                            <span class="text-[rgba(217,_106,_16,_1)] text-2xl font-bold">{{
-                                productview?.currency?.symbol }}{{ productview?.price }}</span>
-                            <span class="text-lg line-through text-gray-400">$180.00</span>
-                        </div>
-                        <div class="items-start mt-4">
-                            <div>
-                                <span class=" text-[rgba(0,_0,_0,_0.46)]">Brand:</span>
-                                <span class="text-[rgba(217,_106,_16,_1)]">Toyota</span>
                             </div>
-                            <div class="mt-2">
-                                <span class=" text-[rgba(0,_0,_0,_0.46)]">Availability:</span>
-                                <span class="text-[rgba(215,_14,_14,_1)]">In Stock</span>
-                            </div>
-                        </div>
-                        <div class="inline-flex items-center mt-5">
-                            <span class=" dark:text-gray-300 font-bold me-5">Qty :</span>
-                            <div class="relative flex items-center max-w-[7rem]">
-                                <button @click="Decrement" type="button" id="decrement-button"
-                                    data-input-counter-decrement="quantity-input"
-                                    class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg px-2 py-2 h-8 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="M1 1h16" />
-                                    </svg>
-                                </button>
-                                <input type="text" v-model="quantity" id="quantity-input" data-input-counter
-                                    aria-describedby="helper-text-explanation"
-                                    class="bg-gray-50 border-x-0 border-gray-300 h-8 text-center text-gray-900 text-sm border-t border-b border-gray-300 focus:ring-blue-500 focus:border-blue-500 block w-full px-1.5 py-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="1" required />
-                                <button @click="Increment" type="button" id="increment-button"
-                                    data-input-counter-increment="quantity-input"
-                                    class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg px-2 py-2 h-8 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-                                    <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="M9 1v16M1 9h16" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <button class="bg-gray-200 w-8 h-8 rounded-full ms-5 me-5"><i
-                                    class="fa-solid fa-heart"></i></button>
-                            <button class="bg-[rgba(217,_106,_16,_1)] text-white w-8 h-8 rounded-lg"><i
-                                    class="fa-solid fa-cart-shopping"></i></button>
-                        </div>
-                        <div class="flex flex-wrap  mt-12">
-                            <button @click=BuyNowBtn(productview) type="button"
-                                class="w-full rounded-xl px-4 py-3 bg-[rgba(217,_106,_16,_1)] hover:bg-gray-900 text-white text-sm font-bold rounded-sm">BUY
-                                IT NOW</button>
                         </div>
 
-                        <div class="flex justify-between items-center mt-6">
-                            <h1>Sold By</h1>
-                            <h1><i class="fa-solid fa-comments me-2 text-[rgba(217,_106,_16,_1)]"></i>Chat Now</h1>
-                        </div>
-                        <div class="flex items-center gap-x-3 mt-4">
-                            <img class="w-12 h-12 rounded-full" v-if="productview?.user?.profile_picture"
-                                :src="common?.defaultProfilePic(productview?.user?.profile_picture) == 0 ? productview?.user?.profile_picture : useRuntimeConfig().public.imageUrl + productview?.user?.profile_picture"
-                                alt="profile picture">
-                            <div class="font-medium text-gray-900 dark:text-white">
-                                <nuxt-link
-                                    :to="`/${productview?.user?.name?.replaceAll(' ', '-')}/${productview?.user?.id}/products`">{{
-                                        productview?.user?.name }}</nuxt-link>
-                            </div>
-                        </div>
-                        <hr class="mt-10" />
-                        <div class="grid grid-cols-3 ">
-                            <span> Postive Seller Ratings</span>
-                            <span>Ship on Time</span>
-                            <span>Chat Response Rate</span>
-                        </div>
-                        <div class="grid grid-cols-3 text-center mt-4">
-                            <span class="font-bold mt-2">83%</span>
-                            <span class="font-bold mt-2">90%</span>
-                            <span class="font-bold mt-2">100%</span>
-                        </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 
@@ -307,33 +388,7 @@ const BuyNowBtn = (product) => {
 
         <div class="flex justify-between items-center mt-10">
             <h2 class="font-bold text-xl">Related Products</h2>
-            <div class="flex justify-end gap-2">
-                <button class="group prev relative inline-flex items-center justify-center ease-in-out duration-300"
-                    data-filter="all">
-                    <span class="relative z-10 text-sm font-medium text-white w-8 h-6 flex justify-center items-center">
-                        <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m15 19-7-7 7-7" />
-                        </svg>
-                    </span>
-                    <span
-                        class="skew absolute w-8 h-6 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-[#F57F20] group-hover:bg-[#F57F20] z-0 -skew-x-12"></span>
-                </button>
 
-                <button class="group next relative inline-flex items-center justify-center ease-in-out duration-300"
-                    data-filter="all">
-                    <span class="relative z-10 text-sm font-medium text-white w-8 h-6 flex justify-center items-center">
-                        <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m9 5 7 7-7 7" />
-                        </svg>
-                    </span>
-                    <span
-                        class="skew absolute w-8 h-6 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-[#F57F20] group-hover:bg-[#F57F20] z-0 -skew-x-12"></span>
-                </button>
-            </div>
         </div>
         <hr class="mb-5 mt-1">
         <!-- Carousel wrapper -->

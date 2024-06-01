@@ -16,11 +16,24 @@ const icons = [
         "subtext": "All over Bangladesh"
     }
 ]
+const secondSearchBar = reactive({
+    model: '',
+    make: '',
+    year: '',
+    engyne: '',
+    parts: ''
+})
+
+const getSearchOptions = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
+}
+
+getSearchOptions()
 
 </script>
 
 <template>
-    <div class="w-full flex justify-center gap-8 bg-white">
+    <div class="w-full flex justify-between gap-8 bg-white">
         <div class=" w-[351px] h-[285px] lg:block hidden">
             <img class="w-full h-full object-cover"
                 src="https://www.bridgestone.com.au/-/media/project/bridgestone-global/apac/bridgestone-nz/tyres/offers/promotions/offers/2024/may/offer-banner/20564-bds-may-web-landing-375x380.jpg?rev=97b60f238cc64e578b73bfe1d5f2c84c">
@@ -29,27 +42,27 @@ const icons = [
         <div class="flex flex-col gap-8 -mt-10 z-20 text-xs">
             <div
                 class=" max-w-[800px] lg:h-[71px]   w-full place-content-center   grid grid-cols-2 md:grid-cols-6 p-4 gap-4 bg-primary rounded-2xl ">
-                <select class="h-[35px] rounded h-">
+                <select class="h-[35px] rounded h-" v-model="secondSearchBar.model">
                     <option value="" disabled selected>Select Model </option>
                     <option value="hurr">Durr</option>
                 </select>
-                <select class="h-[35px] rounded h-">
+                <select class="h-[35px] rounded h-" v-model="secondSearchBar.make">
                     <option value="" disabled selected>Select Make</option>
                     <option value="hurr">Durr</option>
                 </select>
-                <select class="h-[35px] rounded h-">
+                <select class="h-[35px] rounded h-" v-model="secondSearchBar.year">
                     <option value="" disabled selected>Select Year</option>
                     <option value="hurr">Durr</option>
                 </select>
-                <select class="h-[35px] rounded h-">
+                <select class="h-[35px] rounded h-" v-model="secondSearchBar.engyne">
                     <option value="" disabled selected>Select Engine</option>
                     <option value="hurr">Durr</option>
                 </select>
-                <select class="h-[35px] rounded h-">
+                <select class="h-[35px] rounded h-" v-model="secondSearchBar.parts">
                     <option value="" disabled selected>Select Parts</option>
                     <option value="hurr">Durr</option>
                 </select>
-                <Button class=" h-[35px] w-16 bg-red-200 ">
+                <Button class=" h-[35px] w-16 bg-red-200 " @click="">
                     <Icon class="text-primary text-2xl bg" name="fa:search"></Icon>
                 </Button>
 
@@ -79,9 +92,7 @@ const icons = [
 
         </div>
 
-        <div>
 
-        </div>
 
     </div>
 </template>

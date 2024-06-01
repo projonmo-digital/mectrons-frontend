@@ -62,10 +62,10 @@ getProducts();
         <hr class="mb-5">
 
         <div class="relative">
-            <div class="w-[calc(100%-90px)] mx-auto">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6">
-                    <ProductCard v-for="(product, index) of products" :key="product.id" :product="product">
-                    </ProductCard>
+            <div>
+                <div class="w-full">
+                    <Slider :product="products">
+                    </Slider>
                 </div>
             </div>
 
