@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -29,8 +29,9 @@ const getCetagories = async () => {
     const res = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`)
 
     categoryData.value = res.data.value
+    console.log(res.data.value)
     sideBarCategory.value = res.data.value.categories.slice(0, 5)
-    console.log(sideBarCategory.value)
+
 
 }
 
@@ -40,26 +41,27 @@ getCetagories()
 <template>
     <div class="lg:flex">
         <aside id="default-sidebar" class="lg:block hidden z-40 w-64 h-auto " aria-label="Sidebar">
-            <div class="h-full bg-[#EAE5E2] px-3 py-4 ">
-                <div class="flex justify-center ">
-                    <div class=" ">
-                        <div class="w-full   bg-[#EAE5E2]/50 p-4 flex flex-col gap-2 ">
+            <div class="h-full bg-[#EAE5E2] py-4 ">
+                <div class="flex w-full ">
+                    <div class=" w-full">
+                        <div class="w-full  p-1  bg-[#EAE5E2]/50  flex flex-col gap-y-2 ">
                             <h1 class="text-center text-2xl font-bold text-primary">Categories</h1>
 
                             <DropdownMenu class="bg-white" v-for="(i, j) in sideBarCategory">
-                                <DropdownMenuTrigger class="px-2" v-if="j <= 4" as-child>
+                                <DropdownMenuTrigger class="w-full" v-if="j <= 4" as-child>
                                     <Button
-                                        class=" flex w-full p-x-2 justify-between rounded-full h-auto hover:text-white text-sm bg-white text-black">
+                                        class=" flex w-full  justify-between rounded-full h-auto hover:text-white text-sm bg-white text-black">
                                         <h1 class=" font-bold text-start text-wrap text-xs">
-                                            {{ i.name.slice(0, 14) }}.....
+                                            {{ i.name.slice(0, 20) }}.....
 
                                         </h1>
                                         <Icon name="mdi:chevron-right" class="text-xl font-bold"> </Icon>
                                     </Button>
                                 </DropdownMenuTrigger>
 
-                                <DropdownMenuContent class="w-56 bg-white">
-                                    <DropdownMenuItem v-for="(j, index2) in i.children" :key="index2">
+                                <DropdownMenuContent class="w-56 ml-[200px] bg-white">
+                                    <!-- <DropdownMenuItem v-if="!j.children" v-for="(j, index2) in i.children"
+                                        :key="index2">
 
                                         <Button class=" flex justify-between w-full h-auto text-sm bg-white text-black">
                                             <div class="text-wrap text-xs">
@@ -67,7 +69,31 @@ getCetagories()
                                             </div>
                                             <Icon name="mdi:chevron-right" class="text-2xl font-bold"> </Icon>
                                         </Button>
-                                    </DropdownMenuItem>
+                                    </DropdownMenuItem> -->
+
+
+                                    <DropdownMenuSub class="bg-white" v-for="(j, index2) in i.children">
+                                        <DropdownMenuSubTrigger>
+                                            <div class="text-wrap text-xs">
+                                                {{ j.name }}
+                                            </div>
+
+                                        </DropdownMenuSubTrigger>
+                                        <DropdownMenuPortal>
+                                            <DropdownMenuSubContent class="bg-white">
+                                                <DropdownMenuItem v-for="(k, index2) in j.children"><Button
+                                                        class=" flex justify-between w-full h-auto text-sm bg-white text-black">
+                                                        <div class="text-wrap text-xs">
+                                                            {{ k.name }}
+                                                        </div>
+
+                                                    </Button></DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+
+                                            </DropdownMenuSubContent>
+                                        </DropdownMenuPortal>
+                                    </DropdownMenuSub>
+
 
 
                                 </DropdownMenuContent>

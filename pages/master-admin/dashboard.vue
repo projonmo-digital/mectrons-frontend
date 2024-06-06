@@ -12,9 +12,9 @@ const auth = useAuthStore();
 onMounted(() => {
     initFlowbite();
 })
-definePageMeta({
-    middleware: ["auth", "admin"]
-})
+// definePageMeta({
+//     middleware: ["auth", "admin"]
+// })
 
 </script>
 
