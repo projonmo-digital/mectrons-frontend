@@ -45,11 +45,13 @@ export const useAuthStore = defineStore("auth", {
       const token = useTokenStore();
       token.setToken(data.token);
       this.user = data.user;
+
       toaster.addSuccess(data.message);
       if (this.user.email == "admin@admin") {
         return navigateTo("/master-admin/dashboard");
       }
-      if (this.user.email) {
+      if (this.user.email && this.user.nid) {
+        return navigateTo("/sellerView/dashboard");
       } else {
         return navigateTo("/user/dashboard");
       }

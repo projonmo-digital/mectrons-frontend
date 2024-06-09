@@ -1,5 +1,22 @@
 <script setup>
 import { ref } from 'vue';
+const secondSearchBar = reactive({
+    model: '',
+    make: '',
+    year: '',
+    cc: '',
+    engyne: '',
+    parts: ''
+})
+const selectedsecondSearchBar = reactive({
+    model: '',
+    make: '',
+    year: '',
+    cc: '',
+    engyne: '',
+    parts: ''
+})
+
 
 const response = ref({
     title: '',
@@ -9,22 +26,30 @@ const response = ref({
     price: 1000,
     currency_id: 4,
     stock_amount: '5',
-    category_id: "automobiles_tools",
+    category: {
+        grandparentCategoryId: '',
+        parentCategoryId: '',
+        childrenCategoryId: ''
+
+    },
+    category_id: '',
     condition_id: "dfsadf",
     negotiable: '1',
     age: '500',
     origin: 'dsfsa',
     typeId: 'fasds',
     bd: 'afs',
-    extra_field_1: 'fsd',
+    extra_field_1: selectedsecondSearchBar,
     type_id: 1,
     extra_field_2: 'asf',
-    image: []
+    image: [],
+
 });
 
 const setProducts = async () => {
     const token = useTokenStore();
     const body = new FormData();
+
     Object.keys(response.value).forEach(key => {
         if (key === 'image') {
             response.value.image.forEach((file, index) => {
@@ -44,8 +69,9 @@ const setProducts = async () => {
             body
         });
         // Handle the response
-
+        alert("Something went wrong")
     } catch (error) {
+        alert("Something went wrong")
         console.log(error);
     }
 };
@@ -61,18 +87,77 @@ const handleSubmit = (e) => {
     e.preventDefault();
     setProducts();
 };
+
+
+const getMake = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
+    secondSearchBar.make = data.value
+    console.log(secondSearchBar)
+
+}
+getMake()
+const getModel = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}`)
+    secondSearchBar.model = data.value
+    console.log(secondSearchBar.model)
+}
+
+
+const getYear = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}`)
+    secondSearchBar.year = data.value
+
+
+}
+const getCC = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}`)
+    secondSearchBar.cc = data.value
+    console.log(data.value)
+}
+const getEngyne = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}`)
+    secondSearchBar.engyne = data.value
+}
+
+const getParts = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}&engine=${selectedsecondSearchBar.engyne}`)
+    secondSearchBar.parts = data.value
+
+
+}
+
+const service = ref('')
+const category = ref('')
+const categoryData = ref('')
+
+const getCetagories = async () => {
+    const res = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`)
+
+    categoryData.value = res.data.value
+    console.log(res.data.value)
+
+
+
+}
+
+getCetagories()
+
+
+
+
 </script>
 
 
 <template>
     <form @submit="handleSubmit">
-        {{ response }}
+
+
         <div class="p-8 flex flex-col gap-8">
-            <HeaderWithHr header="Add New Product"></HeaderWithHr>
+            <HeaderWithHr header="Add New Service"></HeaderWithHr>
 
             <div class="productCategory">
                 <HeaderWithDot header="Add Information"></HeaderWithDot>
-                <div class="shadow-2xl border p-4">
+                <div class="shadow-xl border p-4">
                     <HeaderWithDot header="Product Category" area="w-[40%]"></HeaderWithDot>
                     <div class="flex w-full justify-around">
                         <div class="flex flex-col gap-2">
@@ -80,18 +165,36 @@ const handleSubmit = (e) => {
                                 <Icon name="fluent:box-16-regular"></Icon>
                                 <p>Product</p>
                             </div>
-                            <RadioGroup v-model="response.category_id">
-                                <div class="flex items-center space-x-2">
-                                    <RadioGroupItem id="autoMobiles_tools" value="automobiles_tools" />
-                                    <Label for="autoMobiles_tools">Automobiles Tools</Label>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <RadioGroupItem id="equipment" value="equipment" />
-                                    <Label for="equipment">Equipment</Label>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <RadioGroupItem id="electronics" value="electronics" />
-                                    <Label for="electronics">Electronics</Label>
+                            <RadioGroup v-model="response.category.grandparentCategoryId" class="flex flex-col gap-y-2">
+                                <div class="flex flex-col " v-for="i in categoryData.categories" :key="i.id">
+                                    <div v-if="!i.name.includes('Service')">
+                                        <div class="flex gap-2 items-center">
+                                            <RadioGroupItem :id="i.id" :value="i.id" />
+                                            <Label :for="i.id">{{ i.name }}</Label>
+                                        </div>
+                                        <RadioGroup v-if="response.category.grandparentCategoryId === i.id"
+                                            class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
+                                            v-model="response.category.parentCategoryId">
+                                            <div class="flex flex-col gap-2  " v-for="j in i.children" :key="j.id">
+                                                <div class="flex  items-center">
+                                                    <RadioGroupItem :id="j.id" :value="j.id" />
+                                                    <Label :for="j.id">{{ j.name }}</Label>
+                                                </div>
+                                                <RadioGroup
+                                                    class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
+                                                    v-if="response.category.parentCategoryId === j.id"
+                                                    v-model="response.category_id">
+                                                    <div class="flex justify-start  flex-col" v-for="k in j.children"
+                                                        :key="k.id">
+                                                        <div class="flex gap-2 ">
+                                                            <RadioGroupItem :id="k.id" :value="k.id" />
+                                                            <Label :for="k.id">{{ k.name }}</Label>
+                                                        </div>
+                                                    </div>
+                                                </RadioGroup>
+                                            </div>
+                                        </RadioGroup>
+                                    </div>
                                 </div>
                             </RadioGroup>
                         </div>
@@ -100,18 +203,37 @@ const handleSubmit = (e) => {
                                 <Icon name="fluent:key-20-regular"></Icon>
                                 <p>Services</p>
                             </div>
-                            <RadioGroup v-model="response.typeId">
-                                <div class="flex items-center space-x-2">
-                                    <RadioGroupItem id="engyne" value="engyne" />
-                                    <Label for="engyne">Engyne</Label>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <RadioGroupItem id="lpg" value="lpg" />
-                                    <Label for="lpg">Lpg</Label>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <RadioGroupItem id="airCondition" value="airCondition" />
-                                    <Label for="airCondition">Air Condition</Label>
+
+                            <RadioGroup v-model="response.category.grandparentCategoryId" class="flex flex-col gap-y-2">
+                                <div class="flex flex-col " v-for="i in categoryData.categories" :key="i.id">
+                                    <div v-if="i.name.includes('Service')">
+                                        <div class="flex gap-2 items-center">
+                                            <RadioGroupItem :id="i.id" :value="i.id" />
+                                            <Label :for="i.id">{{ i.name }}</Label>
+                                        </div>
+                                        <RadioGroup v-if="response.category.grandparentCategoryId === i.id"
+                                            class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
+                                            v-model="response.category.parentCategoryId">
+                                            <div class="flex flex-col gap-2  " v-for="j in i.children" :key="j.id">
+                                                <div class="flex  items-center">
+                                                    <RadioGroupItem :id="j.id" :value="j.id" />
+                                                    <Label :for="j.id">{{ j.name }}</Label>
+                                                </div>
+                                                <RadioGroup
+                                                    class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
+                                                    v-model="response.category_id"
+                                                    v-if="response.category.parentCategoryId === j.id">
+                                                    <div class="flex justify-start  flex-col" v-for="k in j.children"
+                                                        :key="k.id">
+                                                        <div class="flex gap-2 ">
+                                                            <RadioGroupItem :id="k.id" :value="k.id" />
+                                                            <Label :for="k.id">{{ k.name }}</Label>
+                                                        </div>
+                                                    </div>
+                                                </RadioGroup>
+                                            </div>
+                                        </RadioGroup>
+                                    </div>
                                 </div>
                             </RadioGroup>
                         </div>
@@ -154,6 +276,45 @@ const handleSubmit = (e) => {
                     </div>
                 </div>
             </div>
+            <div
+                class="  lg:h-[71px] mt-4   w-full place-content-center   grid grid-cols-2 md:grid-cols-2 p-4 gap-4  rounded-2xl ">
+
+                <select class="h-[35px] rounded h-" @change="getModel" v-model="selectedsecondSearchBar.make">
+                    <option value="" disabled selected>Select Model </option>
+                    <option v-for="i in secondSearchBar.make">{{ i.make }}</option>
+
+                </select>
+                <select @change="getYear" :disabled="!selectedsecondSearchBar.make" class="h-[35px] rounded h-"
+                    v-model="selectedsecondSearchBar.model">
+                    <option value="" disabled selected>Select Model </option>
+                    <option v-for="i in secondSearchBar.model">{{ i.models }}</option>
+                </select>
+                <select @change="getCC" :disabled="!secondSearchBar.year" class="h-[35px] rounded h-"
+                    v-model="selectedsecondSearchBar.year">
+                    <option value="" disabled selected>Select Year</option>
+                    <option v-for="i in secondSearchBar.year">{{ i.year }}</option>
+                </select>
+                <select @change="getEngyne" :disabled="!secondSearchBar.cc" class="h-[35px] rounded h-"
+                    v-model="selectedsecondSearchBar.cc">
+                    <option value="" disabled selected>Select CC</option>
+                    <option v-for="i in secondSearchBar.cc">{{ i.cc }}</option>
+                </select>
+                <select @change="getParts" :disabled="!secondSearchBar.engyne" class="h-[35px] rounded h-"
+                    v-model="selectedsecondSearchBar.engyne">
+                    <option value="" disabled selected>Select Engine</option>
+                    <option v-for="i in secondSearchBar.engyne">{{ i.engine }}</option>
+                </select>
+
+                <select :disabled="!secondSearchBar.parts" class="h-[35px] rounded h-"
+                    v-model="selectedsecondSearchBar.parts">
+                    <option value="" disabled selected>Select Parts</option>
+                    <option v-for="i in categoryData.categories">{{ i.name }}</option>
+                </select>
+
+
+
+            </div>
+
 
             <div id="fileMedia" class="w-full flex flex-col gap-4">
                 <HeaderWithDot header="File & Media"></HeaderWithDot>

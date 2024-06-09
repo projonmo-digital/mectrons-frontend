@@ -1,5 +1,22 @@
 <script setup>
 import { ref } from 'vue';
+const secondSearchBar = reactive({
+    model: '',
+    make: '',
+    year: '',
+    cc: '',
+    engyne: '',
+    parts: ''
+})
+const selectedsecondSearchBar = reactive({
+    model: '',
+    make: '',
+    year: '',
+    cc: '',
+    engyne: '',
+    parts: ''
+})
+
 
 const response = ref({
     title: '',
@@ -15,21 +32,24 @@ const response = ref({
         childrenCategoryId: ''
 
     },
+    category_id: '',
     condition_id: "dfsadf",
     negotiable: '1',
     age: '500',
     origin: 'dsfsa',
     typeId: 'fasds',
     bd: 'afs',
-    extra_field_1: 'fsd',
+    extra_field_1: selectedsecondSearchBar,
     type_id: 1,
     extra_field_2: 'asf',
-    image: []
+    image: [],
+
 });
 
 const setProducts = async () => {
     const token = useTokenStore();
     const body = new FormData();
+
     Object.keys(response.value).forEach(key => {
         if (key === 'image') {
             response.value.image.forEach((file, index) => {
@@ -49,8 +69,9 @@ const setProducts = async () => {
             body
         });
         // Handle the response
-
+        alert("Something went wrong")
     } catch (error) {
+        alert("Something went wrong")
         console.log(error);
     }
 };
@@ -67,22 +88,6 @@ const handleSubmit = (e) => {
     setProducts();
 };
 
-const secondSearchBar = reactive({
-    model: '',
-    make: '',
-    year: '',
-    cc: '',
-    engyne: '',
-    parts: ''
-})
-const selectedsecondSearchBar = reactive({
-    model: '',
-    make: '',
-    year: '',
-    cc: '',
-    engyne: '',
-    parts: ''
-})
 
 const getMake = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
@@ -107,6 +112,7 @@ const getYear = async () => {
 const getCC = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}`)
     secondSearchBar.cc = data.value
+    console.log(data.value)
 }
 const getEngyne = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}`)
@@ -119,6 +125,7 @@ const getParts = async () => {
 
 
 }
+
 const service = ref('')
 const category = ref('')
 const categoryData = ref('')
@@ -144,6 +151,7 @@ getCetagories()
 <template>
     <form @submit="handleSubmit">
 
+
         <div class="p-8 flex flex-col gap-8">
             <HeaderWithHr header="Add New Service"></HeaderWithHr>
 
@@ -159,7 +167,7 @@ getCetagories()
                             </div>
                             <RadioGroup v-model="response.category.grandparentCategoryId" class="flex flex-col gap-y-2">
                                 <div class="flex flex-col " v-for="i in categoryData.categories" :key="i.id">
-                                    <div v-if="i.name.includes('Service')">
+                                    <div v-if="!i.name.includes('Service')">
                                         <div class="flex gap-2 items-center">
                                             <RadioGroupItem :id="i.id" :value="i.id" />
                                             <Label :for="i.id">{{ i.name }}</Label>
@@ -174,7 +182,8 @@ getCetagories()
                                                 </div>
                                                 <RadioGroup
                                                     class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
-                                                    v-if="response.category.parentCategoryId === j.id">
+                                                    v-if="response.category.parentCategoryId === j.id"
+                                                    v-model="response.category_id">
                                                     <div class="flex justify-start  flex-col" v-for="k in j.children"
                                                         :key="k.id">
                                                         <div class="flex gap-2 ">
@@ -212,6 +221,7 @@ getCetagories()
                                                 </div>
                                                 <RadioGroup
                                                     class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
+                                                    v-model="response.category_id"
                                                     v-if="response.category.parentCategoryId === j.id">
                                                     <div class="flex justify-start  flex-col" v-for="k in j.children"
                                                         :key="k.id">
@@ -300,6 +310,7 @@ getCetagories()
                     <option value="" disabled selected>Select Parts</option>
                     <option v-for="i in categoryData.categories">{{ i.name }}</option>
                 </select>
+
 
 
             </div>

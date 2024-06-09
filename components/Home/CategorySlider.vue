@@ -50,7 +50,7 @@ getCetagories()
                             <DropdownMenu class="bg-white" v-for="(i, j) in sideBarCategory">
                                 <DropdownMenuTrigger class="w-full" v-if="j <= 4" as-child>
                                     <Button
-                                        class=" flex w-full  justify-between rounded-full h-auto hover:text-white text-sm bg-white text-black">
+                                        class=" flex w-full  justify-between rounded-2xl h-auto hover:text-white text-sm bg-white text-black">
                                         <h1 class=" font-bold text-start text-wrap text-xs">
                                             {{ i.name.slice(0, 20) }}.....
 
@@ -101,7 +101,7 @@ getCetagories()
                             <DropdownMenu class="bg-white">
                                 <DropdownMenuTrigger class="px-2" as-child>
                                     <Button
-                                        class=" flex w-full p-x-2 justify-between rounded-full h-auto hover:text-white text-sm bg-white text-black">
+                                        class=" flex w-full p-x-2 justify-between rounded-2xl h-auto hover:text-white text-sm bg-white text-black">
                                         <h1 class=" font-bold text-start text-wrap text-xs">
                                             All Categories
 

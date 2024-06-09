@@ -101,34 +101,34 @@ getCetagories()
                 class=" max-w-[800px] lg:h-[71px]   w-full place-content-center   grid grid-cols-2 md:grid-cols-7 p-4 gap-4 bg-primary rounded-2xl ">
 
                 <select class="h-[35px] rounded h-" @change="getModel" v-model="selectedsecondSearchBar.make">
-                    <option value="" disabled selected>Select Model </option>
+                    <option value="" disabled selected>Model </option>
                     <option v-for="i in secondSearchBar.make">{{ i.make }}</option>
 
                 </select>
                 <select @change="getYear" :disabled="!selectedsecondSearchBar.make" class="h-[35px] rounded h-"
                     v-model="selectedsecondSearchBar.model">
-                    <option value="" disabled selected>Select Model </option>
+                    <option value="" disabled selected>Model </option>
                     <option v-for="i in secondSearchBar.model">{{ i.models }}</option>
                 </select>
                 <select @change="getCC" :disabled="!secondSearchBar.year" class="h-[35px] rounded h-"
                     v-model="selectedsecondSearchBar.year">
-                    <option value="" disabled selected>Select Year</option>
+                    <option value="" disabled selected>Year</option>
                     <option v-for="i in secondSearchBar.year">{{ i.year }}</option>
                 </select>
                 <select @change="getEngyne" :disabled="!secondSearchBar.cc" class="h-[35px] rounded h-"
                     v-model="selectedsecondSearchBar.cc">
-                    <option value="" disabled selected>Select CC</option>
+                    <option value="" disabled selected>CC</option>
                     <option v-for="i in secondSearchBar.cc">{{ i.cc }}</option>
                 </select>
                 <select @change="getParts" :disabled="!secondSearchBar.engyne" class="h-[35px] rounded h-"
                     v-model="selectedsecondSearchBar.engyne">
-                    <option value="" disabled selected>Select Engine</option>
+                    <option value="" disabled selected>Engine</option>
                     <option v-for="i in secondSearchBar.engyne">{{ i.engine }}</option>
                 </select>
 
                 <select :disabled="!secondSearchBar.parts" class="h-[35px] rounded h-"
                     v-model="selectedsecondSearchBar.parts">
-                    <option value="" disabled selected>Select Parts</option>
+                    <option value="" disabled selected>Parts</option>
                     <option v-for="i in categoryData.categories">{{ i.name }}</option>
                 </select>
                 <Button :disabled="!secondSearchBar.parts"
