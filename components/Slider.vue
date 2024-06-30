@@ -23,6 +23,7 @@ import {
                         v-for="(i, index) in product">
                         <ProductCard :product="i"></ProductCard>
                     </CarouselItem>
+
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />

@@ -86,19 +86,24 @@ const getCetagories = async () => {
 
 getCetagories()
 
+const store = useUtils()
+const upperLeftAds = await store.getAds('Home Page - Upper Left')
+
+const upperLeftAdsUrl = upperLeftAds.value.url
+console.log(upperLeftAds.value)
+console.log(upperLeftAdsUrl)
 </script>
 
 <template>
 
-    <div class="w-full flex justify-between gap-8 bg-white">
+    <div class="w-full flex justify-between gap-2 bg-white">
         <div class=" w-[351px] h-[285px] lg:block hidden">
-            <img class="w-full h-full object-cover"
-                src="https://www.bridgestone.com.au/-/media/project/bridgestone-global/apac/bridgestone-nz/tyres/offers/promotions/offers/2024/may/offer-banner/20564-bds-may-web-landing-375x380.jpg?rev=97b60f238cc64e578b73bfe1d5f2c84c">
+            <img v-if="upperLeftAds.type === 'image'" class="w-full h-full object-cover" :src="upperLeftAdsUrl">
 
         </div>
-        <div class="flex flex-col gap-8 -mt-10 z-20 text-xs">
+        <div class="flex flex-col gap-8  -mt-10 z-20 text-xs">
             <div
-                class=" max-w-[800px] lg:h-[71px]   w-full place-content-center   grid grid-cols-2 md:grid-cols-7 p-4 gap-4 bg-primary rounded-2xl ">
+                class=" max-w-[1000px] lg:h-[71px]   w-full place-content-center   grid grid-cols-2 md:grid-cols-7 p-4 gap-4 bg-primary rounded-2xl ">
 
                 <select class="h-[35px] rounded h-" @change="getModel" v-model="selectedsecondSearchBar.make">
                     <option value="" disabled selected>Model </option>
@@ -137,7 +142,8 @@ getCetagories()
                 </Button>
 
             </div>
-            <div class="flex lg:flex-row  flex-col gap-8 lg:text-start text-center justify-between items-center">
+            <div
+                class="flex lg:flex-row  lg:mx-8 flex-col gap-8 lg:text-start text-center justify-between items-center">
                 <div v-for="i in icons" class="flex lg:flex-row flex-col gap-4 items-center">
                     <div class=" h-[68px]">
                         <Icon :name="i.name" class="text-[57px] text-primary"></Icon>

@@ -14,6 +14,8 @@ export default defineNuxtConfig({
   tailwindcss: {
     exposeConfig: true,
   },
+  css: ["~/assets/css/input.css"],
+
   modules: [
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
@@ -39,6 +41,12 @@ export default defineNuxtConfig({
   },
   pinia: {
     storesDirs: ["./stores/**", "./custom-folder/stores/**"],
+  },
+  googleFonts: {
+    families: {
+      Poppins: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+    },
+    display: "swap",
   },
   devtools: { enabled: false },
 });

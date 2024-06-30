@@ -9,9 +9,10 @@ import {
 </script>
 
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col mt-[100px]">
+        dsf
         <HomeFeaturedProducts></HomeFeaturedProducts>
-        <div class="flex justify-center w-full">
+        <div class="flex justify-center w-full m-8">
             <Carousel class="relative w-[70%]" :opts="{
                 align: 'start',
             }">

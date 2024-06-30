@@ -98,6 +98,17 @@ const sidebarSchema = [
         //         action: null
         //     }
         // ]
+    },
+    {
+        header: "Advertisement",
+        icon: "fluent:panel-top-gallery-20-filled",
+        subMenu: [
+            {
+                label: "Add Advertisement",
+                action: '/master-admin/advertisement'
+            },
+
+        ]
     }
 ]
 
@@ -105,7 +116,7 @@ const sidebarSchema = [
 
 
 <template>
-    <div class="w-[403px] shadow-md  mb-4  bg-gradient-to-b from-[#EAEAEA] to-[#F57F20] h-[981px] rounded-lg bg"
+    <div class="w-[403px] shadow-md p-4  mb-4 flex justify-center  mt-2  bg-gradient-to-b from-[#EAEAEA] to-[#F57F20] h-[981px] rounded-lg bg"
         style="box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);">
         <div class="w-full flex justify-center p-4">
             <svg width="178" height="35" viewBox="0 0 178 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -163,39 +174,42 @@ const sidebarSchema = [
                     fill="#F15724" />
             </svg>
         </div>
-        <div class="w-[262px] bg-[#EAE5E2]/50 p-4 flex flex-col gap-8 ">
-            <h1 class="text-center text-2xl font-bold text-primary">Categories</h1>
-            <DropdownMenu class="bg-white" v-for="(i, j) in sidebarSchema">
-                <DropdownMenuTrigger as-child>
-                    <Button
-                        class="border h-[55px] border-none text-black  bg-[#D9D9D9] rounded hover:text-white hover:bg-primary "
-                        :key="j">
-                        <div class="flex w-full flex-start gap-4 px-[35px] py-2  ">
-                            <Icon class=" h-[30px] w-[30px]  font-extrabold text-primary hover:text-white rounded "
-                                :name="i.icon"></Icon>
-                            <p class="text-lg">{{ i.header }}</p>
-                        </div>
+        <div class="w-full flex justify-center mt-16">
+            <div class="w-[338px] w-f justify-center p-4 flex flex-col gap-8 ">
 
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent class=" bg-white">
-                    <NuxtLink :to="k.action" v-for="k in i.subMenu">
-                        <DropdownMenuItem>
-                            <Button
-                                class="border w-full h-[55px] border-none text-black  bg-[#D9D9D9] rounded hover:text-white hover:bg-primary ">
-                                <div class="flex w-full flex-start gap-4 px-[35px] py-2  ">
+                <DropdownMenu class="" v-for="(i, j) in sidebarSchema">
+                    <DropdownMenuTrigger as-child>
+                        <Button
+                            class="border h-[55px] border-none text-black  bg-[#D9D9D9] rounded hover:text-white hover:bg-primary "
+                            :key="j">
+                            <div class="flex w-full items-center flex-start gap-4 pl-8 py-2  ">
+                                <Icon class=" h-10 w-10  font-extrabold text-primary hover:text-white rounded "
+                                    :name="i.icon">
+                                </Icon>
+                                <p class=" text-2xl ">{{ i.header }}</p>
+                            </div>
 
-                                    <p class="text-lg">{{ k.label }}</p>
-                                </div>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent class="">
+                        <NuxtLink :to="k.action" v-for="k in i.subMenu">
+                            <DropdownMenuItem>
+                                <Button
+                                    class="border w-full h-[55px] border-none text-black  bg-[#D9D9D9] rounded hover:text-white hover:bg-primary ">
+                                    <div class="flex w-full flex-start gap-4 px-[35px] py-2  ">
 
-                            </Button>
+                                        <p class="text-2xl ">{{ k.label }}</p>
+                                    </div>
 
-                        </DropdownMenuItem>
-                    </NuxtLink>
+                                </Button>
+
+                            </DropdownMenuItem>
+                        </NuxtLink>
 
 
-                </DropdownMenuContent>
-            </DropdownMenu>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
         </div>
 
     </div>

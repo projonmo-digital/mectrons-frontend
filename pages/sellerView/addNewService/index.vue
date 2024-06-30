@@ -17,6 +17,13 @@ const selectedsecondSearchBar = reactive({
     parts: ''
 })
 
+const categoryId = reactive({
+    grandparentCategoryId: '',
+    parentCategoryId: '',
+    childrenCategoryId: ''
+
+})
+
 
 const response = ref({
     title: '',
@@ -26,25 +33,32 @@ const response = ref({
     price: 1000,
     currency_id: 4,
     stock_amount: '5',
-    category: {
-        grandparentCategoryId: '',
-        parentCategoryId: '',
-        childrenCategoryId: ''
+    model: '',
+    make: '',
+    year: '',
+    cc: '',
+    engyne: '',
+    parts: '',
 
-    },
     category_id: '',
     condition_id: "dfsadf",
     negotiable: '1',
     age: '500',
     origin: 'dsfsa',
     typeId: 'fasds',
+    cash_delivery: '',
+    flash_rate: '',
+    free_shipping: '',
+    is_product_quality_multiply: '',
+
     bd: 'afs',
-    extra_field_1: selectedsecondSearchBar,
+
     type_id: 1,
-    extra_field_2: 'asf',
+
     image: [],
 
 });
+
 
 const setProducts = async () => {
     const token = useTokenStore();
@@ -143,7 +157,11 @@ const getCetagories = async () => {
 getCetagories()
 
 
+const isDisabled = ref(true);
 
+const toggleDisabled = () => {
+    isDisabled.value = !isDisabled.value;
+};
 
 </script>
 
@@ -153,7 +171,7 @@ getCetagories()
 
 
         <div class="p-8 flex flex-col gap-8">
-            <HeaderWithHr header="Add New Service"></HeaderWithHr>
+            <HeaderWithHr header="Add New Product"></HeaderWithHr>
 
             <div class="productCategory">
                 <HeaderWithDot header="Add Information"></HeaderWithDot>
@@ -165,16 +183,17 @@ getCetagories()
                                 <Icon name="fluent:box-16-regular"></Icon>
                                 <p>Product</p>
                             </div>
-                            <RadioGroup v-model="response.category.grandparentCategoryId" class="flex flex-col gap-y-2">
+                            <RadioGroup v-model="categoryId.grandparentCategoryId"
+                                :class="isDisabled ? 'bg-slate-red-500  opacity-50' : 'flex flex-col gap-y-2'">
                                 <div class="flex flex-col " v-for="i in categoryData.categories" :key="i.id">
                                     <div v-if="!i.name.includes('Service')">
                                         <div class="flex gap-2 items-center">
                                             <RadioGroupItem :id="i.id" :value="i.id" />
                                             <Label :for="i.id">{{ i.name }}</Label>
                                         </div>
-                                        <RadioGroup v-if="response.category.grandparentCategoryId === i.id"
+                                        <RadioGroup v-if="categoryId.grandparentCategoryId === i.id"
                                             class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
-                                            v-model="response.category.parentCategoryId">
+                                            v-model="categoryId.parentCategoryId">
                                             <div class="flex flex-col gap-2  " v-for="j in i.children" :key="j.id">
                                                 <div class="flex  items-center">
                                                     <RadioGroupItem :id="j.id" :value="j.id" />
@@ -182,7 +201,7 @@ getCetagories()
                                                 </div>
                                                 <RadioGroup
                                                     class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
-                                                    v-if="response.category.parentCategoryId === j.id"
+                                                    v-if="categoryId.parentCategoryId === j.id"
                                                     v-model="response.category_id">
                                                     <div class="flex justify-start  flex-col" v-for="k in j.children"
                                                         :key="k.id">
@@ -204,16 +223,16 @@ getCetagories()
                                 <p>Services</p>
                             </div>
 
-                            <RadioGroup v-model="response.category.grandparentCategoryId" class="flex flex-col gap-y-2">
+                            <RadioGroup v-model="categoryId.grandparentCategoryId" class="flex flex-col gap-y-2">
                                 <div class="flex flex-col " v-for="i in categoryData.categories" :key="i.id">
                                     <div v-if="i.name.includes('Service')">
                                         <div class="flex gap-2 items-center">
                                             <RadioGroupItem :id="i.id" :value="i.id" />
                                             <Label :for="i.id">{{ i.name }}</Label>
                                         </div>
-                                        <RadioGroup v-if="response.category.grandparentCategoryId === i.id"
+                                        <RadioGroup v-if="categoryId.grandparentCategoryId === i.id"
                                             class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
-                                            v-model="response.category.parentCategoryId">
+                                            v-model="categoryId.parentCategoryId">
                                             <div class="flex flex-col gap-2  " v-for="j in i.children" :key="j.id">
                                                 <div class="flex  items-center">
                                                     <RadioGroupItem :id="j.id" :value="j.id" />
@@ -222,7 +241,7 @@ getCetagories()
                                                 <RadioGroup
                                                     class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
                                                     v-model="response.category_id"
-                                                    v-if="response.category.parentCategoryId === j.id">
+                                                    v-if="categoryId.parentCategoryId === j.id">
                                                     <div class="flex justify-start  flex-col" v-for="k in j.children"
                                                         :key="k.id">
                                                         <div class="flex gap-2 ">
@@ -253,17 +272,7 @@ getCetagories()
                     </div>
                     <div class="w-full max-w-sm flex text-nowrap items-center gap-2">
                         <Label for="brandName">Brand Name</Label>
-                        <Select v-model="response.origin">
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select a brand" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Brands</SelectLabel>
-                                    <SelectItem value="apple">Apple</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                        <Input id="brandName" type="text" v-model="response.brand" placeholder="Brand" />
                     </div>
                     <div class="flex text-nowrap w-full max-w-sm items-center gap-1.5">
                         <Label for="tags">Tags</Label>
@@ -279,34 +288,33 @@ getCetagories()
             <div
                 class="  lg:h-[71px] mt-4   w-full place-content-center   grid grid-cols-2 md:grid-cols-2 p-4 gap-4  rounded-2xl ">
 
-                <select class="h-[35px] rounded h-" @change="getModel" v-model="selectedsecondSearchBar.make">
+                <select class="h-[35px] rounded h-" @change="getModel" v-model="response.make">
                     <option value="" disabled selected>Select Model </option>
                     <option v-for="i in secondSearchBar.make">{{ i.make }}</option>
 
                 </select>
-                <select @change="getYear" :disabled="!selectedsecondSearchBar.make" class="h-[35px] rounded h-"
-                    v-model="selectedsecondSearchBar.model">
+                <select @change="getYear" :disabled="!response.make" class="h-[35px] rounded h-"
+                    v-model="response.model">
                     <option value="" disabled selected>Select Model </option>
                     <option v-for="i in secondSearchBar.model">{{ i.models }}</option>
                 </select>
                 <select @change="getCC" :disabled="!secondSearchBar.year" class="h-[35px] rounded h-"
-                    v-model="selectedsecondSearchBar.year">
+                    v-model="response.year">
                     <option value="" disabled selected>Select Year</option>
                     <option v-for="i in secondSearchBar.year">{{ i.year }}</option>
                 </select>
                 <select @change="getEngyne" :disabled="!secondSearchBar.cc" class="h-[35px] rounded h-"
-                    v-model="selectedsecondSearchBar.cc">
+                    v-model="response.cc">
                     <option value="" disabled selected>Select CC</option>
                     <option v-for="i in secondSearchBar.cc">{{ i.cc }}</option>
                 </select>
                 <select @change="getParts" :disabled="!secondSearchBar.engyne" class="h-[35px] rounded h-"
-                    v-model="selectedsecondSearchBar.engyne">
+                    v-model="response.engyne">
                     <option value="" disabled selected>Select Engine</option>
                     <option v-for="i in secondSearchBar.engyne">{{ i.engine }}</option>
                 </select>
 
-                <select :disabled="!secondSearchBar.parts" class="h-[35px] rounded h-"
-                    v-model="selectedsecondSearchBar.parts">
+                <select :disabled="!secondSearchBar.parts" class="h-[35px] rounded h-" v-model="response.parts">
                     <option value="" disabled selected>Select Parts</option>
                     <option v-for="i in categoryData.categories">{{ i.name }}</option>
                 </select>
@@ -382,15 +390,15 @@ getCetagories()
                 <div class="grid grid-cols-2 gap-16">
                     <div class="flex items-center space-x-2 w-full justify-between">
                         <Label for="cashOnDelivery">Cash on Delivery</Label>
-                        <Switch id="cashOnDelivery" v-model="response.negotiable" />
+                        <Switch id="cashOnDelivery" v-model="response.cash_delivery" />
                     </div>
                     <div class="flex items-center space-x-2 w-full justify-between">
                         <Label for="flashRate">Flash Rate</Label>
-                        <Switch id="flashRate" v-model="response.extra_field_1" />
+                        <Switch id="flashRate" v-model="response.flash_rate" />
                     </div>
                     <div class="flex items-center space-x-2 w-full justify-between">
                         <Label for="freeShipping">Free Shipping</Label>
-                        <Switch id="freeShipping" v-model="response.extra_field_2" />
+                        <Switch id="freeShipping" v-model="response.free_shipping" />
                     </div>
                     <div class="flex items-center space-x-2 w-full justify-between">
                         <Label for="isProductQuantityMultiply">Is Product Quantity Multiply</Label>

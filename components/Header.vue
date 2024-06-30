@@ -1,5 +1,19 @@
 <script setup>
+import { LogOut } from 'lucide-vue-next';
 import { onMounted } from 'vue';
+import { ref } from 'vue'
+import { Button } from '@/components/ui/button'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+
+
 
 
 const cart = useCartStore();
@@ -13,6 +27,10 @@ const handelSearchSubmit = () => {
     return navigateTo(`/search?search=${searchText.value}`);
 }
 
+const store = useAuthStore()
+const { data } = useAuthStore().login
+console.log(data)
+
 
 const loginToggleBtnFun = async (value) => {
     let button;
@@ -22,18 +40,85 @@ const loginToggleBtnFun = async (value) => {
         button = document?.getElementById('userLoginButton');
     }
     button.click();
-    console.log(value)
+
 }
+const ToggleBtnFun = async (value) => {
+    let button;
+    if (value == 'sellerLogin') {
+        button = document?.getElementById('sellerLoginButton');
+    } else {
+        button = document?.getElementById('userLoginButton');
+    }
+    button.click();
+
+}
+
+const items = [
+    {
+        "text": "Home",
+        "link": "/"
+    },
+    {
+        "text": "Automobiles",
+        "dropdown": true,
+        "submenu": [
+            {
+                "text": "Item 1",
+                "link": "/item1"
+            },
+            {
+                "text": "Item 2",
+                "link": "/item2"
+            }
+        ]
+    },
+    {
+        "text": "Equipment",
+        "dropdown": true,
+        "submenu": [
+            {
+                "text": "Item A",
+                "link": "/itemA"
+            },
+            {
+                "text": "Item B",
+                "link": "/itemB"
+            }
+        ]
+    },
+    {
+        "text": "Electronics",
+        "link": "#"
+    },
+    {
+        "text": "Service",
+        "link": "/service"
+    },
+    {
+        "text": "About Us",
+        "link": "/about-us"
+    },
+    {
+        "text": "Contact Us",
+        "link": "/contact-us",
+        "bold": true
+    }
+]
+
+const logout = () => {
+    store.logout()
+}
+
 
 
 </script>
 <template>
     <header class="bg-primary ">
-        <div class="max-w-screen-2xl mx-auto px-4 py-2">
+        <div class=" mx-auto px-2 py-2">
             <div class="flex justify-between text-white py-2 ">
-                <div class="flex  ms-12">
+                <div class="flex  ">
                     <button id="sellerLoginButton" data-dropdown-toggle="sellerLogin"
-                        class="font-medium  text-sm px-4 py-2 md:px-5 md:py-2 ">Seller Login</button>
+                        class="font-medium  text-lg px-4 py-2 md:px-5 md:py-2 ">Seller Login</button>
                     <div id="sellerLogin"
                         class="z-50 hidden bg-white divide-y divide-gray-100 w-full max-w-sm rounded-lg shadow dark:bg-gray-700">
                         <div aria-labelledby="sellerLoginButton">
@@ -41,10 +126,10 @@ const loginToggleBtnFun = async (value) => {
                             </LoginForm>
                         </div>
                     </div>
-                    <a href="#" class=" font-medium  text-sm px-4 py-2 md:px-5 md:py-2">Track Order</a>
+                    <!-- <a href="#" class=" font-medium  text-sm px-4 py-2 md:px-5 md:py-2">Track Order</a> -->
                     <div class=""></div>
                 </div>
-                <div class="flex mt-1 gap-x-4 me-12">
+                <div class="flex mt-1 gap-x-4 me-12 text-sm">
                     <span><i class="fa-solid fa-location-dot me-2"></i>House No- A7 , Dog squid road , plot no-1/2 ,
                         Kafrul , Mirpur -13, Dhaka .</span>
                     <span><i class="fa-solid fa-phone me-2"></i>+880 170672751</span>
@@ -128,7 +213,7 @@ const loginToggleBtnFun = async (value) => {
 
 
                     <div class="w-2/3">
-                        <div class="flex mx-5">
+                        <div class="flex ">
                             <form class="relative w-full mx-4" @submit.prevent="handelSearchSubmit">
                                 <input v-model="searchText" type="search" id="search-dropdown"
                                     class="block p-2  py-3 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
@@ -145,10 +230,23 @@ const loginToggleBtnFun = async (value) => {
                     </div>
 
 
-                    <div class="flex items-center gap-x-2 text-white">
-                        <button id="userLoginButton" data-dropdown-toggle="userLogin"
-                            class="flex items-center gap-x-1 font-medium rounded-lg text-sm px-2 py-2 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><i
+                    <div class="flex items-center gap-x-8 text-2xl text-white">
+                        <button v-if="!store.logInSatus" id="userLoginButton" data-dropdown-toggle="userLogin"
+                            class="flex items-center gap-x-1 font-medium rounded-lg text-lg  px-2 py-2 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><i
                                 class="fa-solid fa-user me-2"></i>Login</button>
+
+                        <DropdownMenu v-if="store.logInSatus">
+                            <DropdownMenuTrigger as-child>
+                                <button
+                                    class="flex items-center gap-x-1 font-medium rounded-lg text-lg  px-2 py-2 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><i
+                                        class="fa-solid fa-user me-2"></i><span>Logout</span></button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent class="w-56">
+
+                                <Button @click="logout">Logout</Button>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
                         <div id="userLogin"
                             class="z-50 hidden bg-white divide-y divide-gray-100 w-full max-w-sm rounded-lg shadow dark:bg-gray-700">
                             <div aria-labelledby="userLoginButton">
@@ -156,6 +254,7 @@ const loginToggleBtnFun = async (value) => {
                                 </LoginForm>
                             </div>
                         </div>
+
                         <a href="#"
                             class="  font-medium rounded-lg text-sm px-2 py-2 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
                             EN/BN</a>
@@ -172,40 +271,15 @@ const loginToggleBtnFun = async (value) => {
                     </div>
 
                 </div>
-                <nav class=" flex space-x-2 py-2  justify-center text-white">
-                    <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                    <nuxt-link to="/" class="inline-flex items-center py-2 px-3 text-sm font-medium"
-                        aria-current="page">Home</nuxt-link>
+                <div class="flex justify-center mx-2">
+                    <nav class=" w-2/3  flex space-x-2 py-2  justify-between text-white">
+                        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                        <nuxt-link v-for="i in items" :to="i.link" class="text-[20px] font-bold hover:underline"
+                            aria-current="page">{{ i.text
+                            }}</nuxt-link>
 
-                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
-                        class="focus:outline-none  font-medium rounded-lg text-sm py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        type="button">Automobiles<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-
-
-                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
-                        class="focus:outline-none  font-medium rounded-lg text-sm  py-2.5 text-center inline-flex items-center "
-                        type="button">Equipment<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-
-
-                    <a href="#" class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium">Electronics
-                    </a>
-                    <nuxt-link to="/service"
-                        class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium">Service</nuxt-link>
-                    <nuxt-link to="/about-us"
-                        class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium">About Us</nuxt-link>
-                    <nuxt-link to="/contact-us"
-                        class="inline-flex items-center rounded-md py-2 px-3 text-sm font-medium">Contact Us</nuxt-link>
-                </nav>
+                    </nav>
+                </div>
             </div>
         </div>
     </header>

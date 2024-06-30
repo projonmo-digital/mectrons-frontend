@@ -1,6 +1,6 @@
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    user: {},
+    logInSatus: false,
   }),
   persist: {
     paths: ["user"],
@@ -19,6 +19,7 @@ export const useAuthStore = defineStore("auth", {
           }
         );
         this.commonSeller(data);
+        this.logInSatus = true;
       } catch (error) {
         throw error;
       }
@@ -45,13 +46,13 @@ export const useAuthStore = defineStore("auth", {
       const token = useTokenStore();
       token.setToken(data.token);
       this.user = data.user;
+      this.logInSatus = true;
 
       toaster.addSuccess(data.message);
       if (this.user.email == "admin@admin") {
         return navigateTo("/master-admin/dashboard");
-      }
-      if (this.user.email && this.user.nid) {
-        return navigateTo("/sellerView/dashboard");
+      } else if (this.user.email && this.user.nid) {
+        return navigateTo("/master-admin/dashboard");
       } else {
         return navigateTo("/user/dashboard");
       }
@@ -72,6 +73,7 @@ export const useAuthStore = defineStore("auth", {
         );
 
         token.removeToken();
+        this.logInSatus = false;
       } catch (error) {
         throw error;
       }

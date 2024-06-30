@@ -71,3 +71,6 @@
 .header {
   @apply text-2xl p-4 font-bold;
 }
+div {
+  @apply font-poppins;
+}

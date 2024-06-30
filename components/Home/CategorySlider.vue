@@ -7,6 +7,15 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+const hoverButtonRefs = ref([]);
+const handleMouseOver = (event) => {
+    const target = event.currentTarget;
+    target.click();
+};
+const handleMouseLeave = (event) => {
+    // Simulate a click on the document to close the dropdown
+    document.body.click();
+};
 
 const adstype = ref([]);
 const categoryData = ref([])
@@ -24,33 +33,44 @@ adsType();
 
 
 const categories = ref([]);
-const loading = ref(true);
+const loading = ref(false);
 const getCetagories = async () => {
+    loading.value = true
     const res = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`)
 
     categoryData.value = res.data.value
-    console.log(res.data.value)
+
     sideBarCategory.value = res.data.value.categories.slice(0, 5)
+
+    loading.value = false
 
 
 }
 
 getCetagories()
 
+const categoryByPage = (id) => {
+    navigateTo(`/category/${id}`)
+}
+
 </script>
 <template>
     <div class="lg:flex">
         <aside id="default-sidebar" class="lg:block hidden z-40 w-64 h-auto " aria-label="Sidebar">
-            <div class="h-full bg-[#EAE5E2] py-4 ">
+            <div class="h-[487px] flex justify-center items-center bg-[#EAE5E2] py-4  " v-if="loading">
+                <Icon name="fluent:spinner-ios-16-filled" class="h-9 w-9 text-primary animate-spin"></Icon>
+            </div>
+            <div v-if="!loading" class="h-full bg-[#EAE5E2] py-4 ">
                 <div class="flex w-full ">
                     <div class=" w-full">
                         <div class="w-full  p-1  bg-[#EAE5E2]/50  flex flex-col gap-y-2 ">
                             <h1 class="text-center text-2xl font-bold text-primary">Categories</h1>
 
                             <DropdownMenu class="bg-white" v-for="(i, j) in sideBarCategory">
-                                <DropdownMenuTrigger class="w-full" v-if="j <= 4" as-child>
+                                <DropdownMenuTrigger ref="dropdownTriggers" class="w-full" v-if="j <= 4" as-child
+                                    @mouseover="handleMouseOver($event)" @mouseleave="handleMouseLeave($event)">
                                     <Button
-                                        class=" flex w-full  justify-between rounded-2xl h-auto hover:text-white text-sm bg-white text-black">
+                                        class=" flex w-full  justify-between rounded-xl h-auto hover:text-white text-sm bg-white text-black">
                                         <h1 class=" font-bold text-start text-wrap text-xs">
                                             {{ i.name.slice(0, 20) }}.....
 
@@ -72,36 +92,40 @@ getCetagories()
                                     </DropdownMenuItem> -->
 
 
-                                    <DropdownMenuSub class="bg-white" v-for="(j, index2) in i.children">
-                                        <DropdownMenuSubTrigger>
-                                            <div class="text-wrap text-xs">
-                                                {{ j.name }}
-                                            </div>
+                                    <div v-for="(j, index2) in i.children">
+                                        <DropdownMenuSub class="bg-white">
+                                            <DropdownMenuSubTrigger v-if="j.children">
+                                                <div class="text-wrap text-xs">
+                                                    {{ j.name }}
+                                                </div>
 
-                                        </DropdownMenuSubTrigger>
-                                        <DropdownMenuPortal>
-                                            <DropdownMenuSubContent class="bg-white">
-                                                <DropdownMenuItem v-for="(k, index2) in j.children"><Button
-                                                        class=" flex justify-between w-full h-auto text-sm bg-white text-black">
-                                                        <div class="text-wrap text-xs">
-                                                            {{ k.name }}
-                                                        </div>
+                                            </DropdownMenuSubTrigger>
+                                            <DropdownMenuPortal v-if="j.children?.length > 0">
+                                                <DropdownMenuSubContent v-if="!j.children == []" class="bg-white">
+                                                    <DropdownMenuItem v-if="j.children"
+                                                        v-for="(k, index2) in j.children"><Button
+                                                            @click="categoryByPage(k.id)"
+                                                            class=" flex justify-between w-full h-auto text-sm bg-white text-black">
+                                                            <div class="text-wrap text-xs">
+                                                                {{ k.name }}
+                                                            </div>
 
-                                                    </Button></DropdownMenuItem>
-                                                <DropdownMenuSeparator />
+                                                        </Button></DropdownMenuItem>
+                                                    <DropdownMenuSeparator />
 
-                                            </DropdownMenuSubContent>
-                                        </DropdownMenuPortal>
-                                    </DropdownMenuSub>
+                                                </DropdownMenuSubContent>
+                                            </DropdownMenuPortal>
+                                        </DropdownMenuSub>
 
+                                    </div>
 
 
                                 </DropdownMenuContent>
                             </DropdownMenu>
                             <DropdownMenu class="bg-white">
                                 <DropdownMenuTrigger class="px-2" as-child>
-                                    <Button
-                                        class=" flex w-full p-x-2 justify-between rounded-2xl h-auto hover:text-white text-sm bg-white text-black">
+                                    <Button @click=""
+                                        class=" flex w-full p-x-2 justify-between rounded-xl h-auto hover:text-white text-sm bg-white text-black">
                                         <h1 class=" font-bold text-start text-wrap text-xs">
                                             All Categories
 

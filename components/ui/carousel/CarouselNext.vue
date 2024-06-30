@@ -19,8 +19,8 @@ const { orientation, canScrollNext, scrollNext } = useCarousel()
     props.class,
   )" variant="outline" @click="scrollNext">
     <div
-      class="skew absolute w-10 h-8 left-0 top-0 bg-[#F57F20] group-hover:bg-[#F57F20] z-0 flex items-center p-1 -skew-x-12">
-      <Icon name="mdi:arrow-right" class=" font-bold text-2xl"></Icon>
+      class="skew absolute w-10 h-8 left-0 top-0 bg-primary group-hover:bg-primary z-0 flex items-center p-1 -skew-x-12">
+      <Icon name="mdi:chevron-right" class="font-bold text-white text-4xl"></Icon>
     </div>
   </Button>
 </template>

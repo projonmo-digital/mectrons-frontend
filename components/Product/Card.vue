@@ -47,9 +47,9 @@ const AddToCart = (product) => {
 </script>
 
 <template>
-    <div class="card">
+    <div class="card h-[497px] shadow-xl w-[292px]">
         <div
-            class="relative flex w-full max-w-[292px]  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+            class="relative flex h-full  w-[292px]   flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
             <nuxt-link :to="`/product-details/${props.product?.id}`"
                 class="flex h-60 overflow-hidden  justify-center bg-[rgba(239,_239,_239,_1)]">
                 <img class="object-cover" v-if="props.product?.picture != ''"
@@ -108,9 +108,9 @@ const AddToCart = (product) => {
                 <div class="mt-3 mb-5 flex items-center justify-between">
 
                     <div class="flex items-center gap-x-1">
-                        <span class="text-sm px-1 py-0.5 bg-[rgba(245,_127,_32,_1)] text-white rounded-lg">-30%</span>
+                        <span class="text-sm px-1 py-0.5 bg-primary text-white rounded-lg">-30%</span>
                         <div class="flex items-center gap-x-2">
-                            <span class="text-xl font-bold  text-[rgba(215,_14,_14,_1)]">{{
+                            <span class="text-xl font-bold  text-primary">{{
                                 props.product?.currency?.symbol }}{{ product?.price }}</span>
                             <span class="text-lg line-through text-gray-400">$180.00</span>
                         </div>
@@ -118,7 +118,7 @@ const AddToCart = (product) => {
 
                 </div>
                 <button @click="AddToCart(props.product)" type="button"
-                    class="flex items-center justify-center font-bold mx-4 rounded-full bg-[rgba(239,_239,_239,_1)] hover:bg-[rgb(223,_120,_37,_1)] text-[rgba(0,_0,_0,_0.52)] px-5 py-2.5 text-center text-sm font-medium hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 ease-in-out duration-300">
+                    class="flex items-center justify-center font-bold mx-4 rounded-full bg-[rgba(239,_239,_239,_1)] hover:bg-primary text-[rgba(0,_0,_0,_0.52)] px-5 py-2.5 text-center text-sm font-medium hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 ease-in-out duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"

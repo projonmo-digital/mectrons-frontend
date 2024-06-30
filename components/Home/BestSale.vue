@@ -6,7 +6,7 @@ const getProducts = async () => {
         const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/filter`, {
             method: 'POST',
             body: {
-                marker: ['best-sale'],
+                marker: ['deals-month'],
             }
         });
         products.value = data.value.data;
@@ -19,7 +19,7 @@ getProducts();
 </script>
 
 <template>
-    <div class="w-full p-4 bg-[#D9D9D9]/40 flex flex-col gap-24">
+    <div class="w-full p-8 bg-[#D9D9D9]/40 flex flex-col gap-16">
         <div class="flex justify-center w-full">
             <div class="w-[60%]">
                 <svg width="100%" height="auto" viewBox="0 0 1180 82" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,8 +45,10 @@ getProducts();
 
             </div>
         </div>
-        <div class="relative w-full">
-            <Slider :product="products"></Slider>
+
+        <div class="w-full">
+            <Slider class="w-full" :product="products"></Slider>
         </div>
+
     </div>
 </template>
