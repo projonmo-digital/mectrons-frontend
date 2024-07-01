@@ -54,38 +54,8 @@ const ToggleBtnFun = async (value) => {
 }
 
 const items = [
-    {
-        "text": "Home",
-        "link": "/"
-    },
-    {
-        "text": "Automobiles",
-        "dropdown": true,
-        "submenu": [
-            {
-                "text": "Item 1",
-                "link": "/item1"
-            },
-            {
-                "text": "Item 2",
-                "link": "/item2"
-            }
-        ]
-    },
-    {
-        "text": "Equipment",
-        "dropdown": true,
-        "submenu": [
-            {
-                "text": "Item A",
-                "link": "/itemA"
-            },
-            {
-                "text": "Item B",
-                "link": "/itemB"
-            }
-        ]
-    },
+
+
     {
         "text": "Electronics",
         "link": "#"
@@ -272,8 +242,11 @@ const logout = () => {
 
                 </div>
                 <div class="flex justify-center mx-2">
-                    <nav class=" w-2/3  flex space-x-2 py-2  justify-between text-white">
+                    <nav class=" w-2/3  flex space-x-2 py-2 items-center  justify-between text-white">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                        <nuxt-link to="/" class="text-[20px] font-bold hover:underline"
+                            aria-current="page">Home</nuxt-link>
+                        <HomeAutoMobiles></HomeAutoMobiles>
                         <nuxt-link v-for="i in items" :to="i.link" class="text-[20px] font-bold hover:underline"
                             aria-current="page">{{ i.text
                             }}</nuxt-link>

@@ -88,10 +88,14 @@ getCetagories()
 
 const store = useUtils()
 const upperLeftAds = await store.getAds('Home Page - Upper Left')
+const upperRightAds = await store.getAds('Home Page - Upper Right')
+const upperCenterAds = await store.getAds('Home Page - Upper Center')
 
-const upperLeftAdsUrl = upperLeftAds.value.url
-console.log(upperLeftAds.value)
-console.log(upperLeftAdsUrl)
+const upperLeftAdsUrl = store.imageUrlChanger(upperLeftAds.value.url)
+
+const upperRightAdsUrl = store.imageUrlChanger(upperRightAds.value.url)
+const upperCenterAdsUrl = store.imageUrlChanger(upperCenterAds.value.url)
+console.log(upperCenterAdsUrl) 
 </script>
 
 <template>
@@ -99,6 +103,8 @@ console.log(upperLeftAdsUrl)
     <div class="w-full flex justify-between gap-2 bg-white">
         <div class=" w-[351px] h-[285px] lg:block hidden">
             <img v-if="upperLeftAds.type === 'image'" class="w-full h-full object-cover" :src="upperLeftAdsUrl">
+            <video v-else-if="upperLeftAds.type === 'video'" :src="upperLeftAdsUrl" autoplay class="aspect-video "
+                loop></video>
 
         </div>
         <div class="flex flex-col gap-8  -mt-10 z-20 text-xs">
@@ -157,14 +163,12 @@ console.log(upperLeftAdsUrl)
 
             </div>
             <div class="w-full h-[116px] overflow-hidden">
-                <img src="https://img.freepik.com/free-psd/car-rental-automotive-facebook-cover-template_106176-2473.jpg"
-                    class="w-full h-full object-cover">
+                <img v-if="upperCenterAds.type === 'image'" :src="upperCenterAdsUrl" class="w-full h-full object-cover">
 
             </div>
         </div>
         <div class=" w-[351px] h-[285px] lg:block hidden">
-            <img class="w-full h-full object-cover"
-                src="https://www.bridgestone.com.au/-/media/project/bridgestone-global/apac/bridgestone-nz/tyres/offers/promotions/offers/2024/may/offer-banner/20564-bds-may-web-landing-375x380.jpg?rev=97b60f238cc64e578b73bfe1d5f2c84c">
+            <img v-if="upperRightAds.type === 'image'" class="w-full h-full object-cover" :src="upperRightAdsUrl">
 
         </div>
 

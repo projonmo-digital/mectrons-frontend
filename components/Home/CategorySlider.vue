@@ -93,7 +93,7 @@ const categoryByPage = (id) => {
 
 
                                     <div v-for="(j, index2) in i.children">
-                                        <DropdownMenuSub class="bg-white">
+                                        <DropdownMenuSub class="bg-white" v-if="j.children?.length > 0">
                                             <DropdownMenuSubTrigger v-if="j.children">
                                                 <div class="text-wrap text-xs">
                                                     {{ j.name }}
@@ -116,6 +116,13 @@ const categoryByPage = (id) => {
                                                 </DropdownMenuSubContent>
                                             </DropdownMenuPortal>
                                         </DropdownMenuSub>
+                                        <DropdownMenuItem v-else><Button @click="categoryByPage(j.id)"
+                                                class=" flex justify-start w-full h-auto text-sm bg-white text-black">
+                                                <div class="text-wrap text-xs">
+                                                    {{ j.name }}
+                                                </div>
+
+                                            </Button></DropdownMenuItem>
 
                                     </div>
 

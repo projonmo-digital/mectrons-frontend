@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class=" flex gap-16 flex-col mb-16">
+    <div class=" flex gap-16 flex-col mb-16 p-16">
         <div class="flex justify-center items-center w-full relative">
             <img class="object-cover lg:h-[471px] h-auto w-full"
                 src="https://images.unsplash.com/photo-1613206485381-b028e578e791?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWVjaGFuaWN8ZW58MHx8MHx8fDA%3D"

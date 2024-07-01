@@ -32,5 +32,13 @@ export const useUtils = defineStore("useUtils", () => {
     }
   };
 
-  return { getCetagories, getAds };
+  const imageUrlChanger = (url) => {
+    return (
+      useRuntimeConfig().public.imageUrl +
+      "/" +
+      url.replaceAll("public", "storage")
+    );
+  };
+
+  return { getCetagories, getAds, imageUrlChanger };
 });
