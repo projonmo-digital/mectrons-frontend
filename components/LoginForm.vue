@@ -22,17 +22,7 @@ const errors = ref([]);
 const loadbtn = ref(false);
 
 const handleSubmit = async () => {
-    loadbtn.value = true;
-    try {
-        await auth.login(form);
-        loadbtn.value = false;
-        toggleBtnFun();
-        navigateTo('/sellerView/dashboard')
-    } catch (error) {
-        toaster.addWrong(error.data.message);
-        errors.value = error.data.errors;
-        loadbtn.value = false;
-    }
+    await auth.authenticateUser(form);
 }
 
 const passHideShow = ref(false);
@@ -51,7 +41,7 @@ const toggleBtnFun = () => {
             <div>
                 <FormLabel for="email">Email</FormLabel>
                 <FormInput type="email" name="email" id="email" placeholder="name@gmail.com" v-model="form.email" />
-                <span v-if="errors.email" class="text-sm text-red-500">{{ errors.email[0] }}</span>
+                <span v-if="Object.keys(auth.errors).includes('email')" class="text-sm text-red-500">{{ auth.errors.email[0] }}</span>
             </div>
             <div>
                 <FormLabel for="password">Password</FormLabel>
@@ -76,7 +66,7 @@ const toggleBtnFun = () => {
                         </svg>
                     </div>
                 </div>
-                <span v-if="errors.password" class="text-sm text-red-500">{{ errors.password[0] }}</span>
+                <span v-if="Object.keys(auth.errors).includes('password')" class="text-sm text-red-500">{{ auth.errors.password[0] }}</span>
             </div>
             <div class="flex items-start">
                 <div class="flex items-start">
@@ -90,9 +80,9 @@ const toggleBtnFun = () => {
                     class="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500">Lost Password?</nuxt-link>
             </div>
 
-            <ButtonPrimary type="submit">
+            <ButtonPrimary type="submit" :disabled="auth.loading">
                 <div class="flex items-center justify-center gap-x-2">
-                    <div role="status" v-if="loadbtn">
+                    <div role="status" v-if="auth.loading">
                         <svg aria-hidden="true"
                             class="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +103,7 @@ const toggleBtnFun = () => {
                     class="text-blue-700 hover:underline dark:text-blue-500">Create account</nuxt-link>
             </div>
 
-            <SocialLogin />
+            <!-- <SocialLogin /> -->
         </form>
     </div>
 </template>

@@ -17,7 +17,8 @@ useSeoMeta({
 
 const toaster = useToasterStore();
 const auth = useAuthStore();
-
+definePageMeta({
+})
 const form = reactive({
     email: '',
     password: '',
@@ -27,14 +28,15 @@ const loadbtn = ref(false);
 
 const handleSubmit = async () => {
     loadbtn.value = true;
-    try {
-        await auth.login(form);
-        loadbtn.value = false;
-    } catch (error) {
-        toaster.addWrong(error.data.message);
-        errors.value = error.data.errors;
-        loadbtn.value = false;
-    }
+    auth.authenticateUser(form)
+    // try {
+    //     await auth.login(form);
+    //     loadbtn.value = false;
+    // } catch (error) {
+    //     toaster.addWrong(error.data.message);
+    //     errors.value = error.data.errors;
+    //     loadbtn.value = false;
+    // }
 }
 
 const passHideShow = ref(false);
