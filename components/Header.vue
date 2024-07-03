@@ -201,11 +201,11 @@ const logout = () => {
 
 
                     <div class="flex items-center gap-x-8 text-2xl text-white">
-                        <button v-if="!store.logInSatus" id="userLoginButton" data-dropdown-toggle="userLogin"
+                        <button v-if="!store.user" id="userLoginButton" data-dropdown-toggle="userLogin"
                             class="flex items-center gap-x-1 font-medium rounded-lg text-lg  px-2 py-2 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><i
                                 class="fa-solid fa-user me-2"></i>Login</button>
 
-                        <DropdownMenu v-if="store.logInSatus">
+                        <DropdownMenu v-if="store.user">
                             <DropdownMenuTrigger as-child>
                                 <button
                                     class="flex items-center gap-x-1 font-medium rounded-lg text-lg  px-2 py-2 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><i

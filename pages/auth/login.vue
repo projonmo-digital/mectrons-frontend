@@ -17,9 +17,7 @@ useSeoMeta({
 
 const toaster = useToasterStore();
 const auth = useAuthStore();
-definePageMeta({
-    middleware: ["guest"]
-})
+
 const form = reactive({
     email: '',
     password: '',

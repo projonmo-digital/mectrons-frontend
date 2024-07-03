@@ -95,7 +95,7 @@ const upperLeftAdsUrl = store.imageUrlChanger(upperLeftAds.value.url)
 
 const upperRightAdsUrl = store.imageUrlChanger(upperRightAds.value.url)
 const upperCenterAdsUrl = store.imageUrlChanger(upperCenterAds.value.url)
-console.log(upperCenterAdsUrl) 
+
 </script>
 
 <template>
@@ -142,10 +142,12 @@ console.log(upperCenterAdsUrl)
                     <option value="" disabled selected>Parts</option>
                     <option v-for="i in categoryData.categories">{{ i.name }}</option>
                 </select>
-                <Button :disabled="!secondSearchBar.parts"
-                    class=" h-[35px] w-16 text-primary hover:bg-white  bg-red-200 " @click="">
-                    <Icon class="text-2xl  bg" name="fa:search"></Icon>
-                </Button>
+                <NuxtLink :disabled="!secondSearchBar.parts"
+                    :to="{ path: '/category/product', query: selectedsecondSearchBar }"><Button
+                        :disabled="!secondSearchBar.parts"
+                        class=" h-[35px] w-16 text-primary hover:bg-white  bg-red-200 " @click="">
+                        <Icon class="text-2xl  bg" name="fa:search"></Icon>
+                    </Button></NuxtLink>
 
             </div>
             <div
