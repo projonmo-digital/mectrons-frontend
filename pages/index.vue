@@ -1,16 +1,23 @@
 <script setup>
-const isLoading = ref(true);
+// const isLoading = ref(true)
 
-const fetchData = () => {
-    // Simulate a fetch with a 5-second delay
-    setTimeout(() => {
-        isLoading.value = false;
-    }, 3000);
-};
-
-onMounted(() => {
-    fetchData()
+useHead({
+  title: 'Mectrons | Home',
+  meta: [
+    { name: 'description', content: 'Mectrons' }
+  ]
 })
+
+// const fetchData = () => {
+//     // Simulate a fetch with a 5-second delay
+//     setTimeout(() => {
+//         isLoading.value = false;
+//     }, 3000);
+// };
+
+// onMounted(() => {
+//     fetchData()
+// })
 </script>
 
 

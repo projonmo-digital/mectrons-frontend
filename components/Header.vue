@@ -1,5 +1,4 @@
 <script setup>
-import { LogOut } from 'lucide-vue-next';
 import { onMounted } from 'vue';
 import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
@@ -14,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 const auth = useAuthStore()
-
+const router = useRouter()
 
 const cart = useCartStore();
 onMounted(() => {
@@ -40,17 +39,6 @@ const loginToggleBtnFun = async (value) => {
         button = document?.getElementById('userLoginButton');
     }
     button.click();
-}
-
-const ToggleBtnFun = async (value) => {
-    let button;
-    if (value == 'sellerLogin') {
-        button = document?.getElementById('sellerLoginButton');
-    } else {
-        button = document?.getElementById('userLoginButton');
-    }
-    button.click();
-
 }
 
 const items = [
@@ -104,12 +92,6 @@ const items = [
         "bold": true
     }
 ]
-
-const logout = () => {
-    store.logout()
-}
-
-
 
 </script>
 <template>
@@ -233,9 +215,12 @@ const logout = () => {
                                 </span>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent class="w-56">
-                                <div>
-                                    <Button class="w-full" @click="auth.logUserOut()">Logout</Button>
-                                </div>
+                                <DropdownMenuItem @select="router.push('/master-admin/dashboard')">Dashboard</DropdownMenuItem>
+                                <DropdownMenuItem @select="router.push('/user/dashboard')">Profile</DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem class="text-red-500 hover:text-red-600" @click="auth.logUserOut()">
+                                    <Button class="w-full">Logout</Button>
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
 

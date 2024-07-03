@@ -27,8 +27,8 @@ const categoryByPage = (id) => {
 </script>
 <template>
     <div class="lg:flex">
-        <aside id="default-sidebar" class="lg:block hidden z-40 w-72 h-auto" aria-label="Sidebar">
-            <div class="h-[487px] flex justify-center items-center bg-[#EAE5E2] py-4" v-if="pending">
+        <aside id="default-sidebar" class="lg:block hidden w-72 h-auto" aria-label="Sidebar">
+            <div class="h-full flex justify-center items-center bg-[#EAE5E2] py-4" v-if="pending">
                 <Icon name="fluent:spinner-ios-16-filled" class="h-9 w-9 text-primary animate-spin"></Icon>
             </div>
             <div v-if="!pending" class="h-full bg-[#EAE5E2] py-4">
@@ -92,7 +92,7 @@ const categoryByPage = (id) => {
                 </div>
             </div>
         </aside>
-        <Sheet>
+        <!-- <Sheet>
             <SheetTrigger class="lg:hidden " as-child>
                 <Button variant="outline">
                     <Icon name="mdi:menu" class="text-2xl"></Icon>
@@ -125,7 +125,7 @@ const categoryByPage = (id) => {
                     </DropdownMenu>
                 </div>
             </SheetContent>
-        </Sheet>
+        </Sheet> -->
 
         <div id="indicators-carousel" class="relative w-full z-10" data-carousel="static">
             <div class="relative h-56 overflow-hidden md:h-96">
