@@ -1,11 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { Modal, initFlowbite } from 'flowbite';
-
-onMounted(() => {
-    initFlowbite();
-})
-
+import { Modal, initFlowbite } from 'flowbite'
 
 useSeoMeta({
     title: 'Register - My Amazing Site',
@@ -16,12 +11,12 @@ useSeoMeta({
     twitterCard: 'image',
 })
 
-const toaster = useToasterStore();
-const auth = useAuthStore();
 // definePageMeta({
 //     middleware: ["guest"]
 // })
-
+const router = useRouter()
+const auth = useAuthStore()
+const toaster = useToasterStore();
 const form = reactive({
     name: null,
     email: null,
@@ -29,22 +24,8 @@ const form = reactive({
     password_confirmation: null,
     nid: ''
 })
-
 const errors = ref([]);
 const loadbtn = ref(false);
-
-const handleSubmit = async () => {
-    loadbtn.value = true;
-    try {
-        await auth.register(form);
-        loadbtn.value = false;
-    } catch (error) {
-        toaster.addWrong(error.data.message);
-        errors.value = error.data.errors;
-        loadbtn.value = false;
-    }
-}
-
 
 const passHideShow = ref(false);
 const passHideShow1 = ref(false);
@@ -53,10 +34,52 @@ const isSeller = ref(false);
 const buyerColor = computed(() => isSeller.value ? 'bg-gray-300' : 'bg-primary');
 const sellerColor = computed(() => isSeller.value ? 'bg-primary' : 'bg-gray-300');
 
+// methods
+const register = async(formData) => {
+    try {
+        const data = await $fetch(
+            `${useRuntimeConfig().public.baseUrl}/register`,
+            {
+            method: "POST",
+            body: { ...formData },
+            }
+        );
+
+        if (data) {
+            const token = useCookie('token')
+            const user = useCookie('user')
+            token.value = data?.token
+            user.value = JSON.stringify(data?.user)
+            auth.user = data?.user
+            auth.authenticated = true
+            toaster.addSuccess(data.message);
+            router.push('/')
+        }
+        this.commonSeller(data);
+    } catch (error) {
+    throw error;
+    }
+}
+
+const handleSubmit = async () => {
+    loadbtn.value = true;
+    try {
+        await register(form);
+        loadbtn.value = false;
+    } catch (error) {
+        toaster.addWrong(error.data.message);
+        errors.value = error.data.errors;
+        loadbtn.value = false;
+    }
+}
+
 const toggleSeller = () => {
     isSeller.value = !isSeller.value;
 };
 
+onMounted(() => {
+    initFlowbite();
+})
 
 </script>
 <template>
@@ -69,7 +92,7 @@ const toggleSeller = () => {
                 <hr class="border-gray-400 w-12">
             </div>
         </div>
-        <div class="flex gap-x-3 bg-white rounded shadow">
+        <div class="flex gap-x-3 bg-white rounded shadow-lg border">
             <div class="mx-auto w-full max-w-sm p-4">
                 <div class=" flex w-full justify-end">
                     <Button :class="`rounded-r-none ${buyerColor}`" @click="toggleSeller">Buyer</Button>
@@ -150,7 +173,7 @@ const toggleSeller = () => {
                             <span v-if="errors.name" class="text-sm text-red-500">{{ errors.name[0] }}</span>
                         </div>
                     </div>
-                    <ButtonPrimary type="submit">
+                    <ButtonPrimary type="submit" :disabled="loadbtn">
                         <div class="flex items-center justify-center gap-x-2">
                             <div role="status" v-if="loadbtn">
                                 <svg aria-hidden="true"
@@ -179,7 +202,7 @@ const toggleSeller = () => {
 
             <div class="mx-auto w-full max-w-sm">
                 <div class="flex flex-col gap-x-5 px-4 py-3 space-y-6">
-                    <SocialLogin></SocialLogin>
+                    <!-- <SocialLogin></SocialLogin> -->
                     <img class="w-60 mx-auto mb-6" src="assets/images/auth/auth.png" alt="Auth Image" />
                 </div>
             </div>

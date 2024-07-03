@@ -19,7 +19,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col w-full items-center lg:p-8 gap-8">
+    <div class="flex flex-col gap-4">
         <div class="flex">
             <div class="flex flex-col md:gap-8">
                 <div class="md:flex justify-end items-end">
@@ -182,62 +182,49 @@ onMounted(() => {
 
             </Card3>
         </div>
-        <div class="flex gap-4">
-            <div class=" shadow rounded w-[472px] h-[335px] border flex  gap-4   p-4">
-                <div class="flex flex-col gap-4">
-                    <div class="w-[205px] h-[207px] border p-4 roud" style=" border-radius: 9px">
-                        <h1 class="text-2xl">77</h1>
-                        <p class="text-lg text-slate-400 ">Total Orders</p>
-                        <Button class="h-[33px] mt-10 rounded w-full text-white bg-blue-400  ">All orders</Button>
-
+        <div class="flex gap-5">
+            <div class="shadow-lg rounded-lg border flex gap-3 p-3 w-1/2">
+                <div class="flex flex-col gap-4 w-[50%]">
+                    <div class="bg-blue-300 p-4 rounded-lg flex-1 flex flex-col">
+                        <div class="flex-1">
+                            <h1 class="text-6xl text-blue-700 font-bold">77</h1>
+                            <p class="text-lg text-blue-600 ">Total Orders</p>
+                        </div>
+                        <Button class="rounded w-full text-white bg-blue-400 hover:bg-blue-600">All orders</Button>
                     </div>
-                    <div class="w-[205px] h-[56px] border p-4 bg-[#D70E0E] flex justify-between items-center text-white"
-                        style=" border-radius: 9px">
+                    <div class="w-full rounded-lg bg-red-500 justify-between text-white p-4 flex items-center">
                         <p>Pending Orders</p>
-                        <p class=" text-white text-2xl">47</p>
+                        <p class="text-white text-2xl font-bold">47</p>
                     </div>
-
-
-
                 </div>
-                <div class="flex flex-col gap-4">
-                    <div class="w-[205px] h-[56px] border p-4 bg-[#0575B3]/20 flex justify-between items-center text-[#0575B3]"
-                        style=" border-radius: 9px">
+                <div class="flex flex-col w-[50%] gap-4">
+                    <div class="p-4 rounded-lg bg-[#0575B3]/20 flex justify-between items-center text-[#0575B3]">
                         <p>Pending Orders</p>
-                        <p class=" text-[#0575B3] text-2xl">47</p>
+                        <p class="text-[#0575B3] text-2xl font-bold">47</p>
                     </div>
-                    <div class="w-[205px] h-[56px] border p-4 bg-[#348110]/40  flex justify-between items-center text-[#348110]"
-                        style=" border-radius: 9px">
+                    <div class="p-4 rounded-lg bg-[#348110]/40 flex justify-between items-center text-[#348110]">
                         <p>Pending Orders</p>
-                        <p class=" text-[#348110] text-2xl">47</p>
+                        <p class="text-[#348110] text-2xl font-bold">47</p>
                     </div>
-                    <div class="w-[205px] h-[56px] border p-4 bg-[#D70E0E]/30 flex justify-between items-center text-[#D70E0E]"
-                        style=" border-radius: 9px">
+                    <div class="p-4 rounded-lg bg-[#D70E0E]/30 flex justify-between items-center text-[#D70E0E]">
                         <p>Pending Orders</p>
-                        <p class=" text-[#D70E0E] text-2xl">47</p>
+                        <p class="text-[#D70E0E] text-2xl font-bold">47</p>
                     </div>
-                    <div class="w-[205px] h-[56px] border p-4 bg-[#FFD11B]/20 flex justify-between items-center "
-                        style=" border-radius: 9px">
+                    <div class="p-4 rounded-lg bg-[#FFD11B]/20 flex justify-between items-center ">
                         <p>Pending Orders</p>
-                        <p class="  text-2xl">47</p>
+                        <p class="text-2xl font-bold">47</p>
                     </div>
-
-
                 </div>
-
-
             </div>
-            <div class="shadow rounded w-[472px] h-[335px] border flex flex-col  gap-4   p-4 ">
-                <div class=" flex  justify-between w-full " id="top seller">
+            <div class="shadow-lg rounded-lg border flex flex-col gap-3 p-3 w-1/2">
+                <div class="flex justify-between w-full" id="top seller">
                     <div>
                         <p class="font text-lg font-bold items-center">Top Seller & Products</p>
                     </div>
-
                     <div class="w-[199px] h-7 flex gap-2 ">
-
                         <div
                             class=" hover:bg-[#FBE2CD]  cursor-pointer hover:text-[#F57F20] w-[52px] text-center   h-[28px] hover:-skew-x-12 ">
-                            <p class=" skew-x-0">All</p>
+                            <p class="skew-x-0">All</p>
                         </div>
                         <div
                             class=" hover:bg-[#FBE2CD]  cursor-pointer hover:text-[#F57F20] w-[52px] text-center   h-[28px] hover:-skew-x-12 ">
@@ -251,16 +238,13 @@ onMounted(() => {
                             class=" hover:bg-[#FBE2CD]  cursor-pointer hover:text-[#F57F20] w-[52px] text-center   h-[28px] hover:-skew-x-12 ">
                             <p class=" skew-x-0">Month</p>
                         </div>
-
                     </div>
-
                 </div>
 
                 <div class="text-lg">
                     <h1 class="">By sales</h1>
                 </div>
                 <div>
-
                     <Logos></Logos>
                 </div>
                 <div class="mt-10">
@@ -282,7 +266,6 @@ onMounted(() => {
 
 
             </div>
-
         </div>
     </div>
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { AccordionContent, AccordionHeader, AccordionItem, AccordionRoot, AccordionTrigger } from 'radix-vue'
 
 const sidebarSchema = [
     {
@@ -13,7 +14,6 @@ const sidebarSchema = [
         ]
         // No submenu for Dashboard
     },
-
     {
         header: "Products",
         icon: "eva:inbox-outline",
@@ -84,7 +84,6 @@ const sidebarSchema = [
             }
         ]
     },
-
     {
         header: "Offer",
         icon: "eva:gift-outline",
@@ -116,7 +115,7 @@ const sidebarSchema = [
 
 
 <template>
-    <div class="w-[403px] shadow-md p-4  mb-4 flex justify-center  mt-2  bg-gradient-to-b from-[#EAEAEA] to-[#F57F20] h-[981px] rounded-lg bg"
+    <div class="w-[403px] shadow-md flex justify-center bg-gradient-to-b from-[#EAEAEA] to-[#F57F20] h-[981px] rounded-lg bg"
         style="box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);">
         <div class="w-full flex justify-center p-4">
             <svg width="178" height="35" viewBox="0 0 178 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -174,9 +173,8 @@ const sidebarSchema = [
                     fill="#F15724" />
             </svg>
         </div>
-        <div class="w-full flex justify-center mt-16">
-            <div class="w-[338px] w-f justify-center p-4 flex flex-col gap-8 ">
-
+        <div class="w-full flex justify-center mt-16 px-12">
+            <!-- <div class="w-[338px] w-f justify-center p-4 flex flex-col gap-8">
                 <DropdownMenu class="" v-for="(i, j) in sidebarSchema">
                     <DropdownMenuTrigger as-child>
                         <Button
@@ -209,9 +207,26 @@ const sidebarSchema = [
 
                     </DropdownMenuContent>
                 </DropdownMenu>
-            </div>
+            </div> -->
+            <AccordionRoot class="w-full flex flex-col gap-4 rounded-lg" default-value="item-1" type="single" :collapsible="true">
+                <template v-for="item in sidebarSchema" :key="item">
+                    <AccordionItem class="overflow-hidden" :value="item.header">
+                        <AccordionHeader class="flex">
+                        <AccordionTrigger class="flex h-[45px] flex-1 cursor-default items-center justify-between bg-primary rounded-xl px-5 text-[15px] leading-none">
+                            <span>{{ item.header }}</span>
+                        </AccordionTrigger>
+                        </AccordionHeader>
+                        <AccordionContent class="text-mauve11 bg-mauve2 data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp overflow-hidden text-[15px]">
+                        <div class="px-5 py-4">
+                            <div v-for="(menu, index) in item.subMenu" :key="`menu-${index}`">
+                                <NuxtLink :to="menu.action">{{ menu.label }}</NuxtLink>
+                            </div>
+                        </div>
+                        </AccordionContent>
+                    </AccordionItem>
+                </template>
+            </AccordionRoot>
         </div>
-
     </div>
 
 </template>

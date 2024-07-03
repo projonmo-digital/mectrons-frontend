@@ -1,31 +1,16 @@
 <script setup>
-// const isLoading = ref(true)
-
 useHead({
-  title: 'Mectrons | Home',
+  title: 'Mectrons - Home',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
 })
-
-// const fetchData = () => {
-//     // Simulate a fetch with a 5-second delay
-//     setTimeout(() => {
-//         isLoading.value = false;
-//     }, 3000);
-// };
-
-// onMounted(() => {
-//     fetchData()
-// })
 </script>
 
 
 <template>
     <div v-show="isLoading" class="w-full h-screen  flex justify-center items-center">
-
         <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl"></Icon>
-
     </div>
 
 
