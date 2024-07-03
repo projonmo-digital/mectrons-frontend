@@ -1,4 +1,4 @@
-export const useAuthStore = defineStore("auth", {
+export const useAuthStore_new = defineStore("auth", {
   state: () => ({
     logInSatus: false,
   }),
@@ -18,7 +18,7 @@ export const useAuthStore = defineStore("auth", {
             body: { ...formData },
           }
         );
-        this.commonSeller(data);
+        // this.commonSeller(data);
         this.logInSatus = true;
       } catch (error) {
         throw error;

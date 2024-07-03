@@ -1,11 +1,11 @@
 <template>
-  <div class="flex justify-center flex-row bg-gray-100">
-    <div class="relative poppins-regular max-w-[1440px] bg-white ">
+  <div class="bg-primary bg-opacity-10 poppins-regular">
+    <div class="container mx-auto max-w-[1440px] bg-white p-0">
       <Header></Header>
       <slot />
-      <Footer></Footer>
+      <!-- <Footer></Footer>
       <ToasterAlert></ToasterAlert>
-      <Toaster />
+      <Toaster /> -->
     </div>
   </div>
 </template>

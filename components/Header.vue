@@ -13,7 +13,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-
+const auth = useAuthStore()
 
 
 const cart = useCartStore();
@@ -28,8 +28,8 @@ const handelSearchSubmit = () => {
 }
 
 const store = useAuthStore()
-const { data } = useAuthStore().login
-console.log(data)
+// const { data } = useAuthStore().login
+// console.log(data)
 
 
 const loginToggleBtnFun = async (value) => {
@@ -40,8 +40,8 @@ const loginToggleBtnFun = async (value) => {
         button = document?.getElementById('userLoginButton');
     }
     button.click();
-
 }
+
 const ToggleBtnFun = async (value) => {
     let button;
     if (value == 'sellerLogin') {
@@ -113,37 +113,31 @@ const logout = () => {
 
 </script>
 <template>
-    <header class="bg-primary ">
-        <div class=" mx-auto px-2 py-2">
-            <div class="flex justify-between text-white py-2 ">
-                <div class="flex  ">
-                    <button id="sellerLoginButton" data-dropdown-toggle="sellerLogin"
-                        class="font-medium  text-lg px-4 py-2 md:px-5 md:py-2 ">Seller Login</button>
-                    <div id="sellerLogin"
-                        class="z-50 hidden bg-white divide-y divide-gray-100 w-full max-w-sm rounded-lg shadow dark:bg-gray-700">
-                        <div aria-labelledby="sellerLoginButton">
-                            <LoginForm :toggleBtn="`sellerLogin`" @loginToggleBtn="loginToggleBtnFun($event)">
-                            </LoginForm>
-                        </div>
-                    </div>
-                    <!-- <a href="#" class=" font-medium  text-sm px-4 py-2 md:px-5 md:py-2">Track Order</a> -->
-                    <div class=""></div>
+    <header class="bg-primary text-white">
+        <div class="p-3">
+            <!-- header top panel -->
+            <div class="hidden sm:flex justify-between items-center px-3">
+                <div class="flex items-center gap-4">
+                    <NuxtLink class="hover:underline text-sm" :to="{ name: 'auth-login' }">
+                        {{ 'Seller Login' }}
+                    </NuxtLink>
+                    <NuxtLink class="hover:underline text-sm" :to="{ name: 'auth-login' }">
+                        {{ 'Track Order' }}
+                    </NuxtLink>
                 </div>
-                <div class="flex mt-1 gap-x-4 me-12 text-sm">
-                    <span><i class="fa-solid fa-location-dot me-2"></i>House No- A7 , Dog squid road , plot no-1/2 ,
-                        Kafrul , Mirpur -13, Dhaka .</span>
-                    <span><i class="fa-solid fa-phone me-2"></i>+880 170672751</span>
+                <div class="flex gap-8">
+                    <small class="hidden lg:inline-block">
+                        <i class="fa-solid fa-location-dot me-2"></i>
+                        House No- A7, Dog squid road, plot no-1/2, Kafrul, Mirpur -13, Dhaka.</small>
+                    <small>
+                        <i class="fa-solid fa-phone mr-2"></i>+880 170672751</small>
                 </div>
             </div>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-                integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-                crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-            <div class="mx-auto sm:px-4 lg:px-8">
-                <div class="flex items-center justify-between gap-x-5 h-16">
-
-                    <div class="flex  h-[calc(100%-8px)]">
-                        <nuxt-link to="/" class="flex items-center w-[200px] bg-primary">
+            <div class="px-4 py-4  max-w-[1244px] mx-auto">
+                <div class="flex flex-wrap items-center justify-between gap-5 my-3">
+                    <!-- logo -->
+                    <div>
+                        <nuxt-link to="/" class="flex items-center w-[200px]">
                             <svg width="178" height="35" viewBox="0 0 178 35" fill=""
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -206,80 +200,73 @@ const logout = () => {
                                     d="M25.3284 23.7731H14.4605C13.5506 23.7731 12.8093 22.8529 12.8093 21.7234V13.7926C12.8093 12.6631 13.5506 11.7429 14.4605 11.7429H25.3284C26.2383 11.7429 26.9795 12.6631 26.9795 13.7926V21.7234C26.9834 22.8529 26.2422 23.7731 25.3284 23.7731ZM14.4605 12.2249C13.7663 12.2249 13.2015 12.926 13.2015 13.7877V21.7186C13.2015 22.5803 13.7663 23.2814 14.4605 23.2814H25.3284C26.0225 23.2814 26.5873 22.5803 26.5873 21.7186V13.7926C26.5873 12.9308 26.0225 12.2298 25.3284 12.2298H14.4605V12.2249Z"
                                     fill="white" />
                             </svg>
-
                         </nuxt-link>
                     </div>
-
-
-
-                    <div class="w-2/3">
-                        <div class="flex ">
-                            <form class="relative w-full mx-4" @submit.prevent="handelSearchSubmit">
-                                <input v-model="searchText" type="search" id="search-dropdown"
-                                    class="block p-2  py-3 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                                    placeholder="Search all parts here" required />
-                                <button type="submit"
-                                    class="absolute border rounded-lg top-0 end-0 w-16 flex items-center justify-center text-sm font-medium h-full text-white bg-primary">
-
-                                    <span class="">
-                                        <Icon name="fa:search" class="text-white text-xl"></Icon>
-                                    </span>
-                                </button>
-                            </form>
-                        </div>
+                    <div class="flex-1 hidden md:block">
+                        <form class="w-full flex rounded-lg bg-white" @submit.prevent="handelSearchSubmit">
+                            <input v-model="searchText" type="search" class="w-full p-2 rounded-s-lg text-primary" placeholder="Search all parts here" required />
+                            <button type="submit" class="bg-primary bg-opacity-80 px-4 hover:bg-opacity-90">
+                                <span class="">
+                                    <Icon name="fa:search" class="text-white text-xl"></Icon>
+                                </span>
+                            </button>
+                        </form>
                     </div>
 
-
-                    <div class="flex items-center gap-x-8 text-2xl text-white">
-                        <button v-if="!store.logInSatus" id="userLoginButton" data-dropdown-toggle="userLogin"
-                            class="flex items-center gap-x-1 font-medium rounded-lg text-lg  px-2 py-2 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><i
-                                class="fa-solid fa-user me-2"></i>Login</button>
-
-                        <DropdownMenu v-if="store.logInSatus">
-                            <DropdownMenuTrigger as-child>
-                                <button
-                                    class="flex items-center gap-x-1 font-medium rounded-lg text-lg  px-2 py-2 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"><i
-                                        class="fa-solid fa-user me-2"></i><span>Logout</span></button>
+                    <div class="flex items-center gap-1 md:gap-6">
+                        <DropdownMenu v-if="!auth.authenticated">
+                            <DropdownMenuTrigger @click="auth.errors = {}">
+                                <span class="text-sm hover:underline">
+                                    <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i><span class="hidden sm:inline-block">Login</span>
+                                </span>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent class="w-100 p-0">
+                                <LoginForm @loginToggleBtn="loginToggleBtnFun($event)">
+                                </LoginForm>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        <DropdownMenu v-else>
+                            <DropdownMenuTrigger>
+                                <span class="text-sm hover:underline">
+                                    <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i>
+                                    <span class="hidden sm:inline-block">{{ auth.user.name }}</span>
+                                </span>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent class="w-56">
-
-                                <Button @click="logout">Logout</Button>
+                                <div>
+                                    <Button class="w-full" @click="auth.logUserOut()">Logout</Button>
+                                </div>
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        <div id="userLogin"
-                            class="z-50 hidden bg-white divide-y divide-gray-100 w-full max-w-sm rounded-lg shadow dark:bg-gray-700">
-                            <div aria-labelledby="userLoginButton">
-                                <LoginForm :toggleBtn="`userLogin`" @loginToggleBtn="loginToggleBtnFun($event)">
-                                </LoginForm>
-                            </div>
-                        </div>
-
-                        <a href="#"
-                            class="  font-medium rounded-lg text-sm px-2 py-2 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
-                            EN/BN</a>
-
+                        <button class="text-sm hover:underline hidden sm:inline-block">EN/BN</button>
                         <nuxt-link to="/cart"
                             class="relative inline-flex items-center p-3 text-sm font-medium text-center">
-                            <i class="fa-solid fa-cart-shopping"></i>
+                            <i class="fa-solid fa-cart-shopping text-2xl sm:text-sm"></i>
                             <span class="sr-only">Notifications</span>
                             <div
                                 class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
                                 {{ cart.carts?.quantity > 0 ? cart.carts?.quantity : 0 }}
                             </div>
                         </nuxt-link>
+                        <div class="inline-block sm:hidden">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                    <span class="text-sm hover:underline ml-3">
+                                        <i class="fa-solid fa-bars me-2 text-2xl sm:text-sm"></i>
+                                    </span>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent class="w-[100px] p-0">
+                                    <nuxt-link v-for="i in items" :to="i.link" class=" block p-2">{{ i.text }}</nuxt-link>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
                     </div>
-
                 </div>
-                <div class="flex justify-center mx-2">
-                    <nav class=" w-2/3  flex space-x-2 py-2  justify-between text-white">
-                        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                        <nuxt-link v-for="i in items" :to="i.link" class="text-[20px] font-bold hover:underline"
-                            aria-current="page">{{ i.text
-                            }}</nuxt-link>
-
-                    </nav>
-                </div>
+                <nav class="hidden sm:flex items-center gap-3 justify-center flex-wrap">
+                    <nuxt-link v-for="i in items" :to="i.link" class="text-[20px] font-bold hover:underline"
+                        aria-current="page">{{ i.text }}</nuxt-link>
+                </nav>
             </div>
         </div>
     </header>
