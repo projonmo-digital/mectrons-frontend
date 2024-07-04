@@ -10,7 +10,6 @@ export const useToasterStore = defineStore('toaster', {
         wrongmsg: [], 
         deletemsg: [],
     }),
-
     actions: {
         // Info
         addInfo() {

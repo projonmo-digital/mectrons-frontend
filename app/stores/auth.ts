@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import { useToast } from '@/components/ui/toast/use-toast'
+const { toast } = useToast()
 
 interface IState {
     authenticated: boolean
@@ -30,8 +32,12 @@ export const useAuthStore = defineStore('auth', {
                 user.value = JSON.stringify(data?.value?.user)
                 this.user = data.value?.user
                 this.authenticated = true
+                toast({
+                    title: 'Success',
+                    description: data.value.message,
+                });
             }
-            if(error?.value){
+            if (error?.value) {
                 this.$state.errors = error?.value.data.errors
             }
         },

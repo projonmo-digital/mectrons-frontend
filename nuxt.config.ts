@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
+  srcDir: 'app',
   runtimeConfig: {
     // The private keys which are only available within server-side
     apiSecret: "123",
@@ -36,15 +37,8 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
   ],
   shadcn: {
-    /**
-     * Prefix for all the imported component
-     */
     prefix: "",
-    /**
-     * Directory that the component lives in.
-     * @default "./components/ui"
-     */
-    componentDir: "./components/ui",
+    componentDir: "./app/components/ui",
   },
 
   imports: {

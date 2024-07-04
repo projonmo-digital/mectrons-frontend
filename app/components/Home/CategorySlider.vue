@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 // state
-const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`)
+const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`, { lazy: true })
 
 // methods
 const handleMouseOver = (event) => {

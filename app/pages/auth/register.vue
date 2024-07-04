@@ -2,6 +2,9 @@
 import { onMounted, ref } from 'vue'
 import { Modal, initFlowbite } from 'flowbite'
 
+import { useToast } from '@/components/ui/toast/use-toast'
+const { toast } = useToast()
+
 useSeoMeta({
     title: 'Register - My Amazing Site',
     ogTitle: 'My Amazing Site',
@@ -52,7 +55,10 @@ const register = async(formData) => {
             user.value = JSON.stringify(data?.user)
             auth.user = data?.user
             auth.authenticated = true
-            toaster.addSuccess(data.message);
+            toast({
+                title: 'Success',
+                description: data.message,
+            });
             router.push('/')
         }
         this.commonSeller(data);
