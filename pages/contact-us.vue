@@ -10,43 +10,6 @@ onMounted(() => {
 <template>
     <div class="content">
         <div class="max-w-screen-2xl block h-full mx-auto px-4">
-            <nav class="flex mb-3 mt-4" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-                    <li class="inline-flex items-center">
-                        <a href="#"
-                            class="inline-flex items-center text-xs font-normal text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                            <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
-                            </svg>
-                            Home
-                        </a>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m1 9 4-4-4-4" />
-                            </svg>
-                            <a href="#"
-                                class="ms-1 text-xs font-normal text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Projects</a>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m1 9 4-4-4-4" />
-                            </svg>
-                            <span
-                                class="ms-1 text-xs font-normal text-gray-500 md:ms-2 dark:text-gray-400">Flowbite</span>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
 
             <h1 class="font-bold text-2xl text-primary mb-4 mt-3">Contact Us</h1>
             <div class="flex justify-between gap-x-4 py-6">
@@ -59,8 +22,16 @@ onMounted(() => {
                                 and safety for your vehicle. The Alumalite Big Step Side Bars install in minutes,
                                 providing great looks, convenience and safety for your vehicle.
                             </p>
-                            <p class="text-sm text-gray-900 font-medium mt-3">New South Wles road , 25 Silicon Road,
-                                London D04 89GR</p>
+                            <p class="text-sm text-gray-900 font-medium mt-3">
+                            <h1 class='font-bold'>Office Location
+                            </h1>
+                            House No- A7, Dog Squid Road, Plot No-1/2, Kafrul, Mirpur -13, Dhaka.
+                            </p>
+                            <p class="text-sm text-gray-900 font-medium mt-3">
+                            <h1 class='font-bold'>Store Location
+                            </h1>
+                            House No- A7, Dog Squid Road, Plot No-1/2, Kafrul, Mirpur -13, Dhaka.
+                            </p>
                             <div class="mt-6">
                                 <ul class="">
                                     <li class="pb-4">
@@ -71,7 +42,7 @@ onMounted(() => {
                                                 <path
                                                     d="M7.978 4a2.553 2.553 0 0 0-1.926.877C4.233 6.7 3.699 8.751 4.153 10.814c.44 1.995 1.778 3.893 3.456 5.572 1.68 1.679 3.577 3.018 5.57 3.459 2.062.456 4.115-.073 5.94-1.885a2.556 2.556 0 0 0 .001-3.861l-1.21-1.21a2.689 2.689 0 0 0-3.802 0l-.617.618a.806.806 0 0 1-1.14 0l-1.854-1.855a.807.807 0 0 1 0-1.14l.618-.62a2.692 2.692 0 0 0 0-3.803l-1.21-1.211A2.555 2.555 0 0 0 7.978 4Z" />
                                             </svg>
-                                            <span class="text-sm">+27 34 66 2455-198</span>
+                                            <span class="text-sm"> +880 1706 727 51</span>
                                         </div>
                                     </li>
                                     <li class="pb-4">
@@ -84,21 +55,10 @@ onMounted(() => {
                                                 <path
                                                     d="M20.677 4.117A1.996 1.996 0 0 0 20 4H4c-.225 0-.44.037-.642.105l.758.607L12 10.742 19.9 4.7l.777-.583Z" />
                                             </svg>
-                                            <span class="text-sm">info@chromium.com</span>
+                                            <span class="text-sm">mectrons1@gmail.com</span>
                                         </div>
                                     </li>
-                                    <li class="pb-4">
-                                        <div class="flex items-center gap-x-2">
-                                            <svg class="w-4 h-4 text-primary dark:text-white" aria-hidden="true"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd"
-                                                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            <span class="text-sm">Monday – Friday 8:00 to 19:00</span>
-                                        </div>
-                                    </li>
+
                                 </ul>
                             </div>
                         </div>

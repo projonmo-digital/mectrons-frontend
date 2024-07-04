@@ -50,7 +50,7 @@ const categoryByPage = (id) => {
 
                                 <DropdownMenuContent class="w-64 ml-[17rem]">
                                     <div v-for="(j, index2) in i.children">
-                                        <DropdownMenuSub class="bg-white">
+                                        <DropdownMenuSub class="bg-white" v-if="j.children?.length > 0">
                                             <DropdownMenuSubTrigger v-if="j.children">
                                                 <div class="text-wrap text-xs">
                                                     {{ j.name }}

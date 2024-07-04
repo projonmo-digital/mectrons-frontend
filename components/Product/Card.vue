@@ -44,6 +44,7 @@ const AddToCart = (product) => {
     product.qty = 1;
     cart.AddToCart(product);
 }
+console.log()
 </script>
 
 <template>

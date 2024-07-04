@@ -9,10 +9,110 @@ import {
     PaginationNext,
     PaginationPrev,
 } from '@/components/ui/pagination'
-
 import {
     Button,
 } from '@/components/ui/button'
+const secondSearchBar = reactive({
+    model: '',
+    make: '',
+    year: '',
+    cc: '',
+    engyne: '',
+    parts: ''
+})
+const selectedsecondSearchBar = reactive({
+    model: '',
+    make: '',
+    year: '',
+    cc: '',
+    engyne: '',
+    parts: ''
+})
+const route = useRoute()
+
+const getMake = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
+    secondSearchBar.make = data.value
+    console.log(secondSearchBar)
+
+}
+getMake()
+const getModel = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}`)
+    secondSearchBar.model = data.value
+    console.log(secondSearchBar.model)
+}
+
+
+const getYear = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}`)
+    secondSearchBar.year = data.value
+
+
+}
+const getCC = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}`)
+    secondSearchBar.cc = data.value
+    console.log(data.value)
+}
+const getEngyne = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}`)
+    secondSearchBar.engyne = data.value
+}
+
+const getParts = async () => {
+    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}&engine=${selectedsecondSearchBar.engyne}`)
+    secondSearchBar.parts = data.value
+
+
+}
+
+
+
+const categoryData = ref('')
+
+const getCetagories = async () => {
+    const res = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`)
+
+    categoryData.value = res.data.value
+
+
+
+
+}
+getCetagories()
+const loading = ref(true)
+const data = ref('')
+const setFilter = async () => {
+    const token = useTokenStore();
+
+    try {
+        const response = await useFetch(
+            `${useRuntimeConfig().public.baseUrl}/car-data-search`,
+            {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    Authorization: `Bearer ${token.getToken}`,
+                },
+                body: route.query,
+            }
+        );
+
+        data.value = response.data.value
+
+        loading.value = false
+
+
+        // Refresh products list after update
+    } catch (error) {
+
+        console.log(error);
+    }
+};
+
+setFilter()
+
 </script>
 
 <template>
@@ -33,52 +133,47 @@ import {
             </div>
         </div>
         <div class=" flex justify-center w-full">
-            <div class="flex flex-col gap-8  z-20">
-                <div
-                    class=" max-w-[800px] lg:h-[71px]   w-full place-content-center   grid grid-cols-2 md:grid-cols-6 p-4 gap-4 bg-primary rounded-2xl ">
-                    <select class="h-[35px] rounded h-">
-                        <option value="" disabled selected>Select your option</option>
-                        <option value="hurr">Durr</option>
-                    </select>
-                    <select class="h-[35px] rounded h-">
-                        <option value="" disabled selected>Select your option</option>
-                        <option value="hurr">Durr</option>
-                    </select>
-                    <select class="h-[35px] rounded h-">
-                        <option value="" disabled selected>Select your option</option>
-                        <option value="hurr">Durr</option>
-                    </select>
-                    <select class="h-[35px] rounded h-">
-                        <option value="" disabled selected>Select your option</option>
-                        <option value="hurr">Durr</option>
-                    </select>
-                    <select class="h-[35px] rounded h-">
-                        <option value="" disabled selected>Select your option</option>
-                        <option value="hurr">Durr</option>
-                    </select>
-                    <Button class=" h-[35px] w-16 bg-red-200 ">
-                        <Icon class="text-primary text-2xl bg" name="fa:search"></Icon>
-                    </Button>
+            <div
+                class=" max-w-[1000px] lg:h-[71px]   w-full place-content-center   grid grid-cols-2 md:grid-cols-7 p-4 gap-4 bg-primary rounded-2xl ">
 
-                </div>
-                <div class="flex lg:flex-row  flex-col gap-8 lg:text-start text-center justify-between items-center">
-                    <div v-for="i in icons" class="flex lg:flex-row flex-col gap-4 items-center">
-                        <div class=" h-[68px]">
-                            <Icon :name="i.name" class="text-[57px] text-primary"></Icon>
-                        </div>
-                        <div>
-                            <h1 class="font-bold">{{ i.label }}</h1>
-                            <p class=" text-slate-400">{{ i.subtext }}</p>
-                        </div>
+                <select class="h-[35px] rounded h-" @change="getModel" v-model="selectedsecondSearchBar.make">
+                    <option value="" disabled selected>Model </option>
+                    <option v-for="i in secondSearchBar.make">{{ i.make }}</option>
 
-                    </div>
+                </select>
+                <select @change="getYear" :disabled="!selectedsecondSearchBar.make" class="h-[35px] rounded h-"
+                    v-model="selectedsecondSearchBar.model">
+                    <option value="" disabled selected>Model </option>
+                    <option v-for="i in secondSearchBar.model">{{ i.models }}</option>
+                </select>
+                <select @change="getCC" :disabled="!secondSearchBar.year" class="h-[35px] rounded h-"
+                    v-model="selectedsecondSearchBar.year">
+                    <option value="" disabled selected>Year</option>
+                    <option v-for="i in secondSearchBar.year">{{ i.year }}</option>
+                </select>
+                <select @change="getEngyne" :disabled="!secondSearchBar.cc" class="h-[35px] rounded h-"
+                    v-model="selectedsecondSearchBar.cc">
+                    <option value="" disabled selected>CC</option>
+                    <option v-for="i in secondSearchBar.cc">{{ i.cc }}</option>
+                </select>
+                <select @change="getParts" :disabled="!secondSearchBar.engyne" class="h-[35px] rounded h-"
+                    v-model="selectedsecondSearchBar.engyne">
+                    <option value="" disabled selected>Engine</option>
+                    <option v-for="i in secondSearchBar.engyne">{{ i.engine }}</option>
+                </select>
 
-                </div>
-                <div class="w-full h-[116px] overflow-hidden">
-                    <img src="https://img.freepik.com/free-psd/car-rental-automotive-facebook-cover-template_106176-2473.jpg"
-                        class="w-full h-full object-cover">
+                <select :disabled="!secondSearchBar.parts" class="h-[35px] rounded h-"
+                    v-model="selectedsecondSearchBar.parts">
+                    <option value="" disabled selected>Parts</option>
+                    <option v-for="i in categoryData.categories">{{ i.name }}</option>
+                </select>
+                <NuxtLink :disabled="!secondSearchBar.parts"
+                    :to="{ path: '/category/product', query: selectedsecondSearchBar }"><Button
+                        :disabled="!secondSearchBar.parts"
+                        class=" h-[35px] w-16 text-primary hover:bg-white  bg-red-200 " @click="">
+                        <Icon class="text-2xl  bg" name="fa:search"></Icon>
+                    </Button></NuxtLink>
 
-                </div>
             </div>
         </div>
         <div class="flex lg:flex-row justify-between flex-col">
@@ -95,7 +190,32 @@ import {
             </div>
             <div class=" w-full justify-center">
                 <h1 class=" text-2xl font-bold p-4">Other Product</h1>
-                <OtherProduct></OtherProduct>
+                <div class="w-full h-full">
+                    <div v-if="loading" class="h-[70vh] w-full flex justify-center items-center ">
+                        <Icon name="fluent:spinner-ios-16-filled" class=" text-6xl text-primary animate-spin"></Icon>
+
+                    </div>
+                    <div v-else>
+                        <div v-if="data.length > 0" class="grid grid-cols-3 gap-4">
+                            <ProductCard v-for="i in data" product="i"></ProductCard>
+
+
+                        </div>
+
+                        <div v-else class="flex w-full h-[70vh] justify-center items-center">
+
+                            <div class="flex justify-center items-center flex-col gap-4 text-center">
+                                <Icon name="mdi:emoticon-sad" class="text-6xl">
+
+                                </Icon>
+                                <h1> Sorry we couldn't find any results</h1>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
         </div>
         <div class="flex justify-center ">

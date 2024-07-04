@@ -42,38 +42,8 @@ const loginToggleBtnFun = async (value) => {
 }
 
 const items = [
-    {
-        "text": "Home",
-        "link": "/"
-    },
-    {
-        "text": "Automobiles",
-        "dropdown": true,
-        "submenu": [
-            {
-                "text": "Item 1",
-                "link": "/item1"
-            },
-            {
-                "text": "Item 2",
-                "link": "/item2"
-            }
-        ]
-    },
-    {
-        "text": "Equipment",
-        "dropdown": true,
-        "submenu": [
-            {
-                "text": "Item A",
-                "link": "/itemA"
-            },
-            {
-                "text": "Item B",
-                "link": "/itemB"
-            }
-        ]
-    },
+
+
     {
         "text": "Electronics",
         "link": "#"
@@ -186,7 +156,8 @@ const items = [
                     </div>
                     <div class="flex-1 hidden md:block">
                         <form class="w-full flex rounded-lg bg-white" @submit.prevent="handelSearchSubmit">
-                            <input v-model="searchText" type="search" class="w-full p-2 rounded-s-lg text-primary" placeholder="Search all parts here" required />
+                            <input v-model="searchText" type="search" class="w-full p-2 rounded-s-lg text-primary"
+                                placeholder="Search all parts here" required />
                             <button type="submit" class="bg-primary bg-opacity-80 px-4 hover:bg-opacity-90">
                                 <span class="">
                                     <Icon name="fa:search" class="text-white text-xl"></Icon>
@@ -199,7 +170,8 @@ const items = [
                         <DropdownMenu v-if="!auth.authenticated">
                             <DropdownMenuTrigger @click="auth.errors = {}">
                                 <span class="text-sm hover:underline">
-                                    <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i><span class="hidden sm:inline-block">Login</span>
+                                    <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i><span
+                                        class="hidden sm:inline-block">Login</span>
                                 </span>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent class="w-100 p-0">
@@ -211,11 +183,12 @@ const items = [
                             <DropdownMenuTrigger>
                                 <span class="text-sm hover:underline">
                                     <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i>
-                                    <span class="hidden sm:inline-block">{{ auth.user.name }}</span>
+                                    <span class="hidden sm:inline-block">{{ auth.user?.name }}</span>
                                 </span>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent class="w-56">
-                                <DropdownMenuItem @select="router.push('/master-admin/dashboard')">Dashboard</DropdownMenuItem>
+                                <DropdownMenuItem @select="router.push('/master-admin/dashboard')">Dashboard
+                                </DropdownMenuItem>
                                 <DropdownMenuItem @select="router.push('/user/dashboard')">Profile</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem class="text-red-500 hover:text-red-600" @click="auth.logUserOut()">
@@ -242,7 +215,8 @@ const items = [
                                     </span>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent class="w-[100px] p-0">
-                                    <nuxt-link v-for="i in items" :to="i.link" class=" block p-2">{{ i.text }}</nuxt-link>
+                                    <nuxt-link v-for="i in items" :to="i.link" class=" block p-2">{{ i.text
+                                        }}</nuxt-link>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
