@@ -81,6 +81,10 @@ getCetagories()
 const store = useUtils()
 const upperLeftAds = await store.getAds('Home Page - Upper Left')
 const upperRightAds = await store.getAds('Home Page - Upper Right')
+const makeFilter = () => {
+    navigateTo({ params: '/category/product', query: secondSearchBar })
+}
+
 
 </script>
 
@@ -124,11 +128,13 @@ const upperRightAds = await store.getAds('Home Page - Upper Right')
                         <option v-for="i in categoryData.categories">{{ i.name }}</option>
                     </select>
                 </div>
-                <button :disabled="!secondSearchBar.parts"
-                    class=" cursor-pointer text-primary bg-white bg-opacity-50 hover:bg-opacity-30 px-5 rounded-e-xl"
-                    @click="">
+
+                <button @click="navigateTo({ path: '/category/product', query: selectedsecondSearchBar })"
+                    :disabled="!secondSearchBar.parts"
+                    class=" cursor-pointer text-primary bg-white bg-opacity-50 hover:bg-opacity-30 px-5 rounded-e-xl">
                     <Icon class="text-2xl" name="fa:search"></Icon>
                 </button>
+
             </div>
             <div class="flex flex-col lg:flex-row gap-3">
                 <div v-for="i in icons" class="flex flex-col lg:flex-row items-center p-3 gap-3 w-3/1">
