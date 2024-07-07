@@ -13,138 +13,56 @@ const sidebarList: TSidebar = [
     {
         header: 'Dashboard',
         icon: "eva:home-outline",
-        url: '/master-admin/dashboard'
+        url: '/admin/dashboard'
     },
     {
         header: 'Products',
         icon: "eva:inbox-outline",
-        url: '/master-admin/product/allProduct'
+        url: '/admin/product'
+    },
+    {
+        header: "Order",
+        icon: "eva:shopping-bag-outline",
+        url: '/admin/order'
     },
     {
         header: "Sales",
         icon: "eva:shopping-bag-outline",
-        url: '/master-admin/sales/customer'
-    }
+        url: '/admin/Seller/allSeller'
+    },
+    {
+        header: "Customer",
+        icon: 'eva:people-outline',
+        url: '/admin/sales/customer'
+    },
+    {
+        header: "Seller",
+        icon: 'eva:people-outline',
+        url: '/admin/Seller/allSeller'
+    },
+    {
+        header: "Report",
+        icon: 'eva:people-outline',
+        url: '/admin/Seller/allSeller'
+    },
+    {
+        header: "Offer",
+        icon: "eva:gift-outline",
+        url: '/admin/Seller/allSeller'
+    },
+    {
+        header: "Advertisement",
+        icon: 'eva:people-outline',
+        url: '/admin/Seller/allSeller'
+    },
 ]
-
-
-// const sidebarSchema: TSidebar = [
-//     {
-//         header: "Dashboard",
-//         icon: "eva:home-outline",
-//         url: '/master-admin/dashboard'
-//         subMenu: [
-//             {
-//                 label: "Dashboard",
-//                 action: '/master-admin/dashboard'
-//             },
-
-//         ]
-//         // No submenu for Dashboard
-//     },
-//     {
-//         header: "Products",
-//         icon: "eva:inbox-outline",
-//         subMenu: [
-//             {
-//                 label: "Add new product",
-//                 action: '/master-admin/add-new-product'
-//             },
-//             {
-//                 label: "All products",
-//                 action: '/master-admin/product/allProduct'
-//             },
-//             {
-//                 label: "CategoryProduct",
-//                 action: '/master-admin/product/categoryProduct'
-//             }
-//         ]
-//     },
-//     {
-//         header: "Sales",
-//         icon: "eva:shopping-bag-outline",
-//         subMenu: [
-//             {
-//                 label: "Customer",
-//                 action: '/master-admin/sales/customer'
-//             },
-
-//         ]
-//     },
-//     {
-//         header: "Seller",
-//         icon: "eva:people-outline",
-//         subMenu: [
-//             {
-//                 label: "All Seller",
-//                 action: '/master-admin/Seller/allSeller'
-//             },
-//             {
-//                 label: "Payout",
-//                 action: '/master-admin/Seller/payout'
-//             },
-//             {
-//                 label: "Payout Request",
-//                 action: '/master-admin/Seller/payOutRequest'
-//             },
-//             {
-//                 label: "Seller Commission",
-//                 action: '/master-admin/Seller/sellerCommission'
-//             },
-
-//         ]
-//     },
-//     {
-//         header: "Report",
-//         icon: "eva:person-outline",
-//         subMenu: [
-//             {
-//                 label: "In House Product Sale",
-//                 action: '/master-admin/report/inHouse'
-//             },
-//             {
-//                 label: "Seller Product Sale",
-//                 action: '/master-admin/report/sellerProduct'
-//             },
-//             {
-//                 label: "Product Stock",
-//                 action: '/master-admin/report/productStock'
-//             }
-//         ]
-//     },
-//     {
-//         header: "Offer",
-//         icon: "eva:gift-outline",
-//         // subMenu: [
-//         //     {
-//         //         label: "Current Offers",
-//         //         action: null
-//         //     },
-//         //     {
-//         //         label: "Expired Offers",
-//         //         action: null
-//         //     }
-//         // ]
-//     },
-//     {
-//         header: "Advertisement",
-//         icon: "fluent:panel-top-gallery-20-filled",
-//         subMenu: [
-//             {
-//                 label: "Add Advertisement",
-//                 action: '/master-admin/advertisement'
-//             },
-
-//         ]
-//     }
-// ]
 
 </script>
 
 
 <template>
-    <div class="w-full min-w-[380px] max-w-[630px] p-6 rounded-lg min-h-[981px] shadow-xl border">
-        <!-- <div class="w-full flex justify-center p-4">
+    <div class="w-full min-w-[380px] max-w-[630px] p-6 rounded-lg min-h-[981px] shadow-xl border bg-gradient-to-t from-primary to-white">
+        <div class="w-full flex justify-center my-5">
             <svg width="178" height="35" viewBox="0 0 178 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M19.5508 17.6192L24.5356 13.924C24.7514 13.7633 25.0494 13.924 25.0455 14.1917L24.8533 21.7964L19.5508 17.6192Z"
@@ -199,10 +117,12 @@ const sidebarList: TSidebar = [
                     d="M25.3276 23.7731H14.4598C13.5499 23.7731 12.8086 22.8529 12.8086 21.7234V13.7926C12.8086 12.6631 13.5499 11.7429 14.4598 11.7429H25.3276C26.2375 11.7429 26.9788 12.6631 26.9788 13.7926V21.7234C26.9827 22.8529 26.2414 23.7731 25.3276 23.7731ZM14.4598 12.2249C13.7656 12.2249 13.2008 12.926 13.2008 13.7877V21.7186C13.2008 22.5803 13.7656 23.2814 14.4598 23.2814H25.3276C26.0218 23.2814 26.5866 22.5803 26.5866 21.7186V13.7926C26.5866 12.9308 26.0218 12.2298 25.3276 12.2298H14.4598V12.2249Z"
                     fill="#F15724" />
             </svg>
-        </div> -->
-        <div class="my-8 flex items-center justify-center">
-            <img :src="''" class="w-20 h-20 rounded-full" alt="">
         </div>
+
+        <!-- <div class="my-8 flex items-center justify-center">
+            <img :src="''" class="w-20 h-20 rounded-full" alt="">
+        </div> -->
+        
         <div class="w-full flex justify-center">
             <ul class="w-full flex flex-col gap-3">
                 <li v-for="(menu, index) in sidebarList" :key="`item-${menu}`">

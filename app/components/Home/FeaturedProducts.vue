@@ -1,6 +1,5 @@
 <script setup>
 
-
 const products = ref([]);
 const finalData = ref([]);
 const data = ref(null);

@@ -215,7 +215,7 @@ const items = [
                                 </span>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent class="w-56">
-                                <DropdownMenuItem @select="router.push('/master-admin/dashboard')">Dashboard</DropdownMenuItem>
+                                <DropdownMenuItem @select="router.push('/admin/dashboard')">Dashboard</DropdownMenuItem>
                                 <DropdownMenuItem @select="router.push('/user/dashboard')">Profile</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem class="text-red-500 hover:text-red-600" @click="auth.logUserOut()">
