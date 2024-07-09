@@ -50,9 +50,9 @@ export const useAuthStore_new = defineStore("auth", {
 
       toaster.addSuccess(data.message);
       if (this.user.email == "admin@admin") {
-        return navigateTo("/master-admin/dashboard");
+        return navigateTo("/admin/dashboard");
       } else if (this.user.email && this.user.nid) {
-        return navigateTo("/master-admin/dashboard");
+        return navigateTo("/admin/dashboard");
       } else {
         return navigateTo("/user/dashboard");
       }

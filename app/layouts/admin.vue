@@ -1,13 +1,4 @@
 <script setup lang="ts">
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@/components/ui/sheet'
-
 import SideBar from '../components/master-admin/SideBar.vue';
 
 </script>

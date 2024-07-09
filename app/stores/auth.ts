@@ -38,7 +38,15 @@ export const useAuthStore = defineStore('auth', {
                 });
             }
             if (error?.value) {
-                this.$state.errors = error?.value.data.errors
+                if(typeof error?.value.data.errors === 'string'){
+                    toast({
+                        class: 'bg-red-500',
+                        title: 'Error',
+                        description: error?.value.data.errors
+                    });
+                }else{
+                    this.$state.errors = error?.value.data.errors
+                }
             }
         },
         logUserOut() {

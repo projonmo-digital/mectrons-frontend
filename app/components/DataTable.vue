@@ -29,13 +29,13 @@ const table = useVueTable({
 </script>
 
 <template>
-    <div class="border rounded-md ">
-        <div class="w-full flex p-4  justify-center gap-x-8">
+    <div class="--shadow rounded-md ">
+        <!-- <div class="w-full flex p-4  justify-center gap-x-8">
             <CommandBox class="rounded"></CommandBox>
             <CommandBox class="rounded"></CommandBox>
             <CommandBox class="rounded"></CommandBox>
-        </div>
-        <Table class=" border ">
+        </div> -->
+        <Table>
             <TableHeader>
                 <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
                     <TableHead v-for="header in headerGroup.headers" :key="header.id">
