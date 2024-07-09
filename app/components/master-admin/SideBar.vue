@@ -1,124 +1,150 @@
 <script setup lang="ts">
+const route = useRoute()
 
-const sidebarSchema = [
+interface ISidebarItem {
+    header: string
+    icon: string
+    url: string
+}
+
+type TSidebar = ISidebarItem []
+
+const sidebarList: TSidebar = [
     {
-        header: "Dashboard",
+        header: 'Dashboard',
         icon: "eva:home-outline",
-        subMenu: [
-            {
-                label: "Dashboard",
-                action: '/master-admin/dashboard'
-            },
-
-        ]
-        // No submenu for Dashboard
+        url: '/master-admin/dashboard'
     },
-
     {
-        header: "Products",
+        header: 'Products',
         icon: "eva:inbox-outline",
-        subMenu: [
-            {
-                label: "Add new product",
-                action: '/master-admin/add-new-product'
-            },
-            {
-                label: "All products",
-                action: '/master-admin/product/allProduct'
-            },
-            {
-                label: "CategoryProduct",
-                action: '/master-admin/product/categoryProduct'
-            }
-        ]
+        url: '/master-admin/product/allProduct'
     },
     {
         header: "Sales",
         icon: "eva:shopping-bag-outline",
-        subMenu: [
-            {
-                label: "Customer",
-                action: '/master-admin/sales/customer'
-            },
-
-        ]
-    },
-    {
-        header: "Seller",
-        icon: "eva:people-outline",
-        subMenu: [
-            {
-                label: "All Seller",
-                action: '/master-admin/Seller/allSeller'
-            },
-            {
-                label: "Payout",
-                action: '/master-admin/Seller/payout'
-            },
-            {
-                label: "Payout Request",
-                action: '/master-admin/Seller/payOutRequest'
-            },
-            {
-                label: "Seller Commission",
-                action: '/master-admin/Seller/sellerCommission'
-            },
-
-        ]
-    },
-    {
-        header: "Report",
-        icon: "eva:person-outline",
-        subMenu: [
-            {
-                label: "In House Product Sale",
-                action: '/master-admin/report/inHouse'
-            },
-            {
-                label: "Seller Product Sale",
-                action: '/master-admin/report/sellerProduct'
-            },
-            {
-                label: "Product Stock",
-                action: '/master-admin/report/productStock'
-            }
-        ]
-    },
-
-    {
-        header: "Offer",
-        icon: "eva:gift-outline",
-        // subMenu: [
-        //     {
-        //         label: "Current Offers",
-        //         action: null
-        //     },
-        //     {
-        //         label: "Expired Offers",
-        //         action: null
-        //     }
-        // ]
-    },
-    {
-        header: "Advertisement",
-        icon: "fluent:panel-top-gallery-20-filled",
-        subMenu: [
-            {
-                label: "Add Advertisement",
-                action: '/master-admin/advertisement'
-            },
-
-        ]
+        url: '/master-admin/sales/customer'
     }
 ]
+
+
+// const sidebarSchema: TSidebar = [
+//     {
+//         header: "Dashboard",
+//         icon: "eva:home-outline",
+//         url: '/master-admin/dashboard'
+//         subMenu: [
+//             {
+//                 label: "Dashboard",
+//                 action: '/master-admin/dashboard'
+//             },
+
+//         ]
+//         // No submenu for Dashboard
+//     },
+//     {
+//         header: "Products",
+//         icon: "eva:inbox-outline",
+//         subMenu: [
+//             {
+//                 label: "Add new product",
+//                 action: '/master-admin/add-new-product'
+//             },
+//             {
+//                 label: "All products",
+//                 action: '/master-admin/product/allProduct'
+//             },
+//             {
+//                 label: "CategoryProduct",
+//                 action: '/master-admin/product/categoryProduct'
+//             }
+//         ]
+//     },
+//     {
+//         header: "Sales",
+//         icon: "eva:shopping-bag-outline",
+//         subMenu: [
+//             {
+//                 label: "Customer",
+//                 action: '/master-admin/sales/customer'
+//             },
+
+//         ]
+//     },
+//     {
+//         header: "Seller",
+//         icon: "eva:people-outline",
+//         subMenu: [
+//             {
+//                 label: "All Seller",
+//                 action: '/master-admin/Seller/allSeller'
+//             },
+//             {
+//                 label: "Payout",
+//                 action: '/master-admin/Seller/payout'
+//             },
+//             {
+//                 label: "Payout Request",
+//                 action: '/master-admin/Seller/payOutRequest'
+//             },
+//             {
+//                 label: "Seller Commission",
+//                 action: '/master-admin/Seller/sellerCommission'
+//             },
+
+//         ]
+//     },
+//     {
+//         header: "Report",
+//         icon: "eva:person-outline",
+//         subMenu: [
+//             {
+//                 label: "In House Product Sale",
+//                 action: '/master-admin/report/inHouse'
+//             },
+//             {
+//                 label: "Seller Product Sale",
+//                 action: '/master-admin/report/sellerProduct'
+//             },
+//             {
+//                 label: "Product Stock",
+//                 action: '/master-admin/report/productStock'
+//             }
+//         ]
+//     },
+//     {
+//         header: "Offer",
+//         icon: "eva:gift-outline",
+//         // subMenu: [
+//         //     {
+//         //         label: "Current Offers",
+//         //         action: null
+//         //     },
+//         //     {
+//         //         label: "Expired Offers",
+//         //         action: null
+//         //     }
+//         // ]
+//     },
+//     {
+//         header: "Advertisement",
+//         icon: "fluent:panel-top-gallery-20-filled",
+//         subMenu: [
+//             {
+//                 label: "Add Advertisement",
+//                 action: '/master-admin/advertisement'
+//             },
+
+//         ]
+//     }
+// ]
 
 </script>
 
 
 <template>
-    <div class="w-[403px] shadow-md p-4  mb-4 flex justify-center  mt-2  bg-gradient-to-b from-[#EAEAEA] to-[#F57F20] h-[981px] rounded-lg bg"
-        style="box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);">
-        <div class="w-full flex justify-center p-4">
+    <div class="w-full min-w-[380px] max-w-[630px] p-6 rounded-lg min-h-[981px] shadow-xl border">
+        <!-- <div class="w-full flex justify-center p-4">
             <svg width="178" height="35" viewBox="0 0 178 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M19.5508 17.6192L24.5356 13.924C24.7514 13.7633 25.0494 13.924 25.0455 14.1917L24.8533 21.7964L19.5508 17.6192Z"
@@ -173,156 +199,19 @@ const sidebarSchema = [
                     d="M25.3276 23.7731H14.4598C13.5499 23.7731 12.8086 22.8529 12.8086 21.7234V13.7926C12.8086 12.6631 13.5499 11.7429 14.4598 11.7429H25.3276C26.2375 11.7429 26.9788 12.6631 26.9788 13.7926V21.7234C26.9827 22.8529 26.2414 23.7731 25.3276 23.7731ZM14.4598 12.2249C13.7656 12.2249 13.2008 12.926 13.2008 13.7877V21.7186C13.2008 22.5803 13.7656 23.2814 14.4598 23.2814H25.3276C26.0218 23.2814 26.5866 22.5803 26.5866 21.7186V13.7926C26.5866 12.9308 26.0218 12.2298 25.3276 12.2298H14.4598V12.2249Z"
                     fill="#F15724" />
             </svg>
+        </div> -->
+        <div class="my-8 flex items-center justify-center">
+            <img :src="''" class="w-20 h-20 rounded-full" alt="">
         </div>
-        <div class="w-full flex justify-center mt-16">
-            <div class="w-[338px] w-f justify-center p-4 flex flex-col gap-8 ">
-
-                <DropdownMenu class="" v-for="(i, j) in sidebarSchema">
-                    <DropdownMenuTrigger as-child>
-                        <Button
-                            class="border h-[55px] border-none text-black  bg-[#D9D9D9] rounded hover:text-white hover:bg-primary "
-                            :key="j">
-                            <div class="flex w-full items-center flex-start gap-4 pl-8 py-2  ">
-                                <Icon class=" h-10 w-10  font-extrabold text-primary hover:text-white rounded "
-                                    :name="i.icon">
-                                </Icon>
-                                <p class=" text-2xl ">{{ i.header }}</p>
-                            </div>
-
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent class="">
-                        <NuxtLink :to="k.action" v-for="k in i.subMenu">
-                            <DropdownMenuItem>
-                                <Button
-                                    class="border w-full h-[55px] border-none text-black  bg-[#D9D9D9] rounded hover:text-white hover:bg-primary ">
-                                    <div class="flex w-full flex-start gap-4 px-[35px] py-2  ">
-
-                                        <p class="text-2xl ">{{ k.label }}</p>
-                                    </div>
-
-                                </Button>
-
-                            </DropdownMenuItem>
-                        </NuxtLink>
-
-
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
+        <div class="w-full flex justify-center">
+            <ul class="w-full flex flex-col gap-3">
+                <li v-for="(menu, index) in sidebarList" :key="`item-${menu}`">
+                    <NuxtLink :to="menu.url" class="flex gap-3 items-center py-3 px-5 rounded-lg text-primary bg-gray-300 hover:bg-primary hover:text-white" :class="{ 'text-white bg-primary' : route.path === menu.url}">        
+                        <Icon :name="menu.icon"></Icon>
+                        {{ menu.header }}
+                    </NuxtLink>
+                </li>
+            </ul>
         </div>
-
     </div>
-
 </template>
-<!-- <script setup lang="ts">
-const items= [
-      {
-        "icon": "brakes",
-        "label": "Brakes",
-        "action": null,
-        "subMenu": [
-          {
-            "label": "Brake Pads",
-            "action": null
-          },
-          {
-            "label": "Brake Fluid",
-            "action": null
-          }
-        ]
-      },
-      {
-        "icon": "filter",
-        "label": "Filter",
-        "action": {
-          "type": "button",
-          "label": "Apply Filter"
-        },
-        "subMenu": [
-          {
-            "label": "Air Filters",
-            "action": null
-          },
-          {
-            "label": "Oil Filters",
-            "action": null
-          }
-        ]
-      },
-      {
-        "icon": "lubricant",
-        "label": "Lubricant",
-        "action": null,
-        "subMenu": [
-          {
-            "label": "Engine Oil",
-            "action": null
-          },
-          {
-            "label": "Grease",
-            "action": null
-          }
-        ]
-      },
-      {
-        "icon": "tyre",
-        "label": "Tyre",
-        "action": null,
-        "subMenu": [
-          {
-            "label": "Summer Tyres",
-            "action": null
-          },
-          {
-            "label": "Winter Tyres",
-            "action": null
-          }
-        ]
-      },
-      {
-        "icon": "horn",
-        "label": "Horn",
-        "action": null,
-        "subMenu": [
-          {
-            "label": "Standard Horn",
-            "action": null
-          },
-          {
-            "label": "Air Horn",
-            "action": null
-          }
-        ]
-      }
-    ]
-   
-
-</script>
-
-<template>
-  <div class="w-[262px] bg-[#EAE5E2]/50 p-4 flex flex-col gap-8 ">
-    <h1 class="text-center text-2xl font-bold text-primary">Categories</h1>
-    <DropdownMenu class="bg-white" v-for="i in items">
-      <DropdownMenuTrigger as-child>
-        <Button class="border h-[55px] border-none text-black  bg-[#D9D9D9] rounded hover:text-white hover:bg-primary "
-                    v-for=" (item, index) in sidebarSchema" :key="index">
-                    <div class="flex w-full flex-start gap-4 px-[35px] py-2  ">
-                        <Icon class=" h-[30px] w-[30px]  font-extrabold text-primary hover:text-white rounded "
-                            :name="item.icon"></Icon>
-                        <p class="text-lg">{{ item.header }}</p>
-                    </div>
-
-                </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent class="w-56 bg-white">
-        <DropdownMenuItem v-for="j in i.subMenu">
-          {{j.label}}
-          
-        </DropdownMenuItem>
-       
-        
-      </DropdownMenuContent>
-    </DropdownMenu>
-  </div>
-</template> -->

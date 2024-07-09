@@ -6,13 +6,13 @@ const data = ref<any[] | null>(null) // Initialize as null
 const grabbedData = ref<any[]>([])
 
 const handleSwitchChange = async () => {
-    const token = useTokenStore()
+    const token = useCookie('token')
     try {
         const response = await useFetch(`${useRuntimeConfig().public.baseUrl}/pending/products`, {
             method: "GET",
             headers: {
                 Accept: "application/json",
-                Authorization: `Bearer ${token.getToken}`,
+                Authorization: `Bearer ${token.value}`,
             },
         })
         // Check if response and response.data are defined

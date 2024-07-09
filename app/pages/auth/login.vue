@@ -6,9 +6,8 @@ onMounted(() => {
     initFlowbite();
 })
 
-
 useSeoMeta({
-    title: 'Register - My Amazing Site',
+    title: 'Login - Mectrons',
     ogTitle: 'My Amazing Site',
     description: 'This is my amazing site, let me tell you all about it.',
     ogDescription: 'This is my amazing site, let me tell you all about it.',
@@ -18,69 +17,45 @@ useSeoMeta({
 
 const toaster = useToasterStore();
 const auth = useAuthStore();
-// definePageMeta({
-//     middleware: ["guest"]
-// })
-
-const form = reactive({
-    name: null,
-    email: null,
-    password: null,
-    password_confirmation: null,
-    nid: ''
+definePageMeta({
 })
-
+const form = reactive({
+    email: '',
+    password: '',
+})
 const errors = ref([]);
 const loadbtn = ref(false);
 
 const handleSubmit = async () => {
     loadbtn.value = true;
-    try {
-        await auth.register(form);
-        loadbtn.value = false;
-    } catch (error) {
-        toaster.addWrong(error.data.message);
-        errors.value = error.data.errors;
-        loadbtn.value = false;
-    }
+    auth.authenticateUser(form)
+    // try {
+    //     await auth.login(form);
+    //     loadbtn.value = false;
+    // } catch (error) {
+    //     toaster.addWrong(error.data.message);
+    //     errors.value = error.data.errors;
+    //     loadbtn.value = false;
+    // }
 }
 
-
 const passHideShow = ref(false);
-const passHideShow1 = ref(false);
-const isSeller = ref(false);
-
-const buyerColor = computed(() => isSeller.value ? 'bg-gray-300' : 'bg-primary');
-const sellerColor = computed(() => isSeller.value ? 'bg-primary' : 'bg-gray-300');
-
-const toggleSeller = () => {
-    isSeller.value = !isSeller.value;
-};
-
-
 </script>
+
+
 <template>
     <div class="mx-auto w-full max-w-3xl my-4">
-        <div>
-            <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center">Registation</h5>
-            <div class="flex justify-center items-center gap-x-3 text-gray-400 mt-2">
-                <hr class="border-gray-400 w-12">
-                <p class="text-center text-sm">&#10051;</p>
-                <hr class="border-gray-400 w-12">
-            </div>
-        </div>
         <div class="flex gap-x-3 bg-white rounded shadow">
-            <div class="mx-auto w-full max-w-sm p-4">
-                <div class=" flex w-full justify-end">
-                    <Button :class="`rounded-r-none ${buyerColor}`" @click="toggleSeller">Buyer</Button>
-                    <Button :class="`rounded-l-none ${sellerColor}`" @click="toggleSeller">Seller</Button>
-                </div>
+            <div
+                class="mx-auto w-full max-w-sm bg-gray-100 border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
                 <form class="space-y-6" @submit.prevent="handleSubmit">
-
                     <div>
-                        <FormLabel for="name">Name</FormLabel>
-                        <FormInput type="name" name="name" id="name" placeholder="Your name" v-model="form.name" />
-                        <span v-if="errors.name" class="text-sm text-red-500">{{ errors.name[0] }}</span>
+                        <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center">Sign In</h5>
+                        <div class="flex justify-center items-center gap-x-3 text-gray-400 mt-2">
+                            <hr class="border-gray-400 w-12">
+                            <p class="text-center text-sm">&#10051;</p>
+                            <hr class="border-gray-400 w-12">
+                        </div>
                     </div>
                     <div>
                         <FormLabel for="email">Email</FormLabel>
@@ -89,7 +64,7 @@ const toggleSeller = () => {
                         <span v-if="errors.email" class="text-sm text-red-500">{{ errors.email[0] }}</span>
                     </div>
                     <div>
-                        <FormLabel for="password">Your Password</FormLabel>
+                        <FormLabel for="password">Password</FormLabel>
                         <div class="relative">
                             <FormInput :type="passHideShow ? 'text' : 'password'" class="pe-7" name="password"
                                 id="password" placeholder="password" v-model="form.password" />
@@ -115,41 +90,19 @@ const toggleSeller = () => {
                         </div>
                         <span v-if="errors.password" class="text-sm text-red-500">{{ errors.password[0] }}</span>
                     </div>
-                    <div>
-                        <FormLabel for="password_confirmation">Confirm Password</FormLabel>
-                        <div class="relative">
-                            <FormInput :type="passHideShow1 ? 'text' : 'password'" class="pe-7"
-                                name="password_confirmation" id="password_confirmation"
-                                placeholder="password_confirmation" v-model="form.password_confirmation" />
-                            <div v-if="passHideShow1" @click="passHideShow1 = false"
-                                class="absolute inset-y-0 end-2 flex items-center ps-3 cursor-default">
-                                <svg class="w-5 h-5 text-gray-500 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 14c-.5-.6-.9-1.3-1-2 0-1 4-6 9-6m7.6 3.8A5 5 0 0 1 21 12c0 1-3 6-9 6h-1m-6 1L19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>
+                    <div class="flex items-start">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input id="remember" type="checkbox" value=""
+                                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
                             </div>
-
-                            <div v-else @click="passHideShow1 = true"
-                                class="absolute inset-y-0 end-2 flex items-center ps-3 cursor-default">
-                                <svg class="w-5 h-5 text-gray-500 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-width="2"
-                                        d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
-                                    <path stroke="currentColor" stroke-width="2"
-                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>
-                            </div>
+                            <FormLabel for="remember" class="ml-2">Remember me</FormLabel>
                         </div>
-                        <span v-if="errors.password_confirmation" class="text-sm text-red-500">{{
-                            errors.password_confirmation[0] }}</span>
-                        <div class="mt-4" v-if="isSeller">
-                            <FormLabel for="name">National Id</FormLabel>
-                            <FormInput type="name" name="name" id="name" placeholder="NID Number" v-model="form.nid" />
-                            <span v-if="errors.name" class="text-sm text-red-500">{{ errors.name[0] }}</span>
-                        </div>
+                        <nuxt-link to="/auth/forget-password"
+                            class="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500">Lost
+                            Password?</nuxt-link>
                     </div>
+
                     <ButtonPrimary type="submit">
                         <div class="flex items-center justify-center gap-x-2">
                             <div role="status" v-if="loadbtn">
@@ -165,22 +118,32 @@ const toggleSeller = () => {
                                 </svg>
                                 <span class="sr-only">Loading...</span>
                             </div>
-                            <span>Register</span>
+                            <span>Login</span>
                         </div>
                     </ButtonPrimary>
                     <div class="text-sm font-medium text-center text-gray-500 dark:text-gray-300">
-                        Already have an account? <nuxt-link to="/auth/login"
-                            class="text-blue-700 hover:underline dark:text-blue-500">Login</nuxt-link>
+                        Not registered? <nuxt-link to="/auth/register"
+                            class="text-blue-700 hover:underline dark:text-blue-500">Create account</nuxt-link>
                     </div>
 
                     <!-- <SocialLogin/> -->
                 </form>
             </div>
 
-            <div class="mx-auto w-full max-w-sm">
-                <div class="flex flex-col gap-x-5 px-4 py-3 space-y-6">
-                    <SocialLogin></SocialLogin>
+            <div class="mx-auto w-full max-w-sm ">
+                <div class="flex flex-col gap-x-5 px-4 py-3">
                     <img class="w-60 mx-auto mb-6" src="assets/images/auth/auth.png" alt="Auth Image" />
+                    <div class="shadow-md p-4 rounded-lg bg-gray-100">
+                        <h4 class="text-md font-semibold mb-2">Stay Safe</h4>
+                        <hr class="h-px my-3 bg-gray-300 border-0 dark:bg-gray-700">
+                        <p class="mb-2 text-sm leading-6 text-gray-500">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                        </p>
+                        <p class="mb-2 text-sm leading-6 text-gray-500">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                            been the industry's standard dummy text ever since the 1500s
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

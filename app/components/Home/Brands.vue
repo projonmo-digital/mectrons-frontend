@@ -13,7 +13,6 @@
             <img src="assets/images/brand/mitsubishi.png" alt="" class="w-20" srcset="">
             <img src="assets/images/brand/tata.png" alt="" class="w-20" srcset="">
             <img src="assets/images/brand/toyota.png" alt="" class="w-20" srcset="">
-    
         </div>
     </div>
 </template>
