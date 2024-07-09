@@ -1,5 +1,19 @@
 <script setup lang="ts">
-import SideBar from '../components/master-admin/SideBar.vue';
+import SideBar from '../components/master-admin/SideBar.vue'
+
+definePageMeta({
+  middleware: ["auth"]
+  // or middleware: 'auth'
+})
+
+// definePageMeta({
+//   middleware: [
+//     function (to, from) {
+//       // Custom inline middleware
+//     },
+//     'auth',
+//   ],
+// });
 
 </script>
 <template>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import {
     Select,
@@ -10,6 +10,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
+
 const { toast } = useToast()
 
 const preloader = ref(false)
@@ -32,7 +33,8 @@ const getPositions = async () => {
 
         for(let key in response.data.value){
           let item = { id: key, value: response.data.value[key] }
-          positions.value.push(`${item.id} - ${item.value}`)
+          positions.value.push(item)
+        //   positions.value.push(`${item.id} - ${item.value}`)
         }
         return response
     } catch (error) {
@@ -61,39 +63,75 @@ const chooseImageHandler = () => {
     let input = document.createElement('input')
     input.type = 'file'
     input.onchange = (event) => {
-        
         let imageFile = event.target.files[0]
-        console.log(imageFile.size);
-        if(imageFile.size > 500){
-            alert('test')
-        }
-        formData.value.file = imageFile
+        let fr = new FileReader
+        fr.onload = function(e) {
+            let img = new Image;
+            img.onload = (e) => {
+                let { width, height } = e.target
+                let position = positions.value.find(p => p.id === formData.value.position)
+                if(position){
+                    let dimension = position.value.split('x').map(i => Number(i.trim()))
+                    dimension = { width: dimension[0], height: dimension[1] }
+                    if(dimension.width === width && dimension.height === height){
+                        formData.value.file = imageFile
+                    }else{
+                        toast({
+                            class: 'bg-red-500',
+                            title: 'Error',
+                            description: `Dimension must be ${position.value}`
+                        });
+                    }
+                }else{
+                    toast({
+                        class: 'bg-red-500',
+                        title: 'Error',
+                        description: `Select position first`
+                    });
+                }
+            };
+            img.src = fr.result
+            // formData.value.file = imageFile
+        };
+        fr.readAsDataURL(imageFile)
     }
     input.click()
 }
 
-const submit = async (formData) => {
+const submit = async (data) => {
     const token = useCookie()
+    let fd = new FormData()
+    for(let key in formData.value){
+        if(!['file', 'url'].includes(key)){
+            fd.append(key, formData.value[key])
+        }
+    }
+    if(formData.value.type === 'youtube'){
+        fd.append('url', formData.value['url'])
+    } else{
+        fd.append('file', formData.value['file'])
+    }
     try {
-        const response = await useFetch(`${useRuntimeConfig().public.baseUrl}/advertisement`,
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/advertisement`,
             {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
                     Authorization: `Bearer ${token.value}`,
                 },
-                body: formData,
+                body: fd,
             }
         );
-        if (response.status == 'success') {
-            toast({ title: "Added Successfully", variant: "default" });
+        if(response.status === 'success'){
+            toast({
+                class: 'bg-green-500',
+                title: 'Success',
+                description: response.message
+            });
         }
-        else {
-            toast({ title: "Something went wrong", variant: 'destructive' });
-        }
+        
     } catch (error) {
         toast({ title: "Something went wrong", variant: 'destructive' });
-        console.log(error);
     }
 };
 </script>
@@ -114,8 +152,8 @@ const submit = async (formData) => {
                   </SelectTrigger>
                   <SelectContent>
                       <SelectGroup>
-                          <SelectItem v-for="(position, index) in positions" class="text-slate-500" :value="position">
-                            {{ position }}
+                          <SelectItem v-for="(position, index) in positions" class="text-slate-500" :value="position.id">
+                            {{ `${position.id} - ${position.value}` }}
                           </SelectItem>
                       </SelectGroup>
                   </SelectContent>

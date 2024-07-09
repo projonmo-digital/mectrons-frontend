@@ -12,9 +12,10 @@ const auth = useAuthStore();
 onMounted(() => {
     initFlowbite();
 })
-// definePageMeta({
-//     middleware: ["auth", "admin"]
-// })
+
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
 
 useHead({
     title: 'Dashboard - Mectrons Admin',
@@ -26,7 +27,7 @@ useHead({
 </script>
 
 <template>
-    <div class="flex flex-col gap-16">
+    <div class="flex flex-col gap-16 ">
         <div class="flex h-full basis-2">
             <div class="flex w-[70%] flex-col md:gap-8">
                 <div class="md:flex justify-end items-end">
