@@ -30,7 +30,9 @@ export const useAuthStore = defineStore('auth', {
                 const user = useCookie('user')
                 token.value = data?.value?.token
                 user.value = JSON.stringify(data?.value?.user)
-                this.user = data.value?.user
+                if(data.value?.user){
+                    this.user = {...data.value.user, role: getRole(data.value.user)}
+                }
                 this.authenticated = true
                 toast({
                     title: 'Success',
@@ -59,3 +61,10 @@ export const useAuthStore = defineStore('auth', {
         },
     },
 });
+
+const getRole = (user: any) => {
+    if(user.email === 'admin@admin') return 'admin'
+    else {
+        return user.nid ? 'seller' : 'user'
+    }
+}
