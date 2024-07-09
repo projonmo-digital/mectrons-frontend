@@ -8,8 +8,7 @@ export const useUtils = defineStore("useUtils", () => {
   };
 
   const getAds = async (position) => {
-    const token = useTokenStore();
-
+    const token = useCookie("token");
     try {
       const response = await useFetch(
         `${

@@ -1,117 +1,117 @@
-<script setup>
-import {
-    Pagination,
-    PaginationEllipsis,
-    PaginationFirst,
-    PaginationLast,
-    PaginationList,
-    PaginationListItem,
-    PaginationNext,
-    PaginationPrev,
-} from '@/components/ui/pagination'
-import {
-    Button,
-} from '@/components/ui/button'
-const secondSearchBar = reactive({
-    model: '',
-    make: '',
-    year: '',
-    cc: '',
-    engyne: '',
-    parts: ''
-})
-const selectedsecondSearchBar = reactive({
-    model: '',
-    make: '',
-    year: '',
-    cc: '',
-    engyne: '',
-    parts: ''
-})
-const route = useRoute()
+    <script setup>
+    import {
+        Pagination,
+        PaginationEllipsis,
+        PaginationFirst,
+        PaginationLast,
+        PaginationList,
+        PaginationListItem,
+        PaginationNext,
+        PaginationPrev,
+    } from '@/components/ui/pagination'
+    import {
+        Button,
+    } from '@/components/ui/button'
+    const secondSearchBar = reactive({
+        model: '',
+        make: '',
+        year: '',
+        cc: '',
+        engyne: '',
+        parts: ''
+    })
+    const selectedsecondSearchBar = reactive({
+        model: '',
+        make: '',
+        year: '',
+        cc: '',
+        engyne: '',
+        parts: ''
+    })
+    const route = useRoute()
 
-const getMake = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
-    secondSearchBar.make = data.value
-    console.log(secondSearchBar)
+    const getMake = async () => {
+        const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
+        secondSearchBar.make = data.value
+        console.log(secondSearchBar)
 
-}
-getMake()
-const getModel = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}`)
-    secondSearchBar.model = data.value
-    console.log(secondSearchBar.model)
-}
-
-
-const getYear = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}`)
-    secondSearchBar.year = data.value
-
-
-}
-const getCC = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}`)
-    secondSearchBar.cc = data.value
-    console.log(data.value)
-}
-const getEngyne = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}`)
-    secondSearchBar.engyne = data.value
-}
-
-const getParts = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}&engine=${selectedsecondSearchBar.engyne}`)
-    secondSearchBar.parts = data.value
-
-
-}
-
-
-
-const categoryData = ref('')
-
-const getCetagories = async () => {
-    const res = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`)
-
-    categoryData.value = res.data.value
-
-
-
-
-}
-getCetagories()
-const loading = ref(true)
-const data = ref('')
-const setFilter = async () => {
-    const token = useTokenStore();
-
-    try {
-        const response = await useFetch(
-            `${useRuntimeConfig().public.baseUrl}/car-data-search`,
-            {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${token.getToken}`,
-                },
-                body: route.query,
-            }
-        );
-
-        data.value = response.data.value
-
-        loading.value = false
-
-
-        // Refresh products list after update
-    } catch (error) {
-
-        console.log(error);
     }
-};
+    getMake()
+    const getModel = async () => {
+        const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}`)
+        secondSearchBar.model = data.value
+        console.log(secondSearchBar.model)
+    }
 
-setFilter()
+
+    const getYear = async () => {
+        const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}`)
+        secondSearchBar.year = data.value
+
+
+    }
+    const getCC = async () => {
+        const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}`)
+        secondSearchBar.cc = data.value
+        console.log(data.value)
+    }
+    const getEngyne = async () => {
+        const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}`)
+        secondSearchBar.engyne = data.value
+    }
+
+    const getParts = async () => {
+        const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}&engine=${selectedsecondSearchBar.engyne}`)
+        secondSearchBar.parts = data.value
+
+
+    }
+
+
+
+    const categoryData = ref('')
+
+    const getCetagories = async () => {
+        const res = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`)
+
+        categoryData.value = res.data.value
+
+
+
+
+    }
+    getCetagories()
+    const loading = ref(true)
+    const data = ref('')
+    const setFilter = async () => {
+        const token = useCookie('token')
+
+        try {
+            const response = await useFetch(
+                `${useRuntimeConfig().public.baseUrl}/car-data-search`,
+                {
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: `Bearer ${token.getToken}`,
+                    },
+                    body: route.query,
+                }
+            );
+
+            data.value = response.data.value
+
+            loading.value = false
+
+
+            // Refresh products list after update
+        } catch (error) {
+
+            console.log(error);
+        }
+    };
+
+    setFilter()
 
 </script>
 
