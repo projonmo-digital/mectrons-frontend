@@ -5,7 +5,7 @@ const props = defineProps(['product'])
 
 // Bookmark
 const bookmarkAdd = async (product) => {
-    const token = useTokenStore();
+    const token = useCookie('token')
     try {
         const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${id}`, {
             method: 'PUT',
@@ -44,6 +44,7 @@ const AddToCart = (product) => {
     product.qty = 1;
     cart.AddToCart(product);
 }
+console.log()
 </script>
 
 <template>

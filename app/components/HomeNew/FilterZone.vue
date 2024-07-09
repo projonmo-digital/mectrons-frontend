@@ -81,13 +81,18 @@ getCetagories()
 const store = useUtils()
 const upperLeftAds = await store.getAds('Home Page - Upper Left')
 const upperRightAds = await store.getAds('Home Page - Upper Right')
+const makeFilter = () => {
+    navigateTo({ params: '/category/product', query: secondSearchBar })
+}
+
 
 </script>
 
 <template>
     <div class="w-full flex justify-between gap-2">
         <div class=" w-[351px] h-[285px] lg:block hidden">
-            <img v-if="upperLeftAds.type === 'image'" class="w-full h-full object-cover" :src="useRuntimeConfig().public.imageUrl + '/' + upperLeftAds.url.replaceAll('public', 'storage')">
+            <img v-if="upperLeftAds.type === 'image'" class="w-full h-full object-cover"
+                :src="useRuntimeConfig().public.imageUrl + '/' + upperLeftAds.url.replaceAll('public', 'storage')">
         </div>
         <div class="mt-auto lg:-mt-8 z-10">
             <div class="max-w-[1024px] w-full bg-primary rounded-xl flex">
@@ -116,16 +121,20 @@ const upperRightAds = await store.getAds('Home Page - Upper Right')
                         <option value="" disabled selected>Engine</option>
                         <option v-for="i in secondSearchBar.engyne">{{ i.engine }}</option>
                     </select>
-    
+
                     <select :disabled="!secondSearchBar.parts" class="h-[35px] w-1/6 rounded"
                         v-model="selectedsecondSearchBar.parts">
                         <option value="" disabled selected>Parts</option>
                         <option v-for="i in categoryData.categories">{{ i.name }}</option>
                     </select>
                 </div>
-                <button :disabled="!secondSearchBar.parts" class=" cursor-pointer text-primary bg-white bg-opacity-50 hover:bg-opacity-30 px-5 rounded-e-xl" @click="">
+
+                <button @click="navigateTo({ path: '/category/product', query: selectedsecondSearchBar })"
+                    :disabled="!secondSearchBar.parts"
+                    class=" cursor-pointer text-primary bg-white bg-opacity-50 hover:bg-opacity-30 px-5 rounded-e-xl">
                     <Icon class="text-2xl" name="fa:search"></Icon>
                 </button>
+
             </div>
             <div class="flex flex-col lg:flex-row gap-3">
                 <div v-for="i in icons" class="flex flex-col lg:flex-row items-center p-3 gap-3 w-3/1">
@@ -144,7 +153,8 @@ const upperRightAds = await store.getAds('Home Page - Upper Right')
             </div>
         </div>
         <div class="w-[351px] h-[285px] lg:block hidden">
-            <img v-if="upperLeftAds.type === 'image'" class="w-full h-full object-cover" :src="useRuntimeConfig().public.imageUrl + '/' + upperRightAds.url.replaceAll('public', 'storage')">
+            <img v-if="upperLeftAds.type === 'image'" class="w-full h-full object-cover"
+                :src="useRuntimeConfig().public.imageUrl + '/' + upperRightAds.url.replaceAll('public', 'storage')">
         </div>
     </div>
 </template>

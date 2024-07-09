@@ -17,23 +17,23 @@ onMounted(() => {
 // })
 
 useHead({
-  title: 'Dashboard - Mectrons Admin',
-  meta: [
-    { name: 'description', content: 'Mectrons' }
-  ]
+    title: 'Dashboard - Mectrons Admin',
+    meta: [
+        { name: 'description', content: 'Mectrons' }
+    ]
 })
 
 </script>
 
 <template>
-    <div class="flex flex-col gap-4">
-        <div class="flex">
-            <div class="flex flex-col md:gap-8">
+    <div class="flex flex-col gap-16">
+        <div class="flex h-full basis-2">
+            <div class="flex w-[70%] flex-col md:gap-8">
                 <div class="md:flex justify-end items-end">
                     <Card1 icon="mdi:people-group" type="Customer" class="">
                         <div class="flex flex-col ">
                             <p>
-                                <Icon name="fa-solid:circle" class="text-primary text-[14px]"></Icon> Top Customers
+                                <Icon name="fa-solid:circle" class="text-primary text-sm"></Icon> Top Customers
                             </p>
                             <div style="position: relative;">
                                 <Avatar class="h-[20px] w-[20px] z-40" style="position: absolute; top: 0; left:10px;">
@@ -83,7 +83,7 @@ useHead({
                 </div>
                 <div class="md:flex">
                     <Card2 type="Categories" icon='mdi-light:view-dashboard'>
-                        <div>
+                        <div class='flex-col'>
                             <div class="flex justify-between">
                                 <p>
                                     <Icon name="fa-solid:circle" class="text-[#348110] text-[14px] uppercase"></Icon>
@@ -110,7 +110,7 @@ useHead({
 
                     </Card2>
                     <Card2 class="bg-[#2489BE]/40" type="Top Sells" icon="mdi:coupon-outline">
-                        <div class="h-[233px] ">
+                        <div class=" ">
                             <Badge
                                 class="flex rounded justify-between bg-[#2489BE] text-[14px] text-white font-bold h-[39px]">
                                 <span>Sale in
@@ -138,7 +138,7 @@ useHead({
                     </Card2>
                 </div>
             </div>
-            <Card3 type="Top Seller" icon="hugeicons:manager">
+            <Card3 class="w-[30%]" type="Top Seller" icon="hugeicons:manager">
                 <div class="flex flex-col gap-2">
                     <p>
                         <Icon name="fa-solid:circle" class="text-[#348110] text-[14px] uppercase"></Icon> In house
