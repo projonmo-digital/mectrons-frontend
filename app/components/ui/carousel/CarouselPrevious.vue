@@ -18,8 +18,7 @@ const { orientation, canScrollPrev, scrollPrev } = useCarousel()
       : '-top-12 left-1/2 -translate-x-1/2 rotate-90',
     props.class,
   )" variant="outline" @click="scrollPrev">
-    <div
-      class="skew absolute w-10 h-8 left-0 top-0  bg-primary group-hover:bg-primary z-0 flex items-center p-1 -skew-x-12">
+    <div class="skew absolute w-10 h-8  bg-primary group-hover:bg-primary z-0 flex items-center p-1 -skew-x-12">
       <Icon name="mdi:chevron-left" class="font-bold text-4xl text-white"></Icon>
     </div>
 

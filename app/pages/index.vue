@@ -8,12 +8,14 @@ useHead({
 </script>
 
 <template>
-    <HomeCategorySlider></HomeCategorySlider>
-    <HomeFilterZone></HomeFilterZone>
-    <HomeNewHotSale></HomeNewHotSale>
-    <HomeFeaturedProducts></HomeFeaturedProducts>
-    <HomeBestSale></HomeBestSale>
-    <HomeDealsofMonth></HomeDealsofMonth>
-    <HomeElectronicProducts></HomeElectronicProducts>
-    <HomeBrands></HomeBrands>
+  <HomeCategorySlider></HomeCategorySlider>
+  <HomeFilterZone></HomeFilterZone>
+  <HomeNewHotSale></HomeNewHotSale>
+  <HomeFeaturedProducts></HomeFeaturedProducts>
+  <HomeBestSale></HomeBestSale>
+  <HomeDealsofMonth></HomeDealsofMonth>
+  <HomeElectronicProducts></HomeElectronicProducts>
+  <HomePopularAds></HomePopularAds>
+  <HomeBrands></HomeBrands>
+
 </template>
