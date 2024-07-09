@@ -16,6 +16,13 @@ onMounted(() => {
 //     middleware: ["auth", "admin"]
 // })
 
+useHead({
+  title: 'Dashboard - Mectrons Admin',
+  meta: [
+    { name: 'description', content: 'Mectrons' }
+  ]
+})
+
 </script>
 
 <template>

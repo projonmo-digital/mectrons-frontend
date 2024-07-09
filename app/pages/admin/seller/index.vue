@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import PendingProduct from '~/components/master-admin/product/PendingProduct.vue'
-import ApprovedProduct from '~/components/master-admin/product/ApprovedProduct.vue'
+import PendingSeller from '~/components/master-admin/seller/PendingSeller.vue'
+import ApprovedSeller from '~/components/master-admin/seller/ApprovedSeller.vue'
 
 useHead({
-  title: 'Products - Mectrons Admin',
+  title: 'Seller - Mectrons Admin',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
@@ -24,6 +24,6 @@ const selectedTab = ref('pending')
         </div>
     </div>
     <hr class="my-2">
-    <PendingProduct v-if="selectedTab === 'pending'"></PendingProduct>
-    <ApprovedProduct v-if="selectedTab === 'approved'"></ApprovedProduct>
+    <PendingSeller v-if="selectedTab === 'pending'"></PendingSeller>
+    <ApprovedSeller v-if="selectedTab === 'approved'"></ApprovedSeller>
 </template>

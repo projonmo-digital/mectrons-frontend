@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import PendingProduct from '~/components/master-admin/product/PendingProduct.vue'
-import ApprovedProduct from '~/components/master-admin/product/ApprovedProduct.vue'
+import PendingOrder from '~/components/master-admin/order/PendingOrder.vue'
+import DeliveredOrder from '~/components/master-admin/order/DeliveredOrder.vue'
+
+useHead({
+  title: 'Order - Mectrons Admin',
+  meta: [
+    { name: 'description', content: 'Mectrons' }
+  ]
+})
 
 const selectedTab = ref('pending')
 
@@ -10,13 +17,13 @@ const selectedTab = ref('pending')
 
 <template>
     <div class="flex justify-between">
-        <h1 class="text-2xl font-bold">{{ selectedTab === 'pending' ? 'Pending Product' : 'Approved Product'}}</h1>
+        <h1 class="text-2xl font-bold">{{ selectedTab === 'pending' ? 'Order Pending' : 'Order Delivered'}}</h1>
         <div>
-            <button @click="selectedTab = 'pending'" :disabled="selectedTab === 'pending'" class="bg-primary px-5 py-1 text-white rounded rounded-e-none disabled:bg-orange-300">Pending</button>
-            <button @click="selectedTab = 'approved'" :disabled="selectedTab === 'approved'" class="bg-primary px-5 py-1 text-white rounded rounded-s-none disabled:bg-orange-300">Approved</button>
+            <button @click="selectedTab = 'pending'" :disabled="selectedTab === 'pending'" class="bg-primary px-5 py-1 text-white rounded rounded-e-none disabled:bg-orange-300">Pending Order</button>
+            <button @click="selectedTab = 'delivered'" :disabled="selectedTab === 'delivered'" class="bg-primary px-5 py-1 text-white rounded rounded-s-none disabled:bg-orange-300">Delivered</button>
         </div>
     </div>
     <hr class="my-2">
-    <PendingProduct v-if="selectedTab === 'pending'"></PendingProduct>
-    <ApprovedProduct v-if="selectedTab === 'approved'"></ApprovedProduct>
+    <PendingOrder v-if="selectedTab === 'pending'"></PendingOrder>
+    <DeliveredOrder v-if="selectedTab === 'delivered'"></DeliveredOrder>
 </template>

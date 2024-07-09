@@ -1,6 +1,6 @@
 <script setup>
-import sideBar from "../components/HomeNew/sideBar.vue";
-import caro from "../components/HomeNew/caro.vue";
+import SideBar from "../components/HomeNew/SideBar.vue";
+import Caro from "../components/HomeNew/Caro.vue";
 import CardCollection from "~/components/HomeNew/CardCollection.vue";
 
 

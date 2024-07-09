@@ -29,7 +29,7 @@ const table = useVueTable({
 </script>
 
 <template>
-    <div class="shadow rounded-md ">
+    <div class="--shadow rounded-md ">
         <!-- <div class="w-full flex p-4  justify-center gap-x-8">
             <CommandBox class="rounded"></CommandBox>
             <CommandBox class="rounded"></CommandBox>

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, h } from 'vue'
-import type { ColumnDef, RowData } from "@tanstack/vue-table"
+import type { ColumnDef } from "@tanstack/vue-table"
 import Switch from "~/components/ui/switch/Switch.vue"
 import ProductInfo from "~/components/master-admin/product/ProductInfo.vue"
-import DatatableDropdownAction from '~/components/master-admin/product/DatatableDropdownAction.vue'
 
 import { useToast } from '@/components/ui/toast/use-toast'
 const { toast } = useToast()
@@ -24,18 +23,18 @@ const fetchData = async (params = {}) => {
     try {
         preloader.value = true
         let url = `${useRuntimeConfig().public.baseUrl}/approved/products?${new URLSearchParams(params).toString()}`;
-        const response = await useFetch(url, {
+        const response = await $fetch(url, {
             method: "GET",
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
         })
-        if (response && response.data && response.data.value && response.data.value?.data) {
-            responseParams.value.page = response.data.value?.current_page
-            data.value = response.data.value?.data
-            moreData.value = response.data.value?.last_page === response.data.value?.current_page
-            return response.data // Adjust based on actual response structure
+        if (response && response.data && response.data) {
+            responseParams.value.page = response.current_page
+            data.value = response.data
+            moreData.value = response.last_page === response.current_page
+            return response
         } else {
             console.error("Invalid response format")
             return []
@@ -174,10 +173,6 @@ const markerColumn = (markername: string,  header: string, key: string = 'marker
 
 const columns: ColumnDef<any>[] = [
   {
-    accessorKey: "title",
-    header: () => h("div", { class: "text-start" }, "Name"),
-  },
-  {
     accessorKey: "stock_amount",
     header: "Info",
     cell: ({ row }) => {
@@ -187,10 +182,6 @@ const columns: ColumnDef<any>[] = [
         modelValue: row.original
       });
     }
-  },
-  {
-    accessorKey: "stock_amount",
-    header: "Stock",
   },
   markerColumn('todays-deal', 'Today\'s Deal'),
   markerColumn('featured', 'Featured'),
@@ -209,7 +200,7 @@ const columns: ColumnDef<any>[] = [
   },
   // {
   //   accessorKey: "action",
-  //   header: "Action",
+  //   header: () => h("div", { class: "text-end" }, "Action"),,
   //   cell: ({ row }) => {
   //     const id = row.original.id;
   //     return h(DatatableDropdownAction, {

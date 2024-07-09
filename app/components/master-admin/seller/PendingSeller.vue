@@ -6,6 +6,11 @@ import ProductInfo from "~/components/master-admin/product/ProductInfo.vue"
 import DatatableDropdownAction from '~/components/common/DatatableDropdownAction.vue'
 
 import { useToast } from '@/components/ui/toast/use-toast'
+import UserListViewItem from '~/components/common/UserListViewItem.vue'
+import { getGeneratedID } from '~/helper'
+
+const router = useRouter()
+
 const { toast } = useToast()
 
 const preloader = ref(false)
@@ -23,14 +28,14 @@ const fetchData = async (params = {}) => {
     const token = useCookie('token')
     try {
         preloader.value = true
-        let url = `${useRuntimeConfig().public.baseUrl}/pending/products?${new URLSearchParams(params).toString()}`;
+        let url = `${useRuntimeConfig().public.baseUrl}/pending/users?${new URLSearchParams(params).toString()}`;
         const response = await $fetch(url, {
             method: "GET",
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
-        })
+        })        
         if (response && response.data) {
             responseParams.value.page = response.current_page
             data.value = response.data
@@ -48,10 +53,10 @@ const fetchData = async (params = {}) => {
     }
 }
 
-const approveProduct = async (id: string) => {
+const approveSeller = async (id: string) => {
   const token = useCookie('token')
   try {
-    const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/approve/product/${id}`,
+    const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/approve/user/${id}`,
       {
         method: "GET",
         headers: {
@@ -82,70 +87,10 @@ const approveProduct = async (id: string) => {
   }
 };
 
-const markProductAs = async (id: string, value: string) => {
-  const token = useCookie('token')
-  try {
-    const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/product/mark-as`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token.value}`,
-        },
-        body: {
-          product_id: id,
-          name: value,
-        },
-      }
-    );
-    if (data.value) {
-      toast({
-        class: 'capitalize',
-        title: data.value?.status,
-        description: data.value?.message,
-      });
-      fetchData(responseParams.value)
-    }    
-    if(error.value){
-      toast({
-        class: 'bg-red-500 capitalize',
-        title: error.value?.data.status,
-        description: error.value?.data.message,
-      });
-    }
-    await refreshNuxtData();
-  } catch (error) {
-    await refreshNuxtData();
-    console.log(error);
-  }
-};
-const unmarkProductAs = async (id: number) => {
-    const token = useCookie('token')
-    const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/product/mark-as/${id}`,
-        {
-        method: "DELETE",
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token.value}`,
-        }
-        }
-    );
-    if (data.value) {
-        toast({
-            class: 'capitalize',
-            title: data.value?.status,
-            description: data.value?.message,
-        });
-        fetchData(responseParams.value)
-    }    
-    if(error.value){
-        toast({
-            class: 'bg-red-500 capitalize',
-            title: error.value?.data.status,
-            description: error.value?.data.message,
-        });
-    }
-};
+const sellerDetail = (row: any) => {
+  let generatedId = getGeneratedID(row)
+  router.push(`/admin/seller/${generatedId}`)
+}
 
 const nextPage = () => {
     responseParams.value.page++
@@ -156,56 +101,39 @@ const previousPage = () => {
     fetchData(responseParams.value)
 }
 
-const markerColumn = (markername: string,  header: string, key: string = 'marker'): ColumnDef<any> => {
-    return {
-        accessorKey: key,
-        header: header,
-        cell: ({ row }) => {
-            const id = row.original.id;
-            const marker = row.original.marker.find((i: { name: string }) => i.name === markername)
-            return h(Switch, {
-                class: "text-right font-medium",
-                checked: !!row.original.marker.find((i: { name: string }) => i.name === markername),
-                "onUpdate:checked": () => !!marker ? unmarkProductAs(marker.id) : markProductAs(id, markername)
-            })
-        }
-    }
-}
-
 const columns: ColumnDef<any>[] = [
-  // {
-  //   accessorKey: "title",
-  //   header: () => h("div", { class: "text-start" }, "Name"),
-  // },
   {
-    accessorKey: "stock_amount",
-    header: "Info",
+    accessorKey: "user",
+    header: "User",
     cell: ({ row }) => {
-      return h(ProductInfo, {
-        class: "flex-1 bg-red-500",
+      return h(UserListViewItem, {
+        class: "",
         modelValue: row.original
       });
     }
   },
-  // {
-  //   accessorKey: "stock_amount",
-  //   header: "Stock",
-  // },
-  markerColumn('todays-deal', 'Today\'s Deal'),
-  markerColumn('featured', 'Featured'),
-  markerColumn('electric', 'Electric'),
-  markerColumn('best-sale', 'Best Sale'),
-  markerColumn('deals-month', 'Deals\'s Month'),
   {
-    accessorKey: "approved_at",
-    header: "Approved",
-    cell: ({ row }) => {
-      return h('small', {
-        class: 'bg-red-500 px-3 py-2 rounded-full text-white',
-        innerHTML: row.original.approved_at || 'Pending'
-      })
-    },
+    accessorKey: "email",
+    header: () => h("div", { class: "text-start" }, "Email"),
   },
+  {
+    accessorKey: "nid",
+    header: () => h("div", { class: "text-start" }, "National ID"),
+  },
+  {
+    accessorKey: "phone",
+    header: () => h("div", { class: "text-start" }, "Phone"),
+  },
+  // {
+  //   accessorKey: "approved_at",
+  //   header: "Approved",
+  //   cell: ({ row }) => {
+  //     return h('small', {
+  //       class: 'bg-red-500 px-3 py-2 rounded-full text-white',
+  //       innerHTML: row.original.approved_at || 'Pending'
+  //     })
+  //   },
+  // },
   {
     accessorKey: "action",
     header: () => h("div", { class: "text-end" }, "Action"),
@@ -218,7 +146,13 @@ const columns: ColumnDef<any>[] = [
             {
                 title: 'Approved',
                 method: (row: any) => {
-                    approveProduct(row.id)
+                    approveSeller(row.id)
+                },
+            },
+            {
+                title: 'Show Detail',
+                method: (row: any) => {
+                  sellerDetail(row)
                 },
             }
         ]
