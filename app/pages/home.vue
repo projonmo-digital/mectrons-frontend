@@ -2,9 +2,6 @@
 import SideBar from "../components/HomeNew/SideBar.vue";
 import Caro from "../components/HomeNew/Caro.vue";
 import CardCollection from "~/components/HomeNew/CardCollection.vue";
-
-
-
 </script>
 
 <template>

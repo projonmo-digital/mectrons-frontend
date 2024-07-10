@@ -86,7 +86,7 @@ const proxyResponse = ref({
 
 
 const setProducts = async () => {
-    const token = useTokenStore();
+    const token = useCookie('token');
     const body = new FormData();
 
     Object.keys(response.value).forEach(key => {
@@ -103,7 +103,7 @@ const setProducts = async () => {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                Authorization: `Bearer ${token.getToken}`,
+                Authorization: `Bearer ${token.value}`,
             },
             body
         });
