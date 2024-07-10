@@ -51,7 +51,6 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
