@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Seller from '~/components/master-admin/seller/Seller.vue'
+
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
 
 useHead({
-  title: 'Order - Mectrons Admin',
+  title: 'Offers - Mectrons Admin',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
@@ -13,8 +16,7 @@ useHead({
 
 <template>
     <div class="flex justify-between">
-        <h1 class="text-2xl font-bold">Seller</h1>
+        <h1 class="text-2xl font-bold">Offer</h1>
     </div>
     <hr class="my-2">
-    <Seller></Seller>
 </template>

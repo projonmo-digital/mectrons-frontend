@@ -4,15 +4,16 @@ import { toast } from '~/components/ui/toast'
 import { getFileUrl } from '~/helper'
 
 definePageMeta({
-    middleware: ["auth", "seller"]
+    middleware: ["auth", "user"]
 })
 
 useHead({
-  title: 'Settings - Mectrons Seller',
+  title: 'Settings - Mectrons User',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
 })
+
 
 // state
 const preloader = ref(true)

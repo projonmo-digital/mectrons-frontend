@@ -1,15 +1,14 @@
 <script lang="ts">
 definePageMeta({
-    middleware: ["auth", "seller"]
+    middleware: ["auth", "user"]
 })
 
 useHead({
-  title: 'Withdraw Request - Mectrons Seller',
+  title: 'Reviews - Mectrons User',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
 })
 
 </script>
-
-<template>Request</template>
+<template>Payment</template>

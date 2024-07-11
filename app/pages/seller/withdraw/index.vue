@@ -2,8 +2,12 @@
 import { ref, watch } from 'vue'
 import Modal from "~/components/common/Modal.vue"
 
+definePageMeta({
+    middleware: ["auth", "seller"]
+})
+
 useHead({
-  title: 'Order - Mectrons Admin',
+  title: 'Withdraw - Mectrons Seller',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]

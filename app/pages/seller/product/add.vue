@@ -1,6 +1,18 @@
 <script setup>
 import { ref } from 'vue';
 import { toast } from '~/components/ui/toast';
+
+definePageMeta({
+    middleware: ["auth", "seller"]
+})
+
+useHead({
+  title: 'Add Product - Mectrons Seller',
+  meta: [
+    { name: 'description', content: 'Mectrons' }
+  ]
+})
+
 const secondSearchBar = reactive({
     model: '',
     make: '',

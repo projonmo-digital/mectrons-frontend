@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import ActiveCustomer from '~/components/master-admin/customer/ActiveCustomer.vue'
-import InactiveCustomer from '~/components/master-admin/customer/InactiveCustomer.vue'
-
 definePageMeta({
-    middleware: ["auth", "admin"]
+    middleware: ["auth", "user"]
 })
 
 useHead({
-  title: 'Customers - Mectrons Admin',
+  title: 'Customers - Mectrons User',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
 })
+
+import ActiveCustomer from '~/components/master-admin/customer/ActiveCustomer.vue'
+import InactiveCustomer from '~/components/master-admin/customer/InactiveCustomer.vue'
 
 const selectedTab = ref('active')
 

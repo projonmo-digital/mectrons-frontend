@@ -4,8 +4,12 @@ import { ref } from 'vue'
 import PendingOrder from '~/components/master-admin/order/PendingOrder.vue'
 import DeliveredOrder from '~/components/master-admin/order/DeliveredOrder.vue'
 
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
+
 useHead({
-  title: 'Order - Mectrons Admin',
+  title: 'Orders - Mectrons Admin',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]

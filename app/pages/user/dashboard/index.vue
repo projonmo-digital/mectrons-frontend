@@ -1,10 +1,10 @@
 <script setup>
 definePageMeta({
-    middleware: ["auth", "seller"]
+    middleware: ["auth", "user"]
 })
 
 useHead({
-  title: 'Dashboard - Mectrons Seller',
+  title: 'Dashboard - Mectrons User',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]

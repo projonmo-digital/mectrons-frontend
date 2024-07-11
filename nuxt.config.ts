@@ -1,4 +1,7 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+const ogSource = 'https://res.cloudinary.com/demgpyia8/image/upload/v1677446092/mylo_promo.jpg'
+const metaTitle = 'Mectrons'
+const metaDescription = 'The most flexible workout tool ever. Craft your workout the way you want and forget about all the management.'
+
 export default defineNuxtConfig({
   ssr: false,
   srcDir: 'app',
@@ -14,12 +17,34 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      title: metaTitle,
+      htmlAttrs: {
+        lang: 'en',
+      },
+      meta: [
+        { name: 'description', content: metaDescription },
+        { name: 'og:type', content: 'website' },
+        { name: 'og:image', content: ogSource },
+        { name: 'og:site_name', content: 'Mectrons' },
+        { name: 'og:image:alt', content: metaDescription },
+        { name: 'og:description', content: metaDescription },
+        { name: 'og:image:width', content: '1200' },
+        { name: 'og:image:height', content: '600' },
+        { name: 'og:url', content: 'https://www.mectrons.com.bd' },
+        { name: 'og:title', content: metaTitle },
+        { name: 'twitter:title', content: 'Mectrons' },
+        { name: 'twitter:site', content: '@Mectrons' },
+        { name: 'twitter:image', content: ogSource },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:description', content: metaDescription },
+      ],
       link: [
         {
           rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css",
           integrity: "sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==",
           crossorigin: "anonymous", referrerpolicy: "no-referrer"
-        }
+        },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }
       ]
     }
   },

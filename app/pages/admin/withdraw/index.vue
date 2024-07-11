@@ -2,13 +2,16 @@
 import { ref } from 'vue'
 import Seller from '~/components/master-admin/seller/ApprovedSeller.vue'
 
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
+
 useHead({
-  title: 'Order - Mectrons Admin',
+  title: 'Widthdraw - Mectrons Admin',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
 })
-
 </script>
 
 <template>

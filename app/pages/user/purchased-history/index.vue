@@ -3,15 +3,16 @@ import { ref } from 'vue'
 import Product from '~/components/seller/product/Product.vue'
 
 definePageMeta({
-    middleware: ["auth", "seller"]
+    middleware: ["auth", "user"]
 })
 
 useHead({
-  title: 'Products - Mectrons Seller',
+  title: 'Purchased history - Mectrons User',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
 })
+
 
 </script>
 
