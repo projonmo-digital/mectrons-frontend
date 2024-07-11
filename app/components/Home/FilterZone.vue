@@ -34,53 +34,50 @@ const selectedsecondSearchBar = reactive({
 })
 
 const getMake = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
-    secondSearchBar.make = data.value
-    console.log(secondSearchBar)
-
+    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
+    secondSearchBar.make = response
 }
-getMake()
+
 const getModel = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}`)
-    secondSearchBar.model = data.value
-    console.log(secondSearchBar.model)
+    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}`)
+    secondSearchBar.model = response
 }
 
 const getYear = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}`)
-    secondSearchBar.year = data.value
+    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}`)
+    secondSearchBar.year = response
 
 
 }
 const getCC = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}`)
-    secondSearchBar.cc = data.value
-    console.log(data.value)
+    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}`)
+    secondSearchBar.cc = response
 }
 const getEngyne = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}`)
-    secondSearchBar.engyne = data.value
+    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}`)
+    secondSearchBar.engyne = response
 }
 
 const getParts = async () => {
-    const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}&engine=${selectedsecondSearchBar.engyne}`)
-    secondSearchBar.parts = data.value
-
-
+    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}&engine=${selectedsecondSearchBar.engyne}`)
+    secondSearchBar.parts = response
 }
 
 const categoryData = ref('')
 
 const getCetagories = async () => {
-    const res = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`, { lazy: true })
-    categoryData.value = res.data.value
+    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/general-categories`, { lazy: true })
+    categoryData.value = response
 }
-
-getCetagories()
 
 const store = useUtils()
 const upperLeftAds = await store.getAds('Home Page - Upper Left')
 const upperRightAds = await store.getAds('Home Page - Upper Right')
+
+onMounted(() => {
+    getCetagories()
+    getMake()
+})
 
 </script>
 
