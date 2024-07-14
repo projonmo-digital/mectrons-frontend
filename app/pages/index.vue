@@ -13,7 +13,7 @@ useHead({
     <HomeCategorySlider></HomeCategorySlider>
     <HomeFilterZone></HomeFilterZone>
     <HomeNewHotSale></HomeNewHotSale>
-    <FeaturedProducts></FeaturedProducts>
+    <!-- <FeaturedProducts></FeaturedProducts> -->
     <!-- <HomeBestSale></HomeBestSale> -->
     <!-- <HomeDealsofMonth></HomeDealsofMonth> -->
     <!-- <HomeElectronicProducts></HomeElectronicProducts> -->

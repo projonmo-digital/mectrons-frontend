@@ -25,7 +25,7 @@ const logo = [{
                 <path d="M137.973 0H0V53H1440V0H1301.65L1292.55 20H146.691L137.973 0Z" fill="#F85606" />
             </svg>
         </div>
-        <div class="md:w-full w-[375px] bg-gradient-to-b from-[#F85606]/40 to-[#EAEAEA]/40 mx-auto px-4 py-9">
+        <div class="w-full bg-gradient-to-b from-primary/40 to-white mx-auto px-4 py-10">
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-y-11 lg:grid-cols-5 ms-auto pb-5 ">
 
                 <div>

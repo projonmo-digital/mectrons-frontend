@@ -4,16 +4,8 @@ import { Modal, initFlowbite } from 'flowbite';
 const props = defineProps(['toggleBtn']);
 const emit = defineEmits(['loginToggleBtn']);
 
-onMounted(() => {
-    initFlowbite();
-})
-
-
 const toaster = useToasterStore();
 const auth = useAuthStore();
-definePageMeta({
-    middleware: ["guest"]
-})
 const form = reactive({
     email: '',
     password: '',
@@ -31,6 +23,10 @@ const togglebtn = ref(false);
 const toggleBtnFun = () => {
     emit('loginToggleBtn', props.toggleBtn);
 }
+
+onMounted(() => {
+    initFlowbite();
+})
 
 </script>
 
