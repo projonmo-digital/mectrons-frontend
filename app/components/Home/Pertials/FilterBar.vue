@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
+const { sliderCategories, loading } = storeToRefs(useAppStore())
+
 const prop = defineProps(['title'])
 
 const emit = defineEmits(['select'])
 
 const currentIndex = ref(0)
-const categoriesData = ref<any[]>([])
 const selectedCategory = ref('all')
 
 // methods
@@ -15,7 +16,7 @@ const selectCategory = (category: any) => {
     emit('select', category)
 }
 const setNext = () => {
-    if (categoriesData.value.length > (currentIndex.value + 1)) {
+    if (sliderCategories.value.length > (currentIndex.value + 1)) {
         currentIndex.value++
     }
 };
@@ -25,28 +26,6 @@ const setPrev = () => {
         currentIndex.value--
     }
 };
-
-const getCetagories = async () => {
-    const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`);
-
-    if (data.value) {
-        let itemArray: any[] = []
-        for (let item of data.value.categories) {
-            itemArray.push(item)
-            if (itemArray.length > 2) {
-                categoriesData.value.push(itemArray)
-                itemArray = []
-            }
-        }
-        if (itemArray.length) {
-            categoriesData.value.push(itemArray)
-        }
-    }
-};
-
-onMounted(() => {
-    getCetagories()
-})
 </script>
 
 <template>
@@ -57,7 +36,7 @@ onMounted(() => {
                 <button
                     class="skew hover:bg-primary hover:text-white -skew-x-12 text-gray-500 px-3 py-2 font-bold text-sm"
                     :class="{ 'bg-primary/20 text-primary': selectedCategory === 'all' }" @click="selectCategory({name: 'all'})">All</button>
-                <button v-for="category in categoriesData[currentIndex]" @click="selectCategory(category)"
+                <button v-for="category in sliderCategories[currentIndex]" @click="selectCategory(category)"
                     :key="`categories-${category.id}-${currentIndex}`"
                     class="skew hover:bg-primary hover:text-white -skew-x-12 text-gray-500 px-3 py-2 font-bold text-sm max-w-[200px] text-nowrap truncate"
                     :class="{ 'bg-primary/20 text-primary': selectedCategory === category.name }">

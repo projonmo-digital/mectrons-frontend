@@ -48,7 +48,7 @@ const AddToCart = (product) => {
 
 <template>
 
-    <div class="card bg-gray-900/20 rounded-lg ">
+    <div class="">
         <div class="flex gap-4">
             <div class="relative w-28 h-36 md:h-36 md:w-44">
                 <nuxt-link :to="`/product-details/${props.product?.id}`"

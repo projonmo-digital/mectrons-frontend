@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import Toaster from '@/components/ui/toast/Toaster.vue'
+const appStore = useAppStore()
+
+onMounted(() => {
+  appStore.getCetagories()
+})
 </script>
 
 <template>

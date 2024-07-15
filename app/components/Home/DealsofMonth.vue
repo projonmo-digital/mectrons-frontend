@@ -1,7 +1,10 @@
 <script setup>
+import { useWindowSize } from '@vueuse/core'
+const { width, height } = useWindowSize()
+
 const products = ref([]);
 const getProducts = async () => {
-    refreshNuxtData();
+    // refreshNuxtData();
     try {
         const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/filter`, {
             method: 'POST',
@@ -15,37 +18,6 @@ const getProducts = async () => {
     }
 }
 getProducts();
-
-const value = (index) => {
-
-    if (index === 1) {
-        return 'border-r border-l border-b';
-
-    } else if (index === 3) {
-        return ' border-t border-r';
-    } else if (index === 0) {
-        return 'border-b';
-    } else if (index === 2) {
-        return 'border-b';
-    }
-    else if (index === 3) {
-        return 'border-r border-l border-t';
-    }
-
-    else if (index === 4) {
-        return 'border-r border-l border-t';
-    }
-
-    else if (index === 5) {
-        return ' border-l ';
-    }
-
-
-
-    else {
-        return '';
-    }
-};
 
 </script>
 <template>
@@ -74,10 +46,11 @@ const value = (index) => {
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3    mt-4 mx-20 text-white">
-            <div v-for="(product, index) of products" :key="product.id" :class="`p-8 ${value(index)}`">
-                <ProductCard1 class="" :product="product">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div v-for="(product, index) of products" :key="product.id" class="p-3 border-r">
+                <ProductCard1 :product="product">
                 </ProductCard1>
+                <hr v-if="products.length- ( width < 768 ? 1: width < 1024 ? 2: 3 ) > index" class="my-2">
             </div>
         </div>
     </div>

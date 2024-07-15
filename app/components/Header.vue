@@ -4,6 +4,8 @@ import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import logo_white from '~/assets/images/logo_white.svg'
 
+const { categories } = storeToRefs(useAppStore())
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -17,21 +19,21 @@ import {
 const auth = useAuthStore()
 const router = useRouter()
 
-const cart = useCartStore();
+const cart = useCartStore()
+
 onMounted(() => {
-    cart.getCartData();
+    cart.getCartData()
 })
 
-const searchText = ref('');
+const searchText = ref('')
 const handelSearchSubmit = () => {
-    refreshNuxtData();
-    return navigateTo(`/search?search=${searchText.value}`);
+    refreshNuxtData()
+    return navigateTo(`/search?search=${searchText.value}`)
 }
 
 const store = useAuthStore()
 // const { data } = useAuthStore().login
 // console.log(data)
-
 
 const loginToggleBtnFun = async (value) => {
     let button;
@@ -43,27 +45,36 @@ const loginToggleBtnFun = async (value) => {
     button.click();
 }
 
-const items = [
-
-
-    {
-        "text": "Electronics",
-        "link": "#"
-    },
-    {
-        "text": "Service",
-        "link": "/service"
-    },
-    {
-        "text": "About Us",
-        "link": "/about-us"
-    },
-    {
-        "text": "Contact Us",
-        "link": "/contact-us",
-        "bold": true
-    }
-]
+const menu = computed(() => {
+    return [
+        {
+            text: "Home",
+            link: "/",
+        },
+        {
+            text: "Automobile",
+            link: "/automobile",
+            // children: categories.value.map(i => ({ text: i.name, link: '#' }))
+            children: categories.value.map(i => ({ text: i.name, link: `/category/${i.id}` }))
+        },
+        {
+            text: "Electronics",
+            link: "#"
+        },
+        {
+            text: "Service",
+            link: "/service"
+        },
+        {
+            text: "About Us",
+            link: "/about-us"
+        },
+        {
+            text: "Contact Us",
+            link: "/contact-us"
+        }
+    ]
+})
 
 </script>
 <template>
@@ -163,11 +174,33 @@ const items = [
                         </div>
                     </div>
                 </div>
-                <nav class="hidden sm:flex items-center gap-3 justify-center flex-wrap">
-                    <nuxt-link v-for="i in items" :to="i.link" class="text-[20px] font-bold hover:underline"
-                        aria-current="page">{{ i.text }}</nuxt-link>
-                </nav>
+                <div class="flex items-center justify-center gap-3 mt-5">
+                    <template v-for="(item, index) in menu" :key="`menu-item-${index}`">
+                        <div class="dropdown inline-block relative z-40">
+                            <nuxt-link :to="item.link" class="text-white font-bold inline-flex items-center">
+                                <span class="mr-1">{{ item.text }}</span>
+                                <svg v-if="item.children" class="fill-current h-4 w-4"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                </svg>
+                            </nuxt-link>
+                            <ul v-if="item.children" class="dropdown-menu absolute hidden text-gray-700 pt-1">
+                                <li v-for="(sub, Sindex) in item.children || []" :key="`menu-${index}-${Sindex}`">
+                                    <a class="bg-white text-sm hover:bg-primary text-primary hover:text-white py-2 px-4 block whitespace-no-wrap w-[300px]"
+                                        :href="sub.link">{{ sub.text }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </template>
+                </div>
             </div>
         </div>
     </header>
 </template>
+
+<style>
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+</style>

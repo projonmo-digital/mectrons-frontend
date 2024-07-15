@@ -13,7 +13,7 @@ import { Autoplay } from 'swiper/modules'
 import 'swiper/css'
 
 // state
-const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`, { lazy: true })
+const { categories, loading } = storeToRefs(useAppStore())
 
 // methods
 const handleMouseOver = (event) => {
@@ -39,15 +39,15 @@ const onSlideChange = (e) => {
 <template>
     <div class="flex">
         <aside class="lg:block hidden w-[310px]  bg-gray-200">
-            <div class="h-full flex justify-center items-center bg-[#EAE5E2] py-4" v-if="pending">
+            <div class="h-full flex justify-center items-center bg-[#EAE5E2] py-4" v-if="loading">
                 <Icon name="fluent:spinner-ios-16-filled" class="h-9 w-9 text-primary animate-spin"></Icon>
             </div>
-            <div v-if="!pending" class="h-full">
+            <div v-if="!loading" class="h-full">
                 <div class="flex w-full">
                     <div class="w-full">
                         <div class="w-full flex flex-col gap-2 px-3">
                             <h1 class="text-center text-xl font-bold text-primary my-2">Categories</h1>
-                            <DropdownMenu v-for="(i, j) in data.categories">
+                            <DropdownMenu v-for="(i, j) in categories">
                                 <DropdownMenuTrigger class="w-full" v-if="j <= 4" as-child
                                     @mouseover="handleMouseOver($event)" @mouseleave="handleMouseLeave($event)">
                                     <Button
