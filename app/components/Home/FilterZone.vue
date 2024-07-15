@@ -83,10 +83,10 @@ onMounted(() => {
 
 <template>
     <div class="w-full flex justify-between gap-2">
-        <div class=" w-[351px] h-[285px] lg:block hidden">
+        <div class="min-w-[310px] w-[310px] h-[285px] lg:block hidden">
             <img v-if="upperLeftAds.type === 'image'" class="w-full h-full object-cover" :src="useRuntimeConfig().public.imageUrl + '/' + upperLeftAds.url.replaceAll('public', 'storage')">
         </div>
-        <div class="mt-auto lg:-mt-8 z-10">
+        <div class="flex-1 mt-auto lg:-mt-8 z-10">
             <div class="max-w-[1024px] w-full bg-primary rounded-xl flex">
                 <div class="flex-1 flex items-center p-3 gap-3">
                     <select class="h-[35px] w-1/6 rounded" @change="getModel" v-model="selectedsecondSearchBar.make">
@@ -140,7 +140,7 @@ onMounted(() => {
                     class="w-full h-full object-cover">
             </div>
         </div>
-        <div class="w-[351px] h-[285px] lg:block hidden">
+        <div class="min-w-[310px] w-[310px] h-[285px] lg:block hidden">
             <img v-if="upperLeftAds.type === 'image'" class="w-full h-full object-cover" :src="useRuntimeConfig().public.imageUrl + '/' + upperRightAds.url.replaceAll('public', 'storage')">
         </div>
     </div>

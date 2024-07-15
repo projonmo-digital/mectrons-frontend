@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
+const prop = defineProps(['title'])
+
 const emit = defineEmits(['select'])
 
 const currentIndex = ref(0)
@@ -49,7 +51,7 @@ onMounted(() => {
 
 <template>
     <div class="flex justify-between items-center px-5 my-5">
-        <h2 class=" text-[20px] font-bold">Featured Products</h2>
+        <h2 class="text-[20px] font-bold">{{title}}</h2>
         <div class="flex justify-end items-center gap-1">
             <div class="flex">
                 <button

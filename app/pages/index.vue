@@ -1,6 +1,4 @@
 <script setup>
-import FeaturedProducts from '~/components/Home/FeatureProducts/Products.vue';
-
 useHead({
   title: 'Home - Mectrons',
   meta: [
@@ -12,10 +10,10 @@ useHead({
 <template>
     <HomeCategorySlider></HomeCategorySlider>
     <HomeFilterZone></HomeFilterZone>
-    <HomeNewHotSale></HomeNewHotSale>
-    <!-- <FeaturedProducts></FeaturedProducts> -->
-    <!-- <HomeBestSale></HomeBestSale> -->
-    <!-- <HomeDealsofMonth></HomeDealsofMonth> -->
-    <!-- <HomeElectronicProducts></HomeElectronicProducts> -->
-    <!-- <HomeBrands></HomeBrands> -->
+    <HomeHotSale></HomeHotSale>
+    <HomeFeaturedProducts></HomeFeaturedProducts>
+    <HomeBestSale></HomeBestSale>
+    <HomeDealsofMonth></HomeDealsofMonth>
+    <HomeElectronicProducts></HomeElectronicProducts>
+    <HomeBrands></HomeBrands>
 </template>

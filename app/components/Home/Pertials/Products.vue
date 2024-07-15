@@ -10,6 +10,8 @@ const filterParams = ref({
     marker: ['featured']
 })
 
+const re_render = ref(0)
+
 const getProducts = async (formBody: any) => {
     preloader.value = true
     try {
@@ -25,6 +27,7 @@ const getProducts = async (formBody: any) => {
         console.error(error);
     } finally {
         preloader.value = false
+        re_render.value++
     }
 }
 
@@ -45,8 +48,8 @@ onMounted(() => {
 <template>
     <div>
         <FilterBar @select="chooseCategory"></FilterBar>
-        <div class="border min-h-20">
-            <Slider :products="products" :loading="preloader" />
+        <div>
+            <Slider :products="products" :loading="preloader" :key="re_render"/>
         </div>
     </div>
 </template>

@@ -1,22 +1,50 @@
-<script setup>
+<script setup lang="ts">
+import { ref } from 'vue'
+import FilterBar from './Pertials/FilterBar.vue'
+import Slider from './Pertials/Slider.vue'
+
+// state
+const preloader = ref(false)
 const products = ref([]);
-const getProducts = async () => {
-    refreshNuxtData();
+const filterParams = ref({
+    marker: ['best-sale']
+})
+
+const re_render = ref(0)
+
+const getProducts = async (formBody: any) => {
+    preloader.value = true
     try {
-        const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/filter`, {
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/filter`, {
             method: 'POST',
-            body: {
-                marker: ['deals-month'],
-            }
+            body: formBody,
+            server: false
         });
-        products.value = data.value.data;
+        if (response) {
+            products.value = response.data;
+        }
     } catch (error) {
-        console.log(error);
+        console.error(error);
+    } finally {
+        preloader.value = false
+        re_render.value++
     }
 }
-getProducts();
+
+const chooseCategory = (category: any) => {
+    if (category.id) {
+        getProducts({ ...filterParams.value, category: [category.id] })
+    } else {
+        getProducts({ ...filterParams.value })
+    }
+}
+
+onMounted(() => {
+    getProducts({ ...filterParams.value })
+})
 
 </script>
+
 
 <template>
     <div class="w-full p-8 bg-[#D9D9D9]/40 flex flex-col gap-16">
@@ -47,7 +75,7 @@ getProducts();
         </div>
 
         <div class="w-full">
-            <Slider class="w-full" :product="products"></Slider>
+            <Slider :products="products" :loading="preloader" :key="re_render"/>
         </div>
 
     </div>
