@@ -20,7 +20,6 @@ const formData = ref({})
 const errors = ref({})
 
 const chooseImageHandler = (event) => {
-    console.log(event.target.files);
         let imageFile = event.target.files[0]
         formData.value.logo = imageFile
 }

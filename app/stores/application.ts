@@ -4,14 +4,16 @@ import { useToast } from '@/components/ui/toast/use-toast'
 interface IState {
     loading: boolean,
     categories: any[],
-    sliderCategories: any []
+    sliderCategories: any [],
+    flatCategories: any[]
 }
 
 export const useAppStore = defineStore('app', {
     state: () => <IState>({
         categories: [],
         loading: false,
-        sliderCategories: []
+        sliderCategories: [],
+        flatCategories: []
     }),
     actions: {
         async getCetagories() {
@@ -29,7 +31,24 @@ export const useAppStore = defineStore('app', {
                 if (itemArray.length) {
                     this.$state.sliderCategories.push(itemArray)
                 }
+                this.$state.flatCategories = flattenCategories(data.value.categories, null)
+                
             }
         }
     }
 })
+
+const getFlattenCategories = () => {
+    let itemArray = []
+    return (categories: any[], parent: any) => {
+        for(let cat of categories){
+            itemArray.push({ id: cat.id, value: `${ parent ? `${parent.name} > ${cat.name}` : cat.name }` })
+            if(cat.children.length){
+                flattenCategories(cat.children, cat)
+            }
+        }
+        return itemArray;
+    }
+}
+
+const flattenCategories = getFlattenCategories()

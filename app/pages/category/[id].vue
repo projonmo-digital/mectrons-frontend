@@ -14,7 +14,6 @@ useSeoMeta({
     twitterCard: 'image',
 })
 
-
 const route = useRoute();
 
 const products = ref([]);
@@ -34,8 +33,6 @@ const getProducts = async () => {
 }
 getProducts();
 
-console.log(route);
-
 const otherproducts = ref([]);
 const getOtherProducts = async () => {
     refreshNuxtData();
@@ -53,8 +50,6 @@ const getOtherProducts = async () => {
     }
 }
 getOtherProducts();
-
-
 
 const priceFilterFun = (event) => {
     getSearchDatas(event, 'price');
@@ -130,79 +125,41 @@ watch(() => stateCheckData.value, async (currentValue) => {
     { deep: true }
 );
 
+const categoriesList = ref([
+    { id: 1, name: 'Brakes', img: 'assets/images/categories/disc-brake-1.png' },
+    { id: 2, name: 'Tyres', img: 'assets/images/categories/disc-brake-2.png' },
+    { id: 3, name: 'Lubricant', img: 'assets/images/categories/disc-brake-3.png' },
+    { id: 4, name: 'Brakes', img: 'assets/images/categories/disc-brake-4.png' },
+    { id: 5, name: 'Brakes', img: 'assets/images/categories/disc-brake-5.png' },
+])
 
 </script>
 <template>
     <div class="content">
         <div class="max-w-screen-2xl block md:flex justify-between gap-x-4 h-full mx-auto px-4">
-
             <Sidebar @priceFilter="priceFilterFun" @catChecked="catCheckedFun($event)"
                 @condChecked="condCheckedFun($event)" @stateChecked="stateCheckedFun($event)"
                 @typeChecked="typeCheckedFun($event)"></Sidebar>
 
             <div class="lg:w-[calc(100%-16rem)]">
                 <div class="py-6">
-                    <nav class="flex mb-3" aria-label="Breadcrumb">
-                        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-                            <li class="inline-flex items-center">
-                                <a href="#"
-                                    class="inline-flex items-center text-xs font-normal text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                                    <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor" viewBox="0 0 20 20">
-                                        <path
-                                            d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
-                                    </svg>
-                                    Home
-                                </a>
-                            </li>
-                            <li>
-                                <div class="flex items-center">
-                                    <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 9 4-4-4-4" />
-                                    </svg>
-                                    <a href="#"
-                                        class="ms-1 text-xs font-normal text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Projects</a>
-                                </div>
-                            </li>
-                            <li aria-current="page">
-                                <div class="flex items-center">
-                                    <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 9 4-4-4-4" />
-                                    </svg>
-                                    <span
-                                        class="ms-1 text-xs font-normal text-gray-500 md:ms-2 dark:text-gray-400">Flowbite</span>
-                                </div>
-                            </li>
-                        </ol>
-                    </nav>
-
-                    <button data-drawer-target="sidebar-multi-level-sidebar"
-                        data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar"
-                        type="button"
-                        class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-                        <span class="sr-only">Open sidebar</span>
-                        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path clip-rule="evenodd" fill-rule="evenodd"
-                                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
-                            </path>
-                        </svg>
-                    </button>
-
 
                     <!-- Products -->
-                    <div class="mx-auto w-full">
-                        <div class="bg-white">
-                            <div class="products">
-                                <div class="title flex justify-between items-center gap-3 px-3 py-3 mb-4">
-                                    <h4 class="text-md font-semibold">Shop by Categories </h4>
-                                </div>
-                                <div class="relative">
-                                    <div class="slider-container slider-categories flex overflow-hidden">
+                    <div class="mx-auto">
+                        <div class="bg-red-200">
+                            <div>
+                                <h4 class="text-2xl font-semibold my-5">Shop by Categories </h4>
+                                <div class=" relative">
+                                    <div class="grid grid-cols-5 gap-5">
+                                        <nuxt-link v-for="(cat, i) in categoriesList" :key="cat.id" :to="`/category/${cat.id}`" class="p-5 border rounded-xl bg-white shadow-lg">
+                                            <div class="image flex justify-center items-center">
+                                                <img :src="`/_nuxt/${cat.img}`" alt="Image"
+                                                    class="w-12 h-12 object-cover">
+                                            </div>
+                                            <h4 class="title font-semibold mt-2">{{ cat.name }}</h4>
+                                        </nuxt-link>
+                                    </div>
+                                    <!-- <div class="slider-container slider-categories flex overflow-hidden">
                                         <div class="sliders flex gap-x-4 w-[calc(100%-90px)] mx-auto"
                                             id="sliderContent">
                                             <div class="slide w-1/4 h-44 flex justify-center items-center text-center">
@@ -246,7 +203,7 @@ watch(() => stateCheckData.value, async (currentValue) => {
                                                 </nuxt-link>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="arrow">
                                         <button
@@ -292,51 +249,7 @@ watch(() => stateCheckData.value, async (currentValue) => {
                         </div>
 
 
-                        <div class="best-seller mt-8">
-                            <div class="bg-white">
-                                <div class="title flex justify-between items-center gap-3 px-3 py-2 border-b-2 mb-4">
-                                    <h4 class="text-md font-semibold">Best Seller Products</h4>
-                                    <div class="flex justify-end gap-2">
-                                        <button
-                                            class="group prev relative inline-flex items-center justify-center ease-in-out duration-300"
-                                            data-filter="all">
-                                            <span
-                                                class="relative z-10 text-sm font-medium text-white w-8 h-6 flex justify-center items-center">
-                                                <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-                                                </svg>
-                                            </span>
-                                            <span
-                                                class="skew absolute w-8 h-6 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-[#F57F20] group-hover:bg-[#F57F20] z-0 -skew-x-12"></span>
-                                        </button>
-
-                                        <button
-                                            class="group next relative inline-flex items-center justify-center ease-in-out duration-300"
-                                            data-filter="all">
-                                            <span
-                                                class="relative z-10 text-sm font-medium text-white w-8 h-6 flex justify-center items-center">
-                                                <svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                        stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
-                                                </svg>
-                                            </span>
-                                            <span
-                                                class="skew absolute w-8 h-6 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-[#F57F20] group-hover:bg-[#F57F20] z-0 -skew-x-12"></span>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="mt-3">
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-6">
-                                        <ProductCard v-for="(product, index) of products" :key="product.id"
-                                            :product="product"></ProductCard>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <HomeFeaturedProducts></HomeFeaturedProducts>
 
                         <div class="search-products mt-5">
                             <div class="bg-white">

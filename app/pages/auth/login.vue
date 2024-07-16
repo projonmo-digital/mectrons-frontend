@@ -15,7 +15,6 @@ useSeoMeta({
     twitterCard: 'image',
 })
 
-const toaster = useToasterStore();
 const auth = useAuthStore();
 definePageMeta({
 })

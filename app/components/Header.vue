@@ -185,7 +185,7 @@ const menu = computed(() => {
                                         d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                                 </svg>
                             </nuxt-link>
-                            <ul v-if="item.children" class="dropdown-menu absolute hidden text-gray-700 pt-1">
+                            <ul v-if="item.children" class="dropdown-menu absolute hidden text-gray-700 pt-1 shadow-lg">
                                 <li v-for="(sub, Sindex) in item.children || []" :key="`menu-${index}-${Sindex}`">
                                     <a class="bg-white text-sm hover:bg-primary text-primary hover:text-white py-2 px-4 block whitespace-no-wrap w-[300px]"
                                         :href="sub.link">{{ sub.text }}</a>

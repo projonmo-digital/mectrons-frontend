@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { getUrl } from '~/helper'
 const { toast } = useToast()
+
 definePageMeta({
     middleware: ["auth", "seller"]
 })
@@ -39,10 +40,8 @@ const categoryIdProxy = reactive({
 
 })
 
-const loading = ref(false)
-const formData = ref({})
-const isBn = ref(false)
 const errors = ref({})
+
 const response = ref({
     title: '',
     description: "",
@@ -66,8 +65,10 @@ const response = ref({
     typeId: 'fasds',
     bd: 'afs',
     location: ['sdklf'],
+
     type_id: 1,
-    image: []
+
+    image: [],
 });
 
 const proxyResponse = ref({
@@ -93,8 +94,11 @@ const proxyResponse = ref({
     typeId: 'fasds',
     bd: 'afs',
     location: ['sdklf'],
+
     type_id: 1,
-    image: []
+
+    image: [],
+
 });
 
 const chooseImageHandler = () => {
@@ -138,7 +142,6 @@ const setProducts = async () => {
             },
             body
         });
-        loading.value = pending
         if (error) {
             errors.value = error.value.data.errors
             toast({
@@ -160,7 +163,7 @@ const setProducts = async () => {
             router.go('/seller/product')
         }
     } catch (error) {
-        console.log(error);
+        toast({ description: 'Something went wrong', variant: 'destructive' })
     }
 };
 
@@ -238,13 +241,13 @@ watch(productOrService, () => {
 
 <template>
     <HeaderWithHr header="Add New Prouduct"></HeaderWithHr>
-    <div>
+    <form @submit.prevent="handleSubmit">
         <div>
             <div class="my-3">
                 <div class="py-3 border-b-2 border-dashed">
                     <h1 class="text-primary text-xl font-bold">Product information</h1>
                 </div>
-                <div class="shadow-xl border p-4">
+                <div class="shadow-xl border p-4 mt-5">
                     <h1 class="text-primary text-xl font-bold">Product Category</h1>
                     <div class="flex p-5">
                         <div class="flex-1 flex flex-col gap-2">
@@ -255,8 +258,7 @@ watch(productOrService, () => {
                                     <RadioGroupItem value="product"></RadioGroupItem>
                                 </RadioGroup>
                             </div>
-                            <RadioGroup
-                                :class="!isDisabled ? 'bg-slate-red-500  opacity-50  cursor-not-allowed' : 'flex flex-col gap-y-2'"
+                            <RadioGroup :class="!isDisabled ? 'bg-slate-red-500  opacity-50  cursor-not-allowed' : 'flex flex-col gap-y-2'"
                                 v-model="categoryId.grandparentCategoryId" class="flex flex-col gap-y-2">
                                 <div class="flex flex-col " v-for="i in categoryData.categories" :key="i.id">
                                     <div v-if="!i.name.includes('Service')">
@@ -355,19 +357,7 @@ watch(productOrService, () => {
                     </tr>
                     <tr class=" align-top">
                         <td class="py-3"><Label for="tags">Description</Label></td>
-                        <td class="py-3">
-                            <div class="relative">
-                                <div class="p-1 bg-primary/40 flex items-center absolute top-0 right-0 rounded-bl-lg">
-                                    <button class="text-primary hover:bg-primary hover:text-white text-sm w-12" :class="{ 'bg-primary text-white': !isBn }" @click="isBn = false">en</button>
-                                    <button class="text-primary hover:bg-primary hover:text-white text-sm w-12" :class="{ 'bg-primary text-white': isBn }" @click="isBn = true">bn</button>
-                                </div>
-                                <div>
-                                    <Textarea id="description" v-if="isBn" v-model="response['bn[description]']" rows="8"></Textarea>
-                                    <Textarea id="description" v-else v-model="response.description" rows="8"></Textarea>
-                                    <span v-if="Object.keys(errors).includes('description')" class="text-sm text-red-500">{{
-                                errors.description[0] }}</span>
-                                </div>
-                            </div>
+                        <td class="py-3"><Textarea id="description" v-model="response.description" rows="8"></Textarea>
                         </td>
                     </tr>
                 </table>
@@ -533,14 +523,16 @@ watch(productOrService, () => {
                 <table class="w-full">
                     <tr>
                         <td class="py-3"><Label for="seoTitle">Media Title</Label></td>
-                        <td class="py-3"><Input id="seoTitle" type="text" v-model="response.meta_title"
+                        <td class="py-3"><Input id="seoTitle" type="text" v-model="response.title"
                                 placeholder="Media Title" />
                         </td>
                     </tr>
                     <tr class="align-top">
                         <td class="py-3"><Label for="seoDescription" class="">Description</Label></td>
-                        <td class="py-3"><Textarea id="seoDescription" v-model="response.meta_description"
+                        <td class="py-3"><Textarea id="seoDescription" v-model="response.description"
                                 rows="8"></Textarea>
+                            <span v-if="Object.keys(errors).includes('description')" class="text-sm text-red-500">{{
+                                errors.description[0] }}</span>
                         </td>
                     </tr>
                 </table>
@@ -548,9 +540,9 @@ watch(productOrService, () => {
             <hr class="my-5 w-full max-w-[600px] border-dashed border-b-2">
             <div class="flex justify-end w-full max-w-[600px]">
                 <div class="flex gap-4">
-                    <Button :disable="loading" type="submit" @click="handleSubmit">Save & Publish</Button>
+                    <Button type="submit">Save & Publish</Button>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </template>
