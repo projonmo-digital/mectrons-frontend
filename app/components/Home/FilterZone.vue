@@ -1,4 +1,6 @@
-<script setup>
+<script setup lang="ts">
+import Filter from '@/components/common/Filter.vue'
+
 const icons = [
     {
         "name": "mdi:gift-outline",
@@ -16,69 +18,15 @@ const icons = [
         "subtext": "All over Bangladesh"
     }
 ]
-const secondSearchBar = reactive({
-    model: '',
-    make: '',
-    year: '',
-    cc: '',
-    engyne: '',
-    parts: ''
-})
-const selectedsecondSearchBar = reactive({
-    model: '',
-    make: '',
-    year: '',
-    cc: '',
-    engyne: '',
-    parts: ''
-})
-
-const getMake = async () => {
-    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
-    secondSearchBar.make = response
-}
-
-const getModel = async () => {
-    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}`)
-    secondSearchBar.model = response
-}
-
-const getYear = async () => {
-    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}`)
-    secondSearchBar.year = response
-
-
-}
-const getCC = async () => {
-    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}`)
-    secondSearchBar.cc = response
-}
-const getEngyne = async () => {
-    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}`)
-    secondSearchBar.engyne = response
-}
-
-const getParts = async () => {
-    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}&engine=${selectedsecondSearchBar.engyne}`)
-    secondSearchBar.parts = response
-}
-
-const categoryData = ref('')
-
-const getCetagories = async () => {
-    const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/general-categories`, { lazy: true })
-    categoryData.value = response
-}
 
 const store = useUtils()
 const upperLeftAds = await store.getAds('Home Page - Upper Left')
 const upperRightAds = await store.getAds('Home Page - Upper Right')
 
-onMounted(() => {
-    getCetagories()
-    getMake()
-})
-
+// methods
+const search = (event: any) => {
+    console.log(event);
+}
 </script>
 
 <template>
@@ -87,43 +35,7 @@ onMounted(() => {
             <img v-if="upperLeftAds.type === 'image'" class="w-full h-full object-cover" :src="useRuntimeConfig().public.imageUrl + '/' + upperLeftAds.url.replaceAll('public', 'storage')">
         </div>
         <div class="flex-1 mt-auto lg:-mt-8 z-10">
-            <div class="max-w-[1024px] w-full bg-primary rounded-xl flex">
-                <div class="flex-1 flex items-center p-3 gap-3">
-                    <select class="h-[35px] w-1/6 rounded" @change="getModel" v-model="selectedsecondSearchBar.make">
-                        <option value="" disabled selected>Model </option>
-                        <option v-for="i in secondSearchBar.make">{{ i.make }}</option>
-                    </select>
-                    <select @change="getYear" :disabled="!selectedsecondSearchBar.make" class="h-[35px]  rounded"
-                        v-model="selectedsecondSearchBar.model">
-                        <option value="" disabled selected>Model </option>
-                        <option v-for="i in secondSearchBar.model">{{ i.models }}</option>
-                    </select>
-                    <select @change="getCC" :disabled="!secondSearchBar.year" class="h-[35px] w-1/6 rounded"
-                        v-model="selectedsecondSearchBar.year">
-                        <option value="" disabled selected>Year</option>
-                        <option v-for="i in secondSearchBar.year">{{ i.year }}</option>
-                    </select>
-                    <select @change="getEngyne" :disabled="!secondSearchBar.cc" class="h-[35px] w-1/6 rounded"
-                        v-model="selectedsecondSearchBar.cc">
-                        <option value="" disabled selected>CC</option>
-                        <option v-for="i in secondSearchBar.cc">{{ i.cc }}</option>
-                    </select>
-                    <select @change="getParts" :disabled="!secondSearchBar.engyne" class="h-[35px] w-1/6 rounded"
-                        v-model="selectedsecondSearchBar.engyne">
-                        <option value="" disabled selected>Engine</option>
-                        <option v-for="i in secondSearchBar.engyne">{{ i.engine }}</option>
-                    </select>
-    
-                    <select :disabled="!secondSearchBar.parts" class="h-[35px] w-1/6 rounded"
-                        v-model="selectedsecondSearchBar.parts">
-                        <option value="" disabled selected>Parts</option>
-                        <option v-for="i in categoryData?.categories">{{ i.name }}</option>
-                    </select>
-                </div>
-                <button :disabled="!secondSearchBar.parts" class=" cursor-pointer text-primary bg-white bg-opacity-50 hover:bg-opacity-30 px-5 rounded-e-xl" @click="">
-                    <Icon class="text-2xl" name="fa:search"></Icon>
-                </button>
-            </div>
+            <Filter @search="search" />
             <div class="flex flex-col lg:flex-row gap-3">
                 <div v-for="i in icons" class="flex flex-col lg:flex-row items-center p-3 gap-3 w-3/1">
                     <div>
