@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import Slider from '@/components/Category/Pertials/Slider.vue'
 import Filter from '@/components/common/Filter.vue'
+import FilterSidebar from '@/components/common/FilterSidebar.vue'
 
 const categoriesList = ref([
     { id: 1, name: 'Brakes', img: 'assets/images/categories/disc-brake-1.png' },
@@ -10,7 +11,6 @@ const categoriesList = ref([
     { id: 4, name: 'Brakes', img: 'assets/images/categories/disc-brake-4.png' },
     { id: 5, name: 'Brakes', img: 'assets/images/categories/disc-brake-5.png' },
 ])
-
 
 const preloader = ref(false)
 const responseParams = ref({
@@ -25,23 +25,24 @@ const search = (event: any) => {
     getProducts(event)
 }
 
-const getProducts = async (formBody) => {
+const getProducts = async (formBody: any) => {
     preloader.value = true
     try {
-        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/car-data-search`, {
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/filter`, {
             method: 'POST',
             body: formBody,
-        })
+            server: false
+        });
         if (response) {
-            products.value = response.data;
+            data.value = response.data;
         }
     } catch (error) {
         console.error(error);
     } finally {
         preloader.value = false
-        re_render.value++
     }
 }
+
 
 // const getProducts = async (params = {}) => {
 //     const token = useCookie('token')
@@ -78,9 +79,9 @@ onMounted(() => {
 </script>
 <template>
     <div class="grid grid-cols-12">
-        <div class="col-span-3 p-3">
+        <div class="col-span-3 p-5">
             <div class="h-full bg-orange-200 rounded-xl p-3">
-                menu
+                <FilterSidebar />
             </div>
         </div>
         <div class="col-span-9">

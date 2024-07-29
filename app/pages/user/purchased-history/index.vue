@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Product from '~/components/seller/product/Product.vue'
+import Product from '~/components/seller/product/ApprovedProduct.vue'
 
 definePageMeta({
     middleware: ["auth", "user"]

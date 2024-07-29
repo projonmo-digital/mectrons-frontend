@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import logo_white from '~/assets/images/logo_white.svg'
@@ -53,8 +53,7 @@ const menu = computed(() => {
         },
         {
             text: "Automobile",
-            link: "/automobile",
-            // children: categories.value.map(i => ({ text: i.name, link: '#' }))
+            link: "#",
             children: categories.value.map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         {
@@ -186,7 +185,7 @@ const menu = computed(() => {
                                 </svg>
                             </nuxt-link>
                             <ul v-if="item.children" class="dropdown-menu absolute hidden text-gray-700 pt-1 shadow-lg">
-                                <li v-for="(sub, Sindex) in item.children || []" :key="`menu-${index}-${Sindex}`">
+                                <li class="first:rounded-t-lg last:rounded-b-lg overflow-hidden" v-for="(sub, Sindex) in item.children || []" :key="`menu-${index}-${Sindex}`">
                                     <a class="bg-white text-sm hover:bg-primary text-primary hover:text-white py-2 px-4 block whitespace-no-wrap w-[300px]"
                                         :href="sub.link">{{ sub.text }}</a>
                                 </li>
