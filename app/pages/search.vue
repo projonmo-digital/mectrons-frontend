@@ -48,7 +48,11 @@ const getProducts = async (params: any) => {
 }
 
 watch(() => route.query.search, (n, o) => {
-    getProducts(responseParams.value)
+    console.log(n);
+    responseParams.value.search = n
+    setTimeout(() => {
+        getProducts(responseParams.value)
+    }, 0);    
 }, { immediate: true, deep: true })
 
 onMounted(() => {
