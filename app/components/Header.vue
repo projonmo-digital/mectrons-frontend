@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted } from 'vue'
 import { ref } from 'vue'
+
+import { AvatarFallback, AvatarImage, AvatarRoot } from 'radix-vue'
 import { Button } from '@/components/ui/button'
 import logo_white from '~/assets/images/logo_white.svg'
 
@@ -27,8 +29,7 @@ onMounted(() => {
 
 const searchText = ref('')
 const handelSearchSubmit = () => {
-    refreshNuxtData()
-    return navigateTo(`/search?search=${searchText.value}`)
+    navigateTo(`/search?search=${searchText.value}`)
 }
 
 const store = useAuthStore()
@@ -138,9 +139,18 @@ const menu = computed(() => {
                                 </span>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent class="w-56">
-                                <DropdownMenuItem @select="router.push(`/${auth.user.role}/dashboard`)">Dashboard
+                                <div class="flex justify-center items-center p-5">
+                                    <AvatarRoot class="inline-flex h-[48px] w-[48px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+                                        <AvatarImage
+                                        class="h-full w-full rounded-[inherit] object-cover"
+                                        :src="auth.user?.profile_picture" alt="Colm Tuite" />
+                                        <AvatarFallback class="flex h-full w-full items-center justify-center" :delay-ms="600">
+                                            AV
+                                        </AvatarFallback>
+                                    </AvatarRoot>
+                                </div>
+                                <DropdownMenuItem class="justify-center cursor-pointer font-bold" @select="router.push(`/${auth.user.role}/dashboard`)">Go To Your Panel
                                 </DropdownMenuItem>
-                                <DropdownMenuItem @select="router.push('/user/dashboard')">Profile</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem class="text-red-500 hover:text-red-600" @click="auth.logUserOut()">
                                     <Button class="w-full">Logout</Button>
