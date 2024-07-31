@@ -5,7 +5,8 @@ interface IState {
     loading: boolean,
     categories: any[],
     sliderCategories: any [],
-    flatCategories: any[]
+    flatCategories: any[],
+    local: string
 }
 
 export const useAppStore = defineStore('app', {
@@ -13,7 +14,8 @@ export const useAppStore = defineStore('app', {
         categories: [],
         loading: false,
         sliderCategories: [],
-        flatCategories: []
+        flatCategories: [],
+        local: localStorage.local || 'en'
     }),
     actions: {
         async getCetagories() {
@@ -34,6 +36,10 @@ export const useAppStore = defineStore('app', {
                 this.$state.flatCategories = flattenCategories(data.value.categories, null)
                 
             }
+        },
+        setLocal(value: string) {
+            this.$state.local = value
+            localStorage.local = value
         }
     }
 })

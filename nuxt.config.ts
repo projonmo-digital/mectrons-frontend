@@ -44,7 +44,10 @@ export default defineNuxtConfig({
           integrity: "sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==",
           crossorigin: "anonymous", referrerpolicy: "no-referrer"
         },
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' },
+      ],
+      script: [
+        { src:"https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"}
       ]
     }
   },
