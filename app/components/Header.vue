@@ -186,18 +186,18 @@ const menu = computed(() => {
                 <div class="flex items-center justify-center gap-3 mt-5">
                     <template v-for="(item, index) in menu" :key="`menu-item-${index}`">
                         <div class="dropdown inline-block relative z-40">
-                            <nuxt-link :to="item.link" class="text-white font-bold inline-flex items-center">
+                            <NuxtLink :to="item.link" class="text-white font-bold inline-flex items-center">
                                 <span class="mr-1">{{ item.text }}</span>
                                 <svg v-if="item.children" class="fill-current h-4 w-4"
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path
                                         d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                                 </svg>
-                            </nuxt-link>
+                            </NuxtLink>
                             <ul v-if="item.children" class="dropdown-menu absolute hidden text-gray-700 pt-1 shadow-lg">
                                 <li class="first:rounded-t-lg last:rounded-b-lg overflow-hidden" v-for="(sub, Sindex) in item.children || []" :key="`menu-${index}-${Sindex}`">
-                                    <a class="bg-white text-sm hover:bg-primary text-primary hover:text-white py-2 px-4 block whitespace-no-wrap w-[300px]"
-                                        :href="sub.link">{{ sub.text }}</a>
+                                    <NuxtLink class="bg-white text-sm hover:bg-primary text-primary hover:text-white py-2 px-4 block whitespace-no-wrap w-[300px]"
+                                        :to="sub.link">{{ sub.text }}</NuxtLink>
                                 </li>
                             </ul>
                         </div>
