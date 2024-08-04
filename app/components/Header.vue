@@ -6,7 +6,8 @@ import { AvatarFallback, AvatarImage, AvatarRoot } from 'radix-vue'
 import { Button } from '@/components/ui/button'
 import logo_white from '~/assets/images/logo_white.svg'
 
-const { categories, loading } = storeToRefs(useAppStore())
+const { categories, loading, local } = storeToRefs(useAppStore())
+const appStore = useAppStore()
 
 import {
     DropdownMenu,
@@ -33,9 +34,6 @@ const handelSearchSubmit = () => {
 }
 
 const store = useAuthStore()
-// const { data } = useAuthStore().login
-// console.log(data)
-
 const loginToggleBtnFun = async (value) => {
     let button;
     if (value == 'sellerLogin') {
@@ -85,6 +83,13 @@ const menu = computed(() => {
         }
     ]
 })
+
+const onChange = (value) => {
+    const element = document.querySelector(".goog-te-combo");
+    element.value = value;
+    element.dispatchEvent(new Event("change"));
+    appStore.setLocal(value)
+};
 
 </script>
 <template>
@@ -150,16 +155,18 @@ const menu = computed(() => {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent class="w-56">
                                 <div class="flex justify-center items-center p-5">
-                                    <AvatarRoot class="inline-flex h-[48px] w-[48px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
-                                        <AvatarImage
-                                        class="h-full w-full rounded-[inherit] object-cover"
-                                        :src="auth.user?.profile_picture" alt="Colm Tuite" />
-                                        <AvatarFallback class="flex h-full w-full items-center justify-center" :delay-ms="600">
+                                    <AvatarRoot
+                                        class="inline-flex h-[48px] w-[48px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+                                        <AvatarImage class="h-full w-full rounded-[inherit] object-cover"
+                                            :src="auth.user?.profile_picture" alt="Colm Tuite" />
+                                        <AvatarFallback class="flex h-full w-full items-center justify-center"
+                                            :delay-ms="600">
                                             AV
                                         </AvatarFallback>
                                     </AvatarRoot>
                                 </div>
-                                <DropdownMenuItem class="justify-center cursor-pointer font-bold" @select="router.push(`/${auth.user.role}/dashboard`)">Go To Your Panel
+                                <DropdownMenuItem class="justify-center cursor-pointer font-bold"
+                                    @select="router.push(`/${auth.user.role}/dashboard`)">Go To Your Panel
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem class="text-red-500 hover:text-red-600" @click="auth.logUserOut()">
@@ -168,7 +175,8 @@ const menu = computed(() => {
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        <button class="text-sm hover:underline hidden sm:inline-block">EN/BN</button>
+                        <button class="text-sm hover:underline hidden sm:inline-block"
+                            @click="onChange(local === 'bn' ? 'en': 'bn')">EN/BN</button>
                         <nuxt-link to="/cart"
                             class="relative inline-flex items-center p-3 text-sm font-medium text-center">
                             <i class="fa-solid fa-cart-shopping text-2xl sm:text-sm"></i>
