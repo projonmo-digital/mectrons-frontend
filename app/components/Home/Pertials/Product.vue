@@ -47,7 +47,7 @@ const AddToCart = (product) => {
 </script>
 
 <template>
-    <div class="border relative border-transparent hover:border-gray-200 shadow-md hover:shadow-xl rounded-xl overflow-hidden my-5 bg-white">
+    <div class="border relative border-transparent hover:border-gray-200 shadow-md hover:shadow-xl rounded-xl overflow-hidden my-5 bg-white notranslate">
         <nuxt-link  :to="`/products/${product?.id}`">
             <img class="h-[200px] object-cover" v-if="props.product?.picture != ''"
                 :src="useRuntimeConfig().public.imageUrl + '/' + props.product?.picture[0].replaceAll('public', 'storage')"

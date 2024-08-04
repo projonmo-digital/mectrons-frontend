@@ -63,12 +63,17 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "nuxt-icon",
     "@nuxtjs/google-fonts",
+    "@nuxtjs/sitemap"
   ],
   shadcn: {
     prefix: "",
     componentDir: "./app/components/ui",
   },
-
+  site: {
+    url: 'https://mectrons.com',
+    name: 'My Awesome Website',
+    excludeAppSources: ['nuxt:pages'],
+  },
   imports: {
     dirs: ["./stores", "composables", "composables/**"],
   },

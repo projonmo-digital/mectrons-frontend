@@ -73,7 +73,7 @@ onMounted(() => {
             </div>
         </div>
         <hr>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 min-h-[300px]">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 min-h-[300px] relative">
             <div v-if="preloader" class="flex items-center justify-center absolute inset-0 z-50 bg-white/50">
                 <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl">
                 </Icon>

@@ -32,7 +32,15 @@ body {
   top: 0 !important;
 }
 
+.VIpgJd-yAWNEb-VIpgJd-fmcmS-sn54Q {
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
 body>.skiptranslate {
   display: none;
+}
+#goog-gt-tt{
+  display: none !important;
 }
 </style>

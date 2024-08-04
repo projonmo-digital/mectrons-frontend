@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 
 const { sliderCategories, loading } = storeToRefs(useAppStore())
 
-const prop = defineProps(['title'])
+const prop = defineProps(['title', 'categories'])
 
 const emit = defineEmits(['select'])
 
@@ -30,7 +30,7 @@ const setPrev = () => {
 
 <template>
     <div class="flex justify-between items-center px-5 my-5">
-        <h2 class="text-[20px] font-bold">{{title}}</h2>
+        <h2 class="text-[20px] font-bold notranslate">{{title}}</h2>
         <div class="flex justify-end items-center gap-1">
             <div class="flex">
                 <button

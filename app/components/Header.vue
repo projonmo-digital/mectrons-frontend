@@ -52,17 +52,17 @@ const menu = computed(() => {
         },
         {
             text: categories.value[0]?.name,
-            link: "#",
+            link: `/category/${categories.value[0]?.id}`,
             children: categories.value[0]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         {
             text: categories.value[1]?.name,
-            link: "#",
+            link: `/category/${categories.value[1]?.id}`,
             children: categories.value[1]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         {
             text: categories.value[2]?.name,
-            link: "#",
+            link: `/category/${categories.value[2]?.id}`,
             children: categories.value[2]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         // {
@@ -96,7 +96,7 @@ const onChange = (value) => {
     <header class="bg-primary text-white">
         <div class="p-3">
             <!-- header top panel -->
-            <div class="hidden sm:flex justify-between items-center px-3">
+            <div class="hidden sm:flex justify-between items-center px-3 notranslate">
                 <div class="flex items-center gap-4">
                     <NuxtLink class="hover:underline text-sm" :to="{ name: 'auth-login' }">
                         {{ 'Seller Login' }}
@@ -136,7 +136,7 @@ const onChange = (value) => {
                     <div class="flex items-center gap-1 md:gap-6">
                         <DropdownMenu v-if="!auth.authenticated">
                             <DropdownMenuTrigger @click="auth.errors = {}">
-                                <span class="text-sm hover:underline">
+                                <span class="text-sm hover:underline notranslate">
                                     <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i><span
                                         class="hidden sm:inline-block">Login</span>
                                 </span>
@@ -148,7 +148,7 @@ const onChange = (value) => {
                         </DropdownMenu>
                         <DropdownMenu v-else>
                             <DropdownMenuTrigger>
-                                <span class="text-sm hover:underline">
+                                <span class="text-sm hover:underline notranslate">
                                     <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i>
                                     <span class="hidden sm:inline-block">{{ auth.user?.name }}</span>
                                 </span>
@@ -175,8 +175,8 @@ const onChange = (value) => {
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        <button class="text-sm hover:underline hidden sm:inline-block"
-                            @click="onChange(local === 'bn' ? 'en': 'bn')">EN/BN</button>
+                        <button class="text-sm hover:underline hidden sm:inline-block notranslate"
+                            @click="onChange(local === 'bn' ? 'en': 'bn')">{{ local === 'bn' ? 'EN': 'BN' }}</button>
                         <nuxt-link to="/cart"
                             class="relative inline-flex items-center p-3 text-sm font-medium text-center">
                             <i class="fa-solid fa-cart-shopping text-2xl sm:text-sm"></i>

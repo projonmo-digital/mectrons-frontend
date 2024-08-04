@@ -47,7 +47,7 @@ onMounted(() => {
 
 <template>
     <div class="p-8 mt-3">
-        <h1 class="flex gap-3 text-3xl font-bold items-center">
+        <h1 class="flex gap-3 text-3xl font-bold items-center notranslate">
             <span>HOT Sale</span>
             <span class="w-28 h-2 bg-primary"></span>
         </h1>
