@@ -47,4 +47,7 @@ body {
 body>.skiptranslate {
   display: none;
 }
+#goog-gt-tt{
+  display: none !important;
+}
 </style>

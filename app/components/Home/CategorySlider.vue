@@ -23,9 +23,9 @@ const onSlideChange = (e) => {
             <div class="h-full flex justify-center items-center bg-[#EAE5E2] py-4" v-if="loading">
                 <Icon name="fluent:spinner-ios-16-filled" class="h-9 w-9 text-primary animate-spin"></Icon>
             </div>
-            <div v-if="!loading" class="h-full">
+            <div v-if="!loading && categories.length" class="h-full">
                 <nav class="nav-side-menu p-5">
-                    <NavItems :items="categories" />
+                    <NavItems :items="[...categories[0].children, ...categories[0].children, ...categories[0].children]" />
                 </nav>
             </div>
         </aside>

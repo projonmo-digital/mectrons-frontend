@@ -19,6 +19,7 @@ export const useAppStore = defineStore('app', {
     }),
     actions: {
         async getCetagories() {
+            this.loading = true
             const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`);
             this.categories = data.value?.categories
             if (data.value) {
@@ -34,8 +35,8 @@ export const useAppStore = defineStore('app', {
                     this.$state.sliderCategories.push(itemArray)
                 }
                 this.$state.flatCategories = flattenCategories(data.value.categories, null)
-                
             }
+            this.loading = false
         },
         setLocal(value: string) {
             this.$state.local = value

@@ -6,7 +6,7 @@ import { AvatarFallback, AvatarImage, AvatarRoot } from 'radix-vue'
 import { Button } from '@/components/ui/button'
 import logo_white from '~/assets/images/logo_white.svg'
 
-const { categories, local } = storeToRefs(useAppStore())
+const { categories, loading, local } = storeToRefs(useAppStore())
 const appStore = useAppStore()
 
 import {
@@ -48,19 +48,25 @@ const menu = computed(() => {
             link: "/",
         },
         {
-            text: "Automobile",
-            link: "#",
-            // children: categories.value.map(i => ({ text: i.name, link: `/category/${i.id}` }))
+            text: categories.value[0]?.name,
+            link: `/category/${categories.value[0]?.id}`,
+            children: categories.value[0]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
+        },
+        {
+            text: categories.value[1]?.name,
+            link: `/category/${categories.value[1]?.id}`,
+            // children: categories.value[1]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
             children: categories.value.filter(c => [1,24].includes(c.id)).map(c => c.children).flat(Infinity).map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         {
-            text: "Electronics",
-            link: "#",
-            children: categories.value.filter(c => [71,104].includes(c.id)).map(c => c.children).flat(Infinity).map(i => ({ text: i.name, link: `/category/${i.id}` }))
+            text: categories.value[2]?.name,
+            link: `/category/${categories.value[2]?.id}`,
+            children: categories.value[2]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         {
-            text: "Service",
-            link: "/pages/services"
+            text: categories.value[3]?.name,
+            link: `/category/${categories.value[3]?.id}`,
+            children: categories.value[3]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         {
             text: "About Us",
@@ -85,7 +91,7 @@ const onChange = (value) => {
     <header class="bg-primary text-white">
         <div class="p-3">
             <!-- header top panel -->
-            <div class="hidden sm:flex justify-between items-center px-3">
+            <div class="hidden sm:flex justify-between items-center px-3 notranslate">
                 <div class="flex items-center gap-4 notranslate">
                     <NuxtLink class="hover:underline text-sm" :to="{ name: 'auth-login' }">
                         {{ 'Seller Login' }}
@@ -125,7 +131,7 @@ const onChange = (value) => {
                     <div class="flex items-center gap-1 md:gap-6">
                         <DropdownMenu v-if="!auth.authenticated">
                             <DropdownMenuTrigger @click="auth.errors = {}">
-                                <span class="text-sm hover:underline">
+                                <span class="text-sm hover:underline notranslate">
                                     <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i><span
                                         class="hidden sm:inline-block">Login</span>
                                 </span>
@@ -137,7 +143,7 @@ const onChange = (value) => {
                         </DropdownMenu>
                         <DropdownMenu v-else>
                             <DropdownMenuTrigger>
-                                <span class="text-sm hover:underline">
+                                <span class="text-sm hover:underline notranslate">
                                     <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i>
                                     <span class="hidden sm:inline-block notranslate">{{ auth.user?.name }}</span>
                                 </span>
@@ -154,18 +160,22 @@ const onChange = (value) => {
                                         </AvatarFallback>
                                     </AvatarRoot>
                                 </div>
-                                <DropdownMenuItem class="justify-center cursor-pointer font-bold"
-                                    @select="router.push(`/${auth.user.role}/dashboard`)">Go To Your Panel
+                                <DropdownMenuItem class="justify-center cursor-pointer"
+                                    @select="router.push(`/${auth.user.role}/dashboard`)">
+                                    <div class="flex items-center gap-3 text-gray-700">
+                                        <icon class="text-2xl" name="ion:log-in-outline" />
+                                        <span>Go inside Your Panel</span>
+                                    </div>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem class="text-red-500 hover:text-red-600" @click="auth.logUserOut()">
-                                    <Button class="w-full">Logout</Button>
+                                <DropdownMenuItem @click="auth.logUserOut()" class="text-center cursor-pointer">
+                                    <span class="text-red-500 hover:text-red-600 w-full text-lg">Logout</span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
 
                         <button class="text-sm hover:underline hidden sm:inline-block notranslate"
-                            @click="onChange(local === 'bn' ? 'en': 'bn')">{{ local === 'bn' ? 'EN' : 'BN' }}</button>
+                            @click="onChange(local === 'bn' ? 'en': 'bn')">{{ local === 'bn' ? 'EN': 'BN' }}</button>
                         <nuxt-link to="/cart"
                             class="relative inline-flex items-center p-3 text-sm font-medium text-center">
                             <i class="fa-solid fa-cart-shopping text-2xl sm:text-sm"></i>
@@ -191,25 +201,25 @@ const onChange = (value) => {
                     </div>
                 </div>
                 <div class="flex items-center justify-center gap-3 mt-5">
-                    <template v-for="(item, index) in menu" :key="`menu-item-${index}`">
-                        <div class="dropdown inline-block relative z-40">
-                            <NuxtLink :to="item.link" class="text-white font-bold inline-flex items-center">
-                                <span class="mr-1">{{ item.text }}</span>
-                                <svg v-if="item.children" class="fill-current h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </NuxtLink>
-                            <ul v-if="item.children" class="dropdown-menu absolute hidden text-gray-700 pt-1 shadow-lg">
-                                <li class="first:rounded-t-lg last:rounded-b-lg overflow-hidden"
-                                    v-for="(sub, Sindex) in item.children || []" :key="`menu-${index}-${Sindex}`">
-                                    <NuxtLink
-                                        class="bg-white text-sm hover:bg-primary text-primary hover:text-white py-2 px-4 block whitespace-no-wrap w-[300px]"
-                                        :to="sub.link">{{ sub.text }}</NuxtLink>
-                                </li>
-                            </ul>
-                        </div>
+                    <template v-if="!loading">
+                        <template v-for="(item, index) in menu" :key="`menu-item-${index}`">
+                            <div class="dropdown inline-block relative z-40">
+                                <nuxt-link :to="item.link" class="text-white font-bold inline-flex items-center">
+                                    <span class="mr-1">{{ item.text }}</span>
+                                    <svg v-if="item.children" class="fill-current h-4 w-4"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                    </svg>
+                                </nuxt-link>
+                                <ul v-if="item.children" class="dropdown-menu absolute hidden text-gray-700 pt-1 shadow-lg">
+                                    <li class="first:rounded-t-lg last:rounded-b-lg overflow-hidden" v-for="(sub, Sindex) in item.children || []" :key="`menu-${index}-${Sindex}`">
+                                        <nuxt-link class="bg-white text-sm hover:bg-primary text-primary hover:text-white py-2 px-4 block whitespace-no-wrap w-[300px]"
+                                            :to="sub.link">{{ sub.text }}</nuxt-link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </template>
                     </template>
                 </div>
             </div>

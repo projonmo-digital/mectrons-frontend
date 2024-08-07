@@ -40,7 +40,7 @@ const CheckOutBtn = () => {
 }
 
 onMounted(() => {
-    cart.getCartData()
+    cart.getLocalProducts()
     getProducts()
 })
 
