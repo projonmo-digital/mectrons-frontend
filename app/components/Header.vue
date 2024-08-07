@@ -12,9 +12,6 @@ const appStore = useAppStore()
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
@@ -25,7 +22,7 @@ const router = useRouter()
 const cart = useCartStore()
 
 onMounted(() => {
-    cart.getCartData()
+    console.log(cart.products)
 })
 
 const searchText = ref('')
@@ -53,31 +50,33 @@ const menu = computed(() => {
         {
             text: "Automobile",
             link: "#",
-            children: categories.value.map(i => ({ text: i.name, link: `/category/${i.id}` }))
+            // children: categories.value.map(i => ({ text: i.name, link: `/category/${i.id}` }))
+            children: categories.value.filter(c => [1,24].includes(c.id)).map(c => c.children).flat(Infinity).map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         {
             text: "Electronics",
-            link: "#"
+            link: "#",
+            children: categories.value.filter(c => [71,104].includes(c.id)).map(c => c.children).flat(Infinity).map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         {
             text: "Service",
-            link: "/service"
+            link: "/pages/services"
         },
         {
             text: "About Us",
-            link: "/about-us"
+            link: "/pages/about-us"
         },
         {
             text: "Contact Us",
-            link: "/contact-us"
+            link: "/pages/contact-us"
         }
     ]
 })
 
 const onChange = (value) => {
-    const element = document.querySelector(".goog-te-combo");
+    const element = document.querySelector(".goog-te-combo")
     element.value = value;
-    element.dispatchEvent(new Event("change"));
+    element.dispatchEvent(new Event("change"))
     appStore.setLocal(value)
 };
 
@@ -87,7 +86,7 @@ const onChange = (value) => {
         <div class="p-3">
             <!-- header top panel -->
             <div class="hidden sm:flex justify-between items-center px-3">
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 notranslate">
                     <NuxtLink class="hover:underline text-sm" :to="{ name: 'auth-login' }">
                         {{ 'Seller Login' }}
                     </NuxtLink>
@@ -140,7 +139,7 @@ const onChange = (value) => {
                             <DropdownMenuTrigger>
                                 <span class="text-sm hover:underline">
                                     <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i>
-                                    <span class="hidden sm:inline-block">{{ auth.user?.name }}</span>
+                                    <span class="hidden sm:inline-block notranslate">{{ auth.user?.name }}</span>
                                 </span>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent class="w-56">
@@ -165,8 +164,8 @@ const onChange = (value) => {
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        <button class="text-sm hover:underline hidden sm:inline-block"
-                            @click="onChange(local === 'bn' ? 'en': 'bn')">EN/BN</button>
+                        <button class="text-sm hover:underline hidden sm:inline-block notranslate"
+                            @click="onChange(local === 'bn' ? 'en': 'bn')">{{ local === 'bn' ? 'EN' : 'BN' }}</button>
                         <nuxt-link to="/cart"
                             class="relative inline-flex items-center p-3 text-sm font-medium text-center">
                             <i class="fa-solid fa-cart-shopping text-2xl sm:text-sm"></i>

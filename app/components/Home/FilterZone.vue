@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import Filter from '@/components/common/Filter.vue'
 
+const router = useRouter()
+
 const icons = [
     {
         "name": "mdi:gift-outline",
@@ -26,6 +28,8 @@ const upperRightAds = await store.getAds('Home Page - Upper Right')
 // methods
 const search = (event: any) => {
     console.log(event);
+    let url = '/search-products?' + new URLSearchParams(event).toString()
+    router.push(url)
 }
 </script>
 

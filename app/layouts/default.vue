@@ -28,8 +28,20 @@ onMounted(() => {
 </template>
 
 <style>
+#goog-gt-tt{
+  display: none !important;
+}
 body {
   top: 0 !important;
+}
+
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc {
+  display: none !important;
+}
+
+.VIpgJd-yAWNEb-VIpgJd-fmcmS-sn54Q {
+  box-shadow: none;
+  background-color: transparent !important;
 }
 
 body>.skiptranslate {

@@ -65,7 +65,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="bg-primary rounded-xl flex">
+    <div class="bg-primary rounded-xl flex notranslate">
         <div class="flex-1 flex items-center p-3 gap-3">
             <select class="h-[35px] w-1/6 rounded" @change="getModel" v-model="selectedsecondSearchBar.make">
                 <option value="" disabled selected>Model </option>

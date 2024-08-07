@@ -1,10 +1,6 @@
 <script setup>
 import { onMounted } from 'vue';
-import { initFlowbite, Modal } from 'flowbite';
-onMounted(() => {
-    cart.getCartData();
-    initFlowbite();
-})
+// import { initFlowbite, Modal } from 'flowbite';
 
 const cart = useCartStore();
 
@@ -43,6 +39,10 @@ const CheckOutBtn = () => {
     modal.show();
 }
 
+onMounted(() => {
+    cart.getCartData()
+    getProducts()
+})
 
 </script>
 <template>
@@ -95,13 +95,12 @@ const CheckOutBtn = () => {
 
                             </div>
                         </li>
-                        
                     </ul>
                 </div>
             </div>
             <div class="w-2/5">
                 <div class="flow-root bg-[#FCEADC] px-5 py-3 rounded-md">
-                    <ul role="list" class="">
+                    <ul role="list">
                         <li class="pb-2">
                             <h4 class="block mt-3 mb-3 text-lg font-semibold text-gray-900 dark:text-white">Coupon Code Apply</h4>
                             <form class="flex items-center gap-x-3 mx-auto">  
