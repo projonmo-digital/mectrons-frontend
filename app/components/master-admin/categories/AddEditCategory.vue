@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import Modal from "~/components/common/Modal.vue"
 import type { ICategory } from "~/types/categories"
 import { useToast } from "@/components/ui/toast/use-toast"
+import { useEmitter } from '@/composables/emitter'
+
+const emitter = useEmitter()
 const { toast } = useToast()
 
 interface Props {
@@ -44,6 +47,8 @@ const submit = async () => {
             title: "Success",
             description: response?.message,
         });
+        emitter.emit('refetch-category')
+        isModalOpen.value = false
     } catch (error) {
         const err = error as any;
         console.log(err);
@@ -68,6 +73,18 @@ const changeImage = (event: any) => {
     const file = event.target.files[0]
     formData.value.image = file
 }
+
+onMounted(() => {
+    let category = props.category
+    if(category){
+        formData.value = {
+            name: category.name,
+            commission: category.commission,
+            desc: category.desc,
+            image: category.image
+        }
+    }
+})
 
 </script>
 

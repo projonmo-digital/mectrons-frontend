@@ -3,7 +3,6 @@ import { useToast } from "@/components/ui/toast/use-toast";
 import type { ILoginResponse } from "@/types/auth";
 
 const { toast } = useToast();
-
 interface IState {
   authenticated: boolean;
   user: null | any;
@@ -62,12 +61,14 @@ export const useAuthStore = defineStore("auth", {
       }
     },
     logUserOut() {
+      const router = useRouter()
       const token = useCookie("token");
       const user = useCookie("user");
       this.authenticated = false;
       this.user = null;
       token.value = null;
       user.value = null;
+      router.push('/')
     },
   },
 });

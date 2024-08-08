@@ -4,6 +4,7 @@ import type { ICategory } from '@/types/categories'
 
 import CategoriesItem from './CategoriesItem.vue'
 import AddEditCategory from './AddEditCategory.vue'
+import ConfirmationModal from '@/components/common/ConfirmationModal.vue'
 
 interface Props {
     root?: boolean
@@ -24,7 +25,11 @@ const props = defineProps<Props>()
         <div>
             <AddEditCategory :parent="category" />
             <AddEditCategory :parent="parent!" :category="category" />
-            <button v-if="!root" class="text-gray-500 hover:text-primary text-2xl"><icon name="mdi:bin" /></button>
+            <ConfirmationModal v-if="!root">
+                <template #btn>
+                    <button class="text-gray-500 hover:text-primary text-2xl"><icon name="mdi:bin" /></button>
+                </template>
+            </ConfirmationModal>
         </div>
     </div>
     <div class="pl-4 flex flex-col gap-1" v-if="category.children.length && isExpanded">

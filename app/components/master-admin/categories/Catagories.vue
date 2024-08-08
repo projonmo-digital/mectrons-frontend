@@ -3,7 +3,8 @@ import { ref, onMounted } from 'vue'
 import type { ICategory } from '@/types/categories'
 import { useToast } from '@/components/ui/toast/use-toast'
 import CategoriesItem from './CategoriesItem.vue'
-
+import { useEmitter } from '@/composables/emitter'
+const emitter = useEmitter()
 const { toast } = useToast()
 
 const preloader = ref(false)
@@ -43,6 +44,9 @@ const fetchData = async (params = {}) => {
 
 onMounted(() => {
   fetchData(responseParams.value)
+  emitter.on('refetch-category', (e) => {
+    fetchData(responseParams.value)
+  })
 })
 </script>
 
