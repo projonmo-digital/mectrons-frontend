@@ -10,7 +10,7 @@ useHead({
 <template>
     <HomeCategorySlider></HomeCategorySlider>
     <HomeFilterZone></HomeFilterZone>
-    <HomeNewHotSale></HomeNewHotSale>
+    <HomeHotSale></HomeHotSale>
     <HomeFeaturedProducts></HomeFeaturedProducts>
     <HomeBestSale></HomeBestSale>
     <HomeDealsofMonth></HomeDealsofMonth>

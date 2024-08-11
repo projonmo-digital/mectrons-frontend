@@ -3,6 +3,13 @@ definePageMeta({
     middleware: ["auth", "seller"]
 })
 
+useHead({
+  title: 'Dashboard - Mectrons Seller',
+  meta: [
+    { name: 'description', content: 'Mectrons' }
+  ]
+})
+
 </script>
 
 <template>

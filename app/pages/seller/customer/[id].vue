@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { AvatarFallback, AvatarImage, AvatarRoot } from 'radix-vue'
+
+definePageMeta({
+    middleware: ["auth", "seller"]
+})
+
 useHead({
-  title: 'Order Detail - Mectrons Admin',
+  title: 'Customer Detail - Mectrons Seller',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
 })
+
 const route = useRoute()
 // state
 const { id } = route.params

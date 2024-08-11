@@ -5,3 +5,8 @@ export const getGeneratedID = (row: any) => {
 export const getFileUrl = (url: string): string => {   
     return useRuntimeConfig().public.imageUrl + '/' + url.replaceAll('public', 'storage')
 }
+
+export const getUrl = (data: any) => {
+    if(data instanceof File) return URL.createObjectURL(data)
+    else return getFileUrl(getFileUrl(data))
+}

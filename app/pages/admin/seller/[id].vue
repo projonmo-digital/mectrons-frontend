@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import Stepper from '~/components/common/Stepper.vue';
+
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
+
 useHead({
-  title: 'Order Detail - Mectrons Admin',
+  title: 'Sellers - Mectrons Admin',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
 })
+
 const route = useRoute()
 // state
 const { id } = route.params

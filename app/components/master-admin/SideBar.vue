@@ -22,15 +22,15 @@ const sidebarList: TSidebar = [
         url: '/admin/product'
     },
     {
+        header: "Categories",
+        icon: "eva:shopping-bag-outline",
+        url: '/admin/categories'
+    },
+    {
         header: "Order",
         icon: "eva:shopping-bag-outline",
         url: '/admin/order'
     },
-    // {
-    //     header: "Sales",
-    //     icon: "eva:shopping-bag-outline",
-    //     url: '/admin/Seller/allSeller'
-    // },
     {
         header: "Customer",
         icon: 'eva:people-outline',
@@ -46,11 +46,11 @@ const sidebarList: TSidebar = [
         icon: 'eva:people-outline',
         url: '/admin/report'
     },
-    // {
-    //     header: "Offer",
-    //     icon: "eva:gift-outline",
-    //     url: '/admin/offer'
-    // },
+    {
+        header: "Offer",
+        icon: "eva:gift-outline",
+        url: '/admin/offer'
+    },
     {
         header: "Advertisement",
         icon: 'eva:people-outline',

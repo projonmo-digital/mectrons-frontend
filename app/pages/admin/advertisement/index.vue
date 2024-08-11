@@ -11,6 +11,17 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
+
+useHead({
+  title: 'Advertisement - Mectrons Admin',
+  meta: [
+    { name: 'description', content: 'Mectrons' }
+  ]
+})
+
 const { toast } = useToast()
 
 const preloader = ref(false)

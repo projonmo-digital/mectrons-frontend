@@ -4,6 +4,10 @@ import { ref } from 'vue'
 import PendingProduct from '~/components/master-admin/product/PendingProduct.vue'
 import ApprovedProduct from '~/components/master-admin/product/ApprovedProduct.vue'
 
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
+
 useHead({
   title: 'Products - Mectrons Admin',
   meta: [

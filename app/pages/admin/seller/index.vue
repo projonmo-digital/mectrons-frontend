@@ -4,8 +4,12 @@ import { ref } from 'vue'
 import PendingSeller from '~/components/master-admin/seller/PendingSeller.vue'
 import ApprovedSeller from '~/components/master-admin/seller/ApprovedSeller.vue'
 
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
+
 useHead({
-  title: 'Seller - Mectrons Admin',
+  title: 'Sellers - Mectrons Admin',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]

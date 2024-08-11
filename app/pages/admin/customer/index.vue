@@ -4,8 +4,12 @@ import { ref } from 'vue'
 import ActiveCustomer from '~/components/master-admin/customer/ActiveCustomer.vue'
 import InactiveCustomer from '~/components/master-admin/customer/InactiveCustomer.vue'
 
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
+
 useHead({
-  title: 'Order - Mectrons Admin',
+  title: 'Customers - Mectrons Admin',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]

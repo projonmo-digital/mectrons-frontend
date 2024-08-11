@@ -6,6 +6,18 @@ import Logos from '@/components/master-admin/Logos'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
+
+useHead({
+  title: 'Dashboard - Mectrons Admin',
+  meta: [
+    { name: 'description', content: 'Mectrons' }
+  ]
+})
+
 const Icon = ['']
 const auth = useAuthStore();
 
@@ -13,16 +25,6 @@ onMounted(() => {
     initFlowbite();
 })
 
-definePageMeta({
-    middleware: ["auth", "admin"]
-})
-
-useHead({
-    title: 'Dashboard - Mectrons Admin',
-    meta: [
-        { name: 'description', content: 'Mectrons' }
-    ]
-})
 
 </script>
 

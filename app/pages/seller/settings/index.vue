@@ -3,13 +3,23 @@ import { ref, onMounted } from 'vue'
 import { toast } from '~/components/ui/toast'
 import { getFileUrl } from '~/helper'
 
+definePageMeta({
+    middleware: ["auth", "seller"]
+})
+
+useHead({
+  title: 'Settings - Mectrons Seller',
+  meta: [
+    { name: 'description', content: 'Mectrons' }
+  ]
+})
+
 // state
 const preloader = ref(true)
 const formData = ref({})
 const errors = ref({})
 
 const chooseImageHandler = (event) => {
-    console.log(event.target.files);
         let imageFile = event.target.files[0]
         formData.value.logo = imageFile
 }

@@ -3,8 +3,12 @@ import { ref } from 'vue'
 import PendingReport from '~/components/master-admin/report/PendingReport.vue'
 import DoneReport from '~/components/master-admin/report/DoneReport.vue'
 
+definePageMeta({
+    middleware: ["auth", "admin"]
+})
+
 useHead({
-  title: 'Report - Mectrons Admin',
+  title: 'Reports - Mectrons Admin',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
