@@ -1,9 +1,12 @@
 import { defineStore } from 'pinia'
 import { useToast } from '@/components/ui/toast/use-toast'
+import type { ICategory, IFlashSale } from '~/types/categories'
+import type { IOffer } from '~/types/offer'
 
 interface IState {
     loading: boolean,
-    categories: any[],
+    categories: ICategory[],
+    offerList: IOffer[],
     sliderCategories: any [],
     flatCategories: any[],
     local: string
@@ -14,6 +17,7 @@ export const useAppStore = defineStore('app', {
         categories: [],
         loading: false,
         sliderCategories: [],
+        offerList: [],
         flatCategories: [],
         local: localStorage.local || 'en'
     }),
@@ -36,6 +40,19 @@ export const useAppStore = defineStore('app', {
                 }
                 this.$state.flatCategories = flattenCategories(data.value.categories, null)
             }
+            this.loading = false
+        },
+        async getFlashSale() {
+            this.loading = true
+            const response = await $fetch<IOffer[]>(`${useRuntimeConfig().public.baseUrl}/flash-sale`,
+                {
+                    headers: {
+                        Accept: 'application/json'
+                    }
+                }
+            );
+
+            this.offerList = response
             this.loading = false
         },
         setLocal(value: string) {

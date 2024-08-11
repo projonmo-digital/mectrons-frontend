@@ -34,7 +34,7 @@ const emit = defineEmits(['open', 'close'])
         <DialogPortal>
             <DialogOverlay class="bg-white/50 data-[state=open]:animate-overlayShow fixed inset-0 z-30" />
             <DialogContent
-                class="border shadow-lg data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] focus:outline-none z-[100]">
+                class="border shadow-lg data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] focus:outline-none z-[100]">
                 <DialogTitle class="text-2xl font-semibold">
                     {{ title }}
                 </DialogTitle>

@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button'
 
 interface IAction {
     title: string
-    method: Function,
+    method: Function
+    icon?: string
     hide?: boolean
 }
 
@@ -37,9 +38,13 @@ function copy(id: string) {
                 <DropdownMenuSeparator />
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem v-for="(action, index) in action.filter(a => !a.hide)" :key="`action-${index}`" @click="action.method(row)">
-                            {{ action.title }}
-                        </DropdownMenuItem>
+                    <DropdownMenuItem v-for="(action, index) in action.filter(a => !a.hide)" :key="`action-${index}`"
+                        @click="action.method(row)">
+                        <div class="flex items-center text-gray-700">
+                            <icon class="w-4 h-4 mr-1" v-if="!!action.icon":name="action.icon"/>
+                            <span>{{ action.title }}</span>
+                        </div>
+                    </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenuContent>
         </DropdownMenu>
