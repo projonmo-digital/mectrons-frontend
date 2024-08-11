@@ -1,51 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import type { ICategory } from '@/types/categories'
-import { useToast } from '@/components/ui/toast/use-toast'
 import CategoriesItem from './CategoriesItem.vue'
 import { useEmitter } from '@/composables/emitter'
 const emitter = useEmitter()
-const { toast } = useToast()
 
 const preloader = ref(false)
-const responseParams = ref({})
+const appStore = useAppStore()
+const { categories } = storeToRefs(appStore)
 
 const data = ref<ICategory[]>([])
 
-// methods
-const fetchData = async (params = {}) => {
-  const token = useCookie('token')
-  preloader.value = true
-  try {
-    let url = `${useRuntimeConfig().public.baseUrl}/general-categories?${new URLSearchParams(params).toString()}`;
-    const response = await $fetch<{ categories: ICategory[]}>(url, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token.value}`,
-      },
-    })
-    data.value = response.categories
-  } catch (error) {
-    const err = error as any;
-    if (err.response._data) {
-      if (typeof err.response._data.message === "string") {
-        toast({
-          class: "bg-red-500",
-          title: "Error",
-          description: err.response._data.errors,
-        });
-      }
-    }
-  } finally {
-    preloader.value = false;
-  }
-}
-
 onMounted(() => {
-  fetchData(responseParams.value)
   emitter.on('refetch-category', (e) => {
-    fetchData(responseParams.value)
+    appStore.getCetagories()
   })
 })
 </script>
@@ -58,7 +26,7 @@ onMounted(() => {
         <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl"></Icon>
       </div>
       <div v-else class="flex flex-col gap-1">
-        <CategoriesItem v-for="(category, index) in data" :key="`category-${index}`" :category="category" root />
+        <CategoriesItem v-for="(category, index) in categories" :key="`category-${index}`" :category="category" root />
       </div>
     </div>
   </div>

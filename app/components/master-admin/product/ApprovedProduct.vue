@@ -127,7 +127,7 @@ const unmarkProductAs = async (id: number) => {
             Accept: "application/json",
             Authorization: `Bearer ${token.value}`,
         }
-        }
+      }
     );
     if (data.value) {
         toast({

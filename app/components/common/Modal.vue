@@ -11,18 +11,25 @@ import {
 } from "radix-vue"
 
 interface Props {
-    title: string
+    title: string,
+    hideCloseBtn?: boolean
 }
-const props = defineProps<Props>()
-const model = defineModel()
+
+const props = withDefaults(defineProps<Props>(), {
+    hideCloseBtn: false
+})
+
+const model = defineModel<any>()
 const emit = defineEmits(['open', 'close'])
 
 </script>
 
 <template>
-    <DialogRoot>
+    <DialogRoot v-bind:open="model">
         <DialogTrigger>
-            <slot name="btn"></slot>
+            <span @click="emit('open')">
+                <slot name="btn"></slot>
+            </span>
         </DialogTrigger>
         <DialogPortal>
             <DialogOverlay class="bg-white/50 data-[state=open]:animate-overlayShow fixed inset-0 z-30" />
@@ -34,7 +41,7 @@ const emit = defineEmits(['open', 'close'])
                 <div>
                     <slot name="content"></slot>
                 </div>
-                <DialogClose
+                <DialogClose v-if="!hideCloseBtn" @click="emit('close')"
                     class="text-grass11 hover:bg-green4 focus:shadow-green7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
                     aria-label="Close">
                     <Icon name="lucide:x" />

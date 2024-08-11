@@ -19,7 +19,7 @@ const isModalOpen = ref(false)
 
 const loading = ref(false)
 const formData = ref<any>({})
-const errors = ref({})
+const errors = ref<any>({})
 
 const submit = async () => {
     try {
@@ -29,7 +29,13 @@ const submit = async () => {
         let body = new FormData()
 
         for (const key in formData.value) {
-            body.append(key, formData.value[key])
+            if(key !== 'image'){
+                body.append(key, formData.value[key])
+            } else {
+                if(formData.value[key] instanceof File){
+                    body.append(key, formData.value[key])
+                }
+            }
         }
         body.append('parent_id', `${props.parent?.id}`)
 
@@ -51,7 +57,7 @@ const submit = async () => {
         isModalOpen.value = false
     } catch (error) {
         const err = error as any;
-        console.log(err);
+        errors.value = err.response._data.errors
         
         // if (err.response._data) {
         //     if (typeof err.response._data.message === "string") {
@@ -67,6 +73,14 @@ const submit = async () => {
     } finally {
         loading.value = false
     }
+}
+
+const openModal = () => {
+    isModalOpen.value = true
+}
+const closeModal = () => {
+    isModalOpen.value = false
+    formData.value = {}
 }
 
 const changeImage = (event: any) => {
@@ -89,32 +103,36 @@ onMounted(() => {
 </script>
 
 <template>
-    <Modal v-model="isModalOpen" :title="category ? 'Update Category' : 'Create Category'">
+    <Modal v-model="isModalOpen" :title="category ? 'Update Category' : 'Create Category'" @open="openModal" @close="closeModal">
         <template #btn>
-            <button v-if="category" class="text-gray-500 hover:text-primary text-2xl">
+            <button v-if="category" class="text-gray-500 hover:text-primary text-2xl" @click="isModalOpen = true">
                 <icon name="bxs:edit" />
             </button>
-            <button v-else class="text-gray-500 hover:text-primary text-2xl">
+            <button v-else class="text-gray-500 hover:text-primary text-2xl" @click="isModalOpen = true">
                 <icon name="mingcute:plus-fill" />
             </button>
         </template>
         <template #content>
             <div class="flex flex-col gap-1">
                 <label>Name</label>
-                <input class="border px-3 py-2" type="text" v-model="formData.name" placeholder="Name">
+                <input class="border px-3 py-2" type="text" v-model="formData.name" placeholder="Name" :disabled="!!category">
+                <span v-if="Object.keys(errors).includes('name')" class="text-sm text-red-500">{{ errors.name[0] }}</span>
             </div>
             <div class="flex flex-col gap-1">
                 <label>Commission</label>
-                <input class="border px-3 py-2" type="text" v-model="formData.commission" placeholder="Commission">
+                <input class="border px-3 py-2" type="number" v-model="formData.commission" placeholder="Commission">
+                <span v-if="Object.keys(errors).includes('commission')" class="text-sm text-red-500">{{ errors.commission[0] }}</span>
             </div>
             <div class="flex flex-col gap-1">
                 <label>Description</label>
                 <textarea class="border px-3 py-2" type="text" v-model="formData.desc"
                     placeholder="Description"></textarea>
+                    <span v-if="Object.keys(errors).includes('desc')" class="text-sm text-red-500">{{ errors.desc[0] }}</span>
             </div>
             <div class="flex flex-col gap-1">
                 <label>Image</label>
                 <input class="border px-3 py-2" type="file" @change="changeImage">
+                <span v-if="Object.keys(errors).includes('image')" class="text-sm text-red-500">{{ errors.image[0] }}</span>
             </div>
             <hr class="my-3">
             <ButtonPrimary type="submit" :disabled="loading" @click.prevent="submit">

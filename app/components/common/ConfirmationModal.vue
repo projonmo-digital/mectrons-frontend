@@ -7,21 +7,20 @@ interface Props {
     icon?: string
     confirmBtnText?: string
     cancelBtnText?: string
+    loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
     message: 'Do you want to do that?',
-    icon: '',
+    icon: 'mdi:information',
     confirmBtnText: 'Yes',
     cancelBtnText: 'Cancel',
 })
+
 const emit = defineEmits(['confirm', 'cancel'])
 
 const isModalOpen = ref(false)
-
-const loading = ref(false)
-const formData = ref<any>({})
-const errors = ref({})
+const model = defineModel<any>()
 
 const confirm = () => {
     isModalOpen.value = false
@@ -35,20 +34,22 @@ const cancel = () => {
 </script>
 
 <template>
-    <Modal v-model="isModalOpen" title="">
+    <Modal v-model="model" title="" :hide-close-btn="true">
         <template #btn>
-            <slot name="btn"></slot>
+            <!-- <span @click="isModalOpen = true">
+                <slot name="btn"></slot>
+            </span> -->
         </template>
         <template #content>
             <slot name="content">
                 <div class="flex flex-col items-center">
-                    <Icon class="w-16 h-16 mr-2 text-primary" name="mdi:information"></Icon>
+                    <Icon class="w-16 h-16 mr-2 text-primary" :name="icon" />
                     <p class="text-xl font-medium my-3">{{ message }}</p>
                 </div>
             </slot>
             <hr class="my-3">
             <div class=" flex items-center gap-3">
-                <button class="flex-1 text-gray-800 font-bold hover:text-primary" @click="cancel">{{ cancelBtnText }}</button>
+                <button class="flex-1 text-gray-800 font-bold hover:text-primary" @click.prevent="cancel">{{ cancelBtnText }}</button>
                 <ButtonPrimary class="flex-1" type="button" :disabled="loading" @click="confirm">
                     <div class="flex items-center justify-center gap-x-2">
                         <div role="status" v-if="loading">

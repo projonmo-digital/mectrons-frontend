@@ -25,7 +25,7 @@ const onSlideChange = (e) => {
             </div>
             <div v-if="!loading && categories.length" class="h-full">
                 <nav class="nav-side-menu p-5">
-                    <NavItems :items="[...categories[0].children, ...categories[0].children, ...categories[0].children]" />
+                    <NavItems :items="[...categories[0].children, ...categories[1].children, ...categories[2].children]" />
                 </nav>
             </div>
         </aside>
