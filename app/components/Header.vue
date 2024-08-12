@@ -55,18 +55,12 @@ const menu = computed(() => {
         {
             text: categories.value[1]?.name,
             link: `/category/${categories.value[1]?.id}`,
-            // children: categories.value[1]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
-            children: categories.value.filter(c => [1,24].includes(c.id)).map(c => c.children).flat(Infinity).map(i => ({ text: i.name, link: `/category/${i.id}` }))
+            children: categories.value[1]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         {
             text: categories.value[2]?.name,
             link: `/category/${categories.value[2]?.id}`,
             children: categories.value[2]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
-        },
-        {
-            text: categories.value[3]?.name,
-            link: `/category/${categories.value[3]?.id}`,
-            children: categories.value[3]?.children.map(i => ({ text: i.name, link: `/category/${i.id}` }))
         },
         {
             text: "About Us",

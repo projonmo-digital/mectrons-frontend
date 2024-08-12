@@ -5,13 +5,17 @@ import type { IOffer } from '~/types/offer'
 
 import { useToast } from '@/components/ui/toast/use-toast'
 import DatatableDropdownAction from '~/components/common/DatatableDropdownAction.vue'
+import ConfirmationModal from '@/components/common/ConfirmationModal.vue'
 import AddEditOfferModal from '~/components/master-admin/offer/AddEditOfferModal.vue'
 
 const { toast } = useToast()
+const appStore = useAppStore()
 
 const preloader = ref(false)
 const router = useRouter()
-const isAddEditModalOpen = ref<boolean>(false)
+const loading = ref(false)
+const selectedOffer = ref<IOffer | null>(null)
+
 const data = ref<IOffer[]>([])
 
 // methods
@@ -71,8 +75,9 @@ const columns: ColumnDef<IOffer>[] = [
         action: [
           {
             title: 'Delete',
-            method: (row: any) => {
-              console.log(row);
+            method: (row: IOffer) => {
+              selectedOffer.value = row
+              openDelConfirmationModal()
             },
             icon: 'mdi:bin'
           }
@@ -82,13 +87,64 @@ const columns: ColumnDef<IOffer>[] = [
   }
 ]
 
+//offer add edit modal
+const isAddEditModalOpen = ref<boolean>(false)
 const openAddEditModal = () => {
-  isAddEditModalOpen.value = true  
+  isAddEditModalOpen.value = true
 }
 
 const closeAddEditModal = () => {
   isAddEditModalOpen.value = false
+}
+const afterSuccess = () => {
+  closeAddEditModal()
   fetchData()
+}
+
+// offer delete confirmation modal
+const isDelConfirmationModalOpen = ref(false)
+
+const confirmDelConfirmationModal = (ev: any) => {
+  if (selectedOffer.value) {
+    deleteOffer(selectedOffer.value.id)
+  }
+}
+
+const openDelConfirmationModal = () => {
+  isDelConfirmationModalOpen.value = true
+}
+
+const cancelDelConfirmationModal = () => {
+  isDelConfirmationModalOpen.value = false
+  loading.value = false
+  selectedOffer.value = null
+}
+
+const deleteOffer = async (id: number) => {
+  try {
+    loading.value = true;
+    const token = useCookie('token');
+
+    const response = await $fetch<any>(`${useRuntimeConfig().public.baseUrl}/flash-sale/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token.value}`,
+        }
+      }
+    );
+    toast({
+      title: "Success",
+      description: response?.message,
+    });
+    fetchData()
+    appStore.getCetagories(false)
+    isDelConfirmationModalOpen.value = false
+  } catch (error) {
+  } finally {
+    loading.value = false
+  }
 }
 
 onMounted(() => {
@@ -114,6 +170,10 @@ onMounted(() => {
         <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl"></Icon>
       </div>
     </div>
-    <AddEditOfferModal @open="openAddEditModal" @close="closeAddEditModal" v-model="isAddEditModalOpen"></AddEditOfferModal>
+    <AddEditOfferModal @open="openAddEditModal" @success="afterSuccess" @close="closeAddEditModal"
+      v-model="isAddEditModalOpen"></AddEditOfferModal>
+    <ConfirmationModal v-model="isDelConfirmationModalOpen" 
+    message="Do you want to delete offer?"
+    :loading="loading" @confirm="confirmDelConfirmationModal" @cancel="cancelDelConfirmationModal" />
   </div>
 </template>

@@ -14,7 +14,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const emit = defineEmits(['open', 'close'])
+const emit = defineEmits(['open', 'close', 'success'])
 const model = defineModel<any>()
 
 const loading = ref(false)
@@ -57,7 +57,7 @@ const submit = async () => {
             title: "Success",
             description: response?.message,
         });
-        emit('close')
+        emit('success')
     } catch (error) {
         const err = error as any;
         errors.value = err.response._data.errors

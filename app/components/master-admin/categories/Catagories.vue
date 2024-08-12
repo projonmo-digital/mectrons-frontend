@@ -13,7 +13,7 @@ const data = ref<ICategory[]>([])
 
 onMounted(() => {
   emitter.on('refetch-category', (e) => {
-    appStore.getCetagories()
+    appStore.getCetagories(false)
   })
 })
 </script>

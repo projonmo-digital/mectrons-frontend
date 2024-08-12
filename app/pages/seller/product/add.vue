@@ -356,10 +356,10 @@ watch(productOrService, () => {
                     <tr class=" align-top">
                         <td class="py-3"><Label for="tags">Description</Label></td>
                         <td class="py-3">
-                            <div class="relative">
+                            <div class="relative notranslate">
                                 <div class="p-1 bg-primary/40 flex items-center absolute top-0 right-0 rounded-bl-lg">
-                                    <button class="text-primary hover:bg-primary hover:text-white text-sm w-12" :class="{ 'bg-primary text-white': !isBn }" @click="isBn = false">en</button>
-                                    <button class="text-primary hover:bg-primary hover:text-white text-sm w-12" :class="{ 'bg-primary text-white': isBn }" @click="isBn = true">bn</button>
+                                    <button class="text-primary hover:bg-primary hover:text-white text-sm w-12" :class="{ 'bg-primary text-white': !isBn }" @click="isBn = false">EN</button>
+                                    <button class="text-primary hover:bg-primary hover:text-white text-sm w-12" :class="{ 'bg-primary text-white': isBn }" @click="isBn = true">BN</button>
                                 </div>
                                 <div>
                                     <Textarea id="description" v-if="isBn" v-model="response['bn[description]']" rows="8"></Textarea>

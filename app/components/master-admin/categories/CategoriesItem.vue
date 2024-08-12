@@ -117,8 +117,11 @@ const cancelFlash = () => {
         </div>
         <div>
             <span v-if="category.flash_sale_offers.length" class="w-2 h-2 rounded-full bg-primary inline-block mr-1"></span>
-            <button class="px-3 py-1 text-sm rounded-full text-white hover:bg-orange-500 mr-3"
-             :class="isFlashSaleOpen ? 'bg-primary': 'bg-gray-500'" @click="toggleFlashSale">Flah sale</button>
+            <!--<button class="px-3 py-1 text-sm rounded-full text-white hover:bg-orange-500 mr-3"
+             :class="isFlashSaleOpen ? 'bg-primary': 'bg-gray-500'" @click="toggleFlashSale">Flah sale</button>-->
+            <button class="text-gray-500 hover:text-primary text-2xl"
+            :class="isFlashSaleOpen ? 'text-primary': 'text-gray-500'"
+            @click="toggleFlashSale"><icon name="mdi:flash" /></button>
             <AddEditCategory :parent="category" />
             <AddEditCategory :parent="parent!" :category="category" />
             <button v-if="!root" class="text-gray-500 hover:text-primary text-2xl" @click="isDelConfirmationModalOpen = true"><icon name="mdi:bin" /></button>

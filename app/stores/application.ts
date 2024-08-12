@@ -22,8 +22,8 @@ export const useAppStore = defineStore('app', {
         local: localStorage.local || 'en'
     }),
     actions: {
-        async getCetagories() {
-            this.loading = true
+        async getCetagories(loading = true) {
+            this.loading = loading
             const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`);
             this.categories = data.value?.categories
             if (data.value) {
