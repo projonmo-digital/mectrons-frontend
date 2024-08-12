@@ -1,20 +1,26 @@
 import { SAVE_CARTS, UPDATE_CART, DELETE_CART, GET_PRODUCTS } from "~/helper/localStorage"
+import type { IProduct } from "~/types/products"
 
 interface IState {
     loading: boolean,
-    products: any[],
+    products: IProduct[],
 }
 
 export const useCartStore = defineStore("cart", {
-  state: () => ({
+  state: () => <IState>({
+    loading: false,
     products: []
   }),
   actions: {
     getLocalProducts() {
-        GET_PRODUCTS().then((res: any) => {
-            this.products = res
+        GET_PRODUCTS().then((res) => {
+          this.products = res
         })
     },
+    addToCart(product: IProduct) {
+      this.products.push(product)
+      SAVE_CARTS(this.products)
+    }
     // async AddToCart(product) {
     //   const toaster = useToasterStore();
 

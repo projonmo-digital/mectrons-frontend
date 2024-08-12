@@ -1,45 +1,49 @@
+import type { IProduct } from "~/types/products"
+
 export const idGen = () => {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
-const saveToLocalstorage = (key: string, data: any) => {
+const saveToLocalstorage = <T>(key: string, data: T[]) => {
   return new Promise((resolve) => {
-    return resolve(localStorage.setItem(key, JSON.stringify(data)))
+    localStorage.setItem(key, JSON.stringify(data))
+    return resolve(true)
   })
 }
 
-const retriveFromLocalstorage = (key: string) => {
-  return new Promise((resolve, reject) => {
-    let data = localStorage.getItem(key)
+const retriveFromLocalstorage = <T>(key: string) => {
+  return new Promise<T[]>((resolve, reject) => {
+    let data: string | null = localStorage.getItem(key)
     if (data) {
-      return resolve(JSON.parse(data))
+      return resolve(JSON.parse(data) as T[])
     }
     return(reject('data not found'))
   })
 }
 
 // carts
-export const SAVE_CARTS = (formData: any) => {
-  return retriveFromLocalstorage('carts').then(async (data: any) => {
-    return saveToLocalstorage('carts', [...data, formData])
+export const SAVE_CARTS = (formData: IProduct[]) => {
+  return retriveFromLocalstorage<IProduct>('carts').then(async (data) => {
+    return saveToLocalstorage<IProduct>('carts', [...data, ...formData])
   })
 }
 
-export const UPDATE_CART = (formData: any) => {
-  return retriveFromLocalstorage('carts').then(async (data: any) => {
-    Object.assign(data.find((p: any) => p.id === formData.id),
-      { ...formData }
-    )
-    return saveToLocalstorage('carts', data);
+export const UPDATE_CART = (formData: IProduct) => {
+  return retriveFromLocalstorage<IProduct>('carts').then(async (data) => {
+    let product = data.find((p: IProduct) => p.id === formData.id)
+    if(product){
+      Object.assign(product, { ...formData })
+    }
+    return saveToLocalstorage('carts', data)
   })
 }
 
-export const DELETE_CART = (id: any) => {
-  return retriveFromLocalstorage('carts').then(async (data: any) => {
-    return saveToLocalstorage('carts', data.filter((p: any) => p.id !== id))
+export const DELETE_CART = (id: number) => {
+  return retriveFromLocalstorage<IProduct>('carts').then(async (data) => {
+    return saveToLocalstorage('carts', data.filter((p) => p.id !== id))
   })
 }
 
 export const GET_PRODUCTS = () => {
-  return retriveFromLocalstorage('carts')
+  return retriveFromLocalstorage<IProduct>('carts')
 }

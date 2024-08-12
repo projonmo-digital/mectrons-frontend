@@ -8,6 +8,7 @@ import logo_white from '~/assets/images/logo_white.svg'
 
 const { categories, loading, local } = storeToRefs(useAppStore())
 const appStore = useAppStore()
+const { products } = storeToRefs(useCartStore())
 
 import {
     DropdownMenu,
@@ -20,10 +21,6 @@ const auth = useAuthStore()
 const router = useRouter()
 
 const cart = useCartStore()
-
-onMounted(() => {
-    console.log(cart.products)
-})
 
 const searchText = ref('')
 const handelSearchSubmit = () => {
@@ -176,7 +173,7 @@ const onChange = (value) => {
                             <span class="sr-only">Notifications</span>
                             <div
                                 class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                                {{ cart.carts?.quantity > 0 ? cart.carts?.quantity : 0 }}
+                                {{ products.length }}
                             </div>
                         </nuxt-link>
                         <div class="inline-block sm:hidden">

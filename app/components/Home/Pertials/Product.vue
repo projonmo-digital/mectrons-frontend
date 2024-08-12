@@ -1,10 +1,17 @@
-<script setup>
+<script setup lang="ts">
+import type { IProduct } from '~/types/products';
+
 const auth = useAuthStore();
-const cart = useCartStore();
-const props = defineProps(['product'])
+const cartStore = useCartStore();
+
+interface Props {
+    product: IProduct
+}
+
+const props = defineProps<Props>()
 
 // Bookmark
-const bookmarkAdd = async (product) => {
+const bookmarkAdd = async (product: IProduct) => {
     const token = useCookie('token')
     try {
         const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
@@ -22,7 +29,7 @@ const bookmarkAdd = async (product) => {
     }
 }
 
-const bookmarkRemove = async (product) => {
+const bookmarkRemove = async (product: IProduct) => {
     const token = useCookie('token');
     try {
         const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
@@ -40,21 +47,20 @@ const bookmarkRemove = async (product) => {
     }
 }
 
-const AddToCart = (product) => {
-    product.qty = 1;
-    cart.AddToCart(product);
+const addToCart = (product: IProduct) => {
+    cartStore.addToCart(product)
 }
 </script>
 
 <template>
     <div class="border relative border-transparent hover:border-gray-200 shadow-md hover:shadow-xl rounded-xl overflow-hidden my-5 bg-white notranslate">
-        <nuxt-link  :to="`/products/${product?.id}`">
-            <img class="h-[200px] object-cover" v-if="props.product?.picture != ''"
-                :src="useRuntimeConfig().public.imageUrl + '/' + props.product?.picture[0].replaceAll('public', 'storage')"
+        <nuxt-link  :to="`/products/${product.id}`">
+            <img class="h-[200px] object-cover" v-if="product?.picture.length"
+                :src="useRuntimeConfig().public.imageUrl + '/' + product.picture[0]?.replaceAll('public', 'storage')"
                 alt="Product" />
             <img class="h-[200px] object-cover" v-else src="assets/images/dummy-image.jpg" alt="Ads" />
         </nuxt-link>
-        <Icon name="mdi:heart" class="w-8 h-8 absolute top-3 left-3 text-gray-300 cursor-pointer" @click="auth?.user?.id === props.product?.user_id ? bookmarkRemove(product) :bookmarkAdd(product)"
+        <Icon name="mdi:heart" class="w-8 h-8 absolute top-3 left-3 text-gray-300 cursor-pointer" @click="auth?.user?.id === product?.user_id ? bookmarkRemove(product) :bookmarkAdd(product)"
             :class="{ 'text-red-500': auth?.user?.id === props.product?.user_id }"></Icon>
         <div>
             <div class="flex items-center px-3 py-2">
@@ -101,7 +107,7 @@ const AddToCart = (product) => {
                 </div>
             </div>
             <div class="flex justify-center py-3">
-                <button @click="AddToCart(props.product)" type="button" class="flex items-center justify-center mx-4 rounded-full bg-[rgba(239,_239,_239,_1)] hover:bg-primary text-[rgba(0,_0,_0,_0.52)] px-5 py-2.5 text-center text-sm font-medium hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 ease-in-out duration-300">
+                <button @click="addToCart(product)" type="button" class="flex items-center justify-center mx-4 rounded-full bg-[rgba(239,_239,_239,_1)] hover:bg-primary text-[rgba(0,_0,_0,_0.52)] px-5 py-2.5 text-center text-sm font-medium hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300 ease-in-out duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
