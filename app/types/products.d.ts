@@ -47,7 +47,7 @@ export interface IProduct {
   currency_id: number;
   category_id: number;
   type_id: number;
-  status: 'pending' | 'ok';
+  status: "pending" | "ok";
   approved_at: string;
   picture: string[];
   marker: IMarker[];

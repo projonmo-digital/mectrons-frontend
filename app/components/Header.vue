@@ -8,6 +8,8 @@ import logo_white from '~/assets/images/logo_white.svg'
 
 const { categories, loading, local } = storeToRefs(useAppStore())
 const appStore = useAppStore()
+const cartStore = useCartStore()
+
 const { products } = storeToRefs(useCartStore())
 
 import {
@@ -167,13 +169,12 @@ const onChange = (value) => {
 
                         <button class="text-sm hover:underline hidden sm:inline-block notranslate"
                             @click="onChange(local === 'bn' ? 'en': 'bn')">{{ local === 'bn' ? 'EN': 'BN' }}</button>
-                        <nuxt-link to="/cart"
+                        <nuxt-link to="/pages/cart"
                             class="relative inline-flex items-center p-3 text-sm font-medium text-center">
                             <i class="fa-solid fa-cart-shopping text-2xl sm:text-sm"></i>
-                            <span class="sr-only">Notifications</span>
                             <div
                                 class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                                {{ products.length }}
+                                {{ Object.values(cartStore.fromData.quantity).reduce((r,c) => r += c, 0) }}
                             </div>
                         </nuxt-link>
                         <div class="inline-block sm:hidden">

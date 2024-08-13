@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Toaster from '@/components/ui/toast/Toaster.vue'
 const appStore = useAppStore()
+const cartStore = useCartStore()
 
 // 
 function googleTranslateElementInit() {
@@ -11,6 +12,11 @@ onMounted(() => {
   googleTranslateElementInit()
   appStore.getCetagories()
   appStore.getFlashSale()
+  cartStore.getLocalProducts().then(res => {
+    setTimeout(() => {
+      cartStore.fromDateGenerator()
+    })
+  })
 })
 </script>
 

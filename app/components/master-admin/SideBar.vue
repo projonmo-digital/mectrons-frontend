@@ -52,6 +52,11 @@ const sidebarList: TSidebar = [
         url: '/admin/offer'
     },
     {
+        header: "Coupon",
+        icon: "eva:gift-outline",
+        url: '/admin/Coupon'
+    },
+    {
         header: "Advertisement",
         icon: 'eva:people-outline',
         url: '/admin/advertisement'

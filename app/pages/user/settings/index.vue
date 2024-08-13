@@ -1,7 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { toast } from '~/components/ui/toast'
 import { getFileUrl } from '~/helper'
+import type { IUserResponse } from '~/types/auth';
+
+const authStore = useAuthStore()
 
 definePageMeta({
     middleware: ["auth", "user"]
@@ -17,36 +20,42 @@ useHead({
 
 // state
 const preloader = ref(true)
-const formData = ref({})
-const errors = ref({})
+const formData = ref<any>({})
+const errors = ref<any>({})
 
-const chooseImageHandler = (event) => {
-    console.log(event.target.files);
+const chooseImageHandler = (event: any) => {
+    let input = document.createElement('input')
+    input.type = 'file'
+    input.addEventListener('change', async(event: any) => {
         let imageFile = event.target.files[0]
-        formData.value.logo = imageFile
-}
-
-const submit = async () => {
-    const token = useCookie('token');
-    const fd = new FormData();
-
-    Object.keys(formData.value).forEach(key => {
-        if(key !== 'logo'){
-            fd.append(key, formData.value[key])
-        }
-        if(key === 'logo' && formData.value[key] instanceof File){
-            fd.append(key, formData.value[key])
-        }
-    });
-
-    try {
-        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/saler-settings`, {
+        const fd = new FormData()
+        const token = useCookie('token')
+        fd.append('profile_picture', imageFile)
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/profile-picture`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token.value}`,
             },
             body: fd
+        });
+        if(response){
+            getSettings()
+        }
+    })
+    input.click()
+}
+
+const submit = async () => {
+    const token = useCookie('token');
+    try {
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/profile`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token.value}`,
+            },
+            body: JSON.stringify(formData.value)
         });
         getSettings()
         toast({ description: response.message, variant: 'default' })
@@ -55,38 +64,33 @@ const submit = async () => {
     }
 };
 
-const getUrl = (data) => {
+const getUrl = (data: File | string) => {
     if(data instanceof File) return URL.createObjectURL(data)
     else return getFileUrl(data)
 }
 
 const getSettings = async (params = {}) => {
     const token = useCookie('token')
+    const user = useCookie("user");
     try {
         preloader.value = true
-        let url = `${useRuntimeConfig().public.baseUrl}/saler-settings?${new URLSearchParams(params).toString()}`;
-        const response = await $fetch(url, {
+        let url = `${useRuntimeConfig().public.baseUrl}/profile?${new URLSearchParams(params).toString()}`;
+        const response = await $fetch<IUserResponse>(url, {
             method: "GET",
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
         })
+        user.value = JSON.stringify(response)
+        authStore.user = response
         if (response) {
             let data = {
+                email: response['email'] || "",
                 name: response['name'] || "",
-                name_bn: response['name_bn'] || "",
-                logo: response['logo'] || "",
-                phone: response['phone'] || "",
-                location: response['location'] || "",
-                address: response['address'] || "",
-                meta_title: response['meta_title'] || "",
-                meta_desc: response['meta_desc'] || "",
-                facebook: response['facebook'] || "",
-                instragram: response['instragram'] || "",
-                twitter: response['twitter'] || "",
-                google: response['google'] || "",
-                youtube: response['youtube'] || ""
+                mobile: response['mobile'] || "",
+                profile_picture: response.profile_picture || '',
+                address: response.profile.address || "",
             }
             formData.value = data
             return response
@@ -116,100 +120,47 @@ onMounted(() => {
                 <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl"></Icon>
             </div>
         <div v-else class="flex flex-col gap-5">
-            <div class="flex flex-col border p-5 rounded-lg">
-                <div class="pb-2">
-                    <h1 class="text-2xl">Basic Info</h1>
-                </div>
-                <hr>
+            <div class="flex flex-col">
                 <div class="flex flex-col gap-8">
                     <div class="flex --items-center">
                         <table class="w-full max-w-[600px]">
                             <tr>
-                                <td class="py-3"><Label for="shop_name">Shop Name</Label></td>
+                                <td class="py-3"><Label for="email">Email</Label></td>
                                 <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.name" type="text" placeholder="Shop Name" />
+                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.email" disabled type="text" placeholder="email" />
+                                    <small class="text-red-500" v-if="errors['email']">{{ errors['email'][0] }}</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-3"><Label for="name">Name</Label></td>
+                                <td class="py-3">
+                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.name" type="text" placeholder="Name" />
                                     <small class="text-red-500" v-if="errors['name']">{{ errors['name'][0] }}</small>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="py-3"><Label for="shop_name">Shop Name BN</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.name_bn" type="text" placeholder="Shop Name" /></td>
-                            </tr>
-                            <tr>
-                                <td class="py-3"><Label for="picture">Picture</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" type="file" @change="chooseImageHandler" /></td>
-                            </tr>
-                            <tr>
-                                <td class="py-3"><Label for="shop_phone">Shop Phone</Label></td>
+                                <td class="py-3"><Label for="mobile">Mobile</Label></td>
                                 <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.phone" type="text" placeholder="Shop Phone" />
-                                    <small class="text-red-500" v-if="errors['phone']">{{ errors['phone'][0] }}</small>
+                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.mobile" type="text" placeholder="mobile" />
+                                    <small class="text-red-500" v-if="errors['mobile']">{{ errors['mobile'][0] }}</small>
                                 </td>
                             </tr>
+                            
                             <tr>
-                                <td class="py-3"><Label for="shop_address">Shop Location</Label></td>
+                                <td class="py-3"><Label for="address">Address</Label></td>
                                 <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.location" type="text" placeholder="Shop Phone" />
-                                    <small class="text-red-500" v-if="errors['location']">{{ errors['location'][0] }}</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-3"><Label for="street_address">Street Address</Label></td>
-                                <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.address" type="text" placeholder="Street Address" />
+                                    <textarea class="w-full border" v-model="formData.address"></textarea>
                                     <small class="text-red-500" v-if="errors['address']">{{ errors['address'][0] }}</small>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="py-3"><Label for="meta_title">Meta Title</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.meta_title" type="text" placeholder="Meta Title" /></td>
-                            </tr>
-                            <tr>
-                                <td class="py-3" style="vertical-align: top;">
-                                    <Label for="description">Meta Description</Label>
-                                </td>
-                                <td class="py-3"><Textarea v-model="formData.meta_desc" class="h-[331px] resize-none"></Textarea></td>
                             </tr>
                         </table>
                         <div class="flex-1">
                             <div class="flex justify-center items-center mt-24">
-                                <div class="border rounded-lg bg-gray-200 w-[160px] h-[160px] relative overflow-hidden">
-                                    <img :src="getUrl(formData.logo)" class="w-full h-full object-cover" alt="">
+                                <div @click="chooseImageHandler" class="border cursor-pointer rounded-lg bg-gray-200 w-[160px] h-[160px] relative overflow-hidden">
+                                    <img :src="getUrl(formData.profile_picture)" class="w-full h-full object-cover" alt="">
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex flex-col border p-5 rounded-lg">
-                <div class="pb-2">
-                    <h1 class="text-2xl">Media Link</h1>
-                </div>
-                <hr>
-                <div class="flex flex-col gap-8">
-                    <div class="flex items-center">
-                        <table class="w-full max-w-[600px]">
-                            <tr>
-                                <td class="py-3"><Label for="shop_name">Facebook</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.facebook" type="text" placeholder="Facebook" /></td>
-                            </tr>
-                            <tr>
-                                <td class="py-3"><Label for="instagram">Instagram</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.intstagram" type="text" placeholder="Instagram" /></td>
-                            </tr>
-                            <tr>
-                                <td class="py-3"><Label for="twitter">Twitter</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.twitter" type="text" placeholder="Twitter" /></td>
-                            </tr>
-                            <tr>
-                                <td class="py-3"><Label for="google">Google</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.google" type="text" placeholder="Google" /></td>
-                            </tr>
-                            <tr>
-                                <td class="py-3"><Label for="youtube">Youtube</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.youtube" type="text" placeholder="Youtube" /></td>
-                            </tr>
-                        </table>
                     </div>
                 </div>
             </div>

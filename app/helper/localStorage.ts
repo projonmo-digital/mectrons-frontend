@@ -17,15 +17,15 @@ const retriveFromLocalstorage = <T>(key: string) => {
     if (data) {
       return resolve(JSON.parse(data) as T[])
     }
-    return(reject('data not found'))
+    return resolve([])
   })
 }
 
 // carts
 export const SAVE_CARTS = (formData: IProduct[]) => {
-  return retriveFromLocalstorage<IProduct>('carts').then(async (data) => {
-    return saveToLocalstorage<IProduct>('carts', [...data, ...formData])
-  })
+  return saveToLocalstorage<IProduct>('carts', formData)
+  // return retriveFromLocalstorage<IProduct>('carts').then((data) => {
+  // })
 }
 
 export const UPDATE_CART = (formData: IProduct) => {
