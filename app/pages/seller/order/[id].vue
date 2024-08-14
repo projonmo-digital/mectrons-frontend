@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import Stepper from '~/components/common/Stepper.vue';
-import UserListViewItem from '~/components/common/UserListViewItem.vue';
+import Stepper from '~/components/Common/Stepper.vue';
+import UserListViewItem from '~/components/Common/UserListViewItem.vue';
 
 definePageMeta({
     middleware: ["auth", "seller"]

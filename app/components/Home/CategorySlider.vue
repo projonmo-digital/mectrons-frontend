@@ -4,7 +4,7 @@ import { Autoplay } from 'swiper/modules'
 import 'swiper/css'
 
 // components
-import NavItems from '@/components/common/NavItems.vue'
+import NavItems from '@/components/Common/NavItems.vue'
 
 // state
 const { categories, loading } = storeToRefs(useAppStore())

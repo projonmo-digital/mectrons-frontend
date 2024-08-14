@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
-import Modal from "~/components/common/Modal.vue"
+import Modal from "~/components/Common/Modal.vue"
 import type { ICategory } from "~/types/categories"
 import { useToast } from "@/components/ui/toast/use-toast"
 import { useEmitter } from '@/composables/emitter'

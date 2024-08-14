@@ -12,11 +12,7 @@ onMounted(() => {
   googleTranslateElementInit()
   appStore.getCetagories()
   appStore.getFlashSale()
-  cartStore.getLocalProducts().then(res => {
-    setTimeout(() => {
-      cartStore.fromDateGenerator()
-    })
-  })
+  cartStore.getLocalProducts()
 })
 </script>
 

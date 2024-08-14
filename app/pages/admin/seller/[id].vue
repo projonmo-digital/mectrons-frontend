@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import Stepper from '~/components/common/Stepper.vue';
+import Stepper from '~/components/Common/Stepper.vue';
 
 definePageMeta({
     middleware: ["auth", "admin"]

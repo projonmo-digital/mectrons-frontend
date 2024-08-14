@@ -5,7 +5,7 @@ import type { ICategory, IFlashSale } from '@/types/categories'
 import CategoriesItem from './CategoriesItem.vue'
 import AddEditCategory from './AddEditCategoryModal.vue'
 import SelectFalashSaleModal from './SelectFalashSaleModal.vue'
-import ConfirmationModal from '@/components/common/ConfirmationModal.vue'
+import ConfirmationModal from '@/components/Common/ConfirmationModal.vue'
 
 import { useToast } from "@/components/ui/toast/use-toast"
 import { useEmitter } from '@/composables/emitter'

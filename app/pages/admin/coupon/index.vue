@@ -4,8 +4,8 @@ import type { ColumnDef } from "@tanstack/vue-table"
 import type { IOffer } from '~/types/offer'
 
 import { useToast } from '@/components/ui/toast/use-toast'
-import DatatableDropdownAction from '~/components/common/DatatableDropdownAction.vue'
-import ConfirmationModal from '@/components/common/ConfirmationModal.vue'
+import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
+import ConfirmationModal from '@/components/Common/ConfirmationModal.vue'
 import AddEditCouponModal from '~/components/master-admin/coupon/AddEditCouponModal.vue'
 
 const { toast } = useToast()

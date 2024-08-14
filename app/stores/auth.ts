@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import { useToast } from "@/components/ui/toast/use-toast";
-import type { ILoginResponse } from "@/types/auth";
+import type { ILoginResponse, IUser } from "@/types/auth";
 
 const { toast } = useToast();
 interface IState {
   authenticated: boolean;
-  user: null | any;
+  user: null | IUser;
   loading: boolean;
   errors: any;
 }

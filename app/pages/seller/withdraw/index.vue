@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import Modal from "~/components/common/Modal.vue"
+import Modal from "~/components/Common/Modal.vue"
 
 definePageMeta({
     middleware: ["auth", "seller"]

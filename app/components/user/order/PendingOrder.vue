@@ -3,11 +3,11 @@ import { ref, onMounted, h } from 'vue'
 import type { ColumnDef } from "@tanstack/vue-table"
 import Switch from "~/components/ui/switch/Switch.vue"
 import OderInfo from '~/components/master-admin/order/OderInfo.vue'
-import DatatableDropdownAction from '~/components/common/DatatableDropdownAction.vue'
+import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
 
 import { useToast } from '@/components/ui/toast/use-toast'
 import { getGeneratedID } from '~/helper'
-import UserListViewItem from '~/components/common/UserListViewItem.vue'
+import UserListViewItem from '~/components/Common/UserListViewItem.vue'
 const { toast } = useToast()
 
 const router = useRouter()

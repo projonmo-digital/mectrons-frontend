@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Filter from '@/components/common/Filter.vue'
+import Filter from '@/components/Common/Filter.vue'
 
 const router = useRouter()
 

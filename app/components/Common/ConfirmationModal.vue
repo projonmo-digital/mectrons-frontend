@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import Modal from "~/components/common/Modal.vue"
+import Modal from "~/components/Common/Modal.vue"
 
 interface Props {
     message?: string

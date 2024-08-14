@@ -3,7 +3,7 @@ import { ref, onMounted, h } from 'vue'
 import type { ColumnDef, RowData } from "@tanstack/vue-table"
 import Switch from "~/components/ui/switch/Switch.vue"
 import ProductInfo from "~/components/master-admin/product/ProductInfo.vue"
-import DatatableDropdownAction from '~/components/common/DatatableDropdownAction.vue'
+import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
 
 import { useToast } from '@/components/ui/toast/use-toast'
 const { toast } = useToast()

@@ -5,15 +5,16 @@ export interface ICartProduct extends IProduct {
 }
 
 export interface ICartItem {
+  currency_id: number;
   seller_id: number;
-  buyer_id: number;
   delivery_status: "placed";
   method: string;
   to_address: string;
   cost_fields: {
-    coupon: string;
+    coupon?: string;
     price: any;
     quantity: any;
     discount: number;
   };
+  mega_id: number;
 }

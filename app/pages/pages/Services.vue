@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Slider from '@/components/Category/Pertials/Slider.vue'
-import Filter from '@/components/common/Filter.vue'
-import FilterSidebar from '@/components/common/FilterSidebar.vue'
+import Filter from '@/components/Common/Filter.vue'
+import FilterSidebar from '@/components/Common/FilterSidebar.vue'
 import Product from '@/components/Home/Pertials/Product.vue'
 
 const store = useUtils()

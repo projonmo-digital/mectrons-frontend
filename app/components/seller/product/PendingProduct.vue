@@ -2,7 +2,7 @@
 import { ref, onMounted, h } from 'vue'
 import type { ColumnDef } from "@tanstack/vue-table"
 import ProductInfo from "~/components/master-admin/product/ProductInfo.vue"
-import DatatableDropdownAction from '~/components/common/DatatableDropdownAction.vue'
+import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
 
 const preloader = ref(false)
 const responseParams = ref({

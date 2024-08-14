@@ -3,8 +3,8 @@ import { ref, onMounted, h } from 'vue'
 import { getGeneratedID } from '~/helper'
 import type { ColumnDef } from "@tanstack/vue-table"
 import Switch from "~/components/ui/switch/Switch.vue"
-import UserListViewItem from '~/components/common/UserListViewItem.vue'
-import DatatableDropdownAction from '~/components/common/DatatableDropdownAction.vue'
+import UserListViewItem from '~/components/Common/UserListViewItem.vue'
+import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
 
 import { useToast } from '@/components/ui/toast/use-toast'
 const { toast } = useToast()

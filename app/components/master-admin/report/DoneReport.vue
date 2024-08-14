@@ -2,8 +2,8 @@
 import { ref, onMounted, h } from 'vue'
 import type { ColumnDef } from "@tanstack/vue-table"
 import ProductInfo from '~/components/master-admin/report/ProductInfo.vue'
-import DatatableDropdownAction from '~/components/common/DatatableDropdownAction.vue'
-import UserListViewItem from '~/components/common/UserListViewItem.vue'
+import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
+import UserListViewItem from '~/components/Common/UserListViewItem.vue'
 
 import { useToast } from '@/components/ui/toast/use-toast'
 import { getGeneratedID } from '~/helper'

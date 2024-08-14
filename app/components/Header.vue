@@ -12,6 +12,8 @@ const cartStore = useCartStore()
 
 const { products } = storeToRefs(useCartStore())
 
+const productsCount = computed(() => products.value.map(p => p.qty || 1).reduce((r, c) => r += c, 0))
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -174,7 +176,7 @@ const onChange = (value) => {
                             <i class="fa-solid fa-cart-shopping text-2xl sm:text-sm"></i>
                             <div
                                 class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                                {{ Object.values(cartStore.fromData.quantity).reduce((r,c) => r += c, 0) }}
+                                {{ productsCount }}
                             </div>
                         </nuxt-link>
                         <div class="inline-block sm:hidden">
