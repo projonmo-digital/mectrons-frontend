@@ -51,7 +51,7 @@ const AddToCart = (product) => {
     <div class="">
         <div class="flex gap-4">
             <div class="relative w-28 h-36 md:h-36 md:w-44">
-                <nuxt-link :to="`/product-details/${props.product?.id}`"
+                <nuxt-link :to="`/products/${props.product?.id}`"
                     class="flex justify-center items-center overflow-hidden">
                     <img class="object-cover rounded-t-lg w-28 h-36 md:h-36 md:w-44 md:rounded-none md:rounded-s-lg"
                         v-if="props.product?.picture != ''"
@@ -103,7 +103,7 @@ const AddToCart = (product) => {
                 </div>
 
                 <h5 class="text-sm font-bold tracking-tight ">
-                    <nuxt-link :to="`/product-details/${props.product?.id}`">
+                    <nuxt-link :to="`/products/${props.product?.id}`">
                         {{ props.product?.title }}
                     </nuxt-link>
                 </h5>

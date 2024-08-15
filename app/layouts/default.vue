@@ -13,6 +13,7 @@ onMounted(() => {
   appStore.getCetagories()
   appStore.getFlashSale()
   cartStore.getLocalProducts()
+  cartStore.getPaymentMethods()
 })
 </script>
 

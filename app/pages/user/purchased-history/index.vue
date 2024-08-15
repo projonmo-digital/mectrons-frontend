@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Product from '~/components/seller/product/ApprovedProduct.vue'
+import Invoice from '~/components/user/purchase-history/Invoice.vue'
 
 definePageMeta({
     middleware: ["auth", "user"]
@@ -13,13 +13,8 @@ useHead({
   ]
 })
 
-
 </script>
 
 <template>
-    <div class="flex justify-between">
-        <h1 class="text-2xl font-bold">Products</h1>
-    </div>
-    <hr class="my-2">
-    <Product></Product>
+    <Invoice></Invoice>
 </template>

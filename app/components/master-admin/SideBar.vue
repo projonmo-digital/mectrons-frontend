@@ -62,9 +62,19 @@ const sidebarList: TSidebar = [
         url: '/admin/advertisement'
     },
     {
+        header: "Withdraw history",
+        icon: 'eva:people-outline',
+        url: '/admin/withdraw-history'
+    },
+    {
         header: "Withdraw",
         icon: 'eva:people-outline',
         url: '/admin/withdraw'
+    },
+    {
+        header: "Settings",
+        icon: 'eva:people-outline',
+        url: '/admin/settings'
     },
 ]
 

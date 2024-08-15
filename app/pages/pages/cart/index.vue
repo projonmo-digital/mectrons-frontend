@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { idGen, SAVE_CARTS } from '~/helper/localStorage';
+import { SAVE_CARTS } from '~/helper/localStorage';
 import type { ICartItem } from '~/types/cart';
 import BestSaleProducts from '~/components/Products/BestSaleProducts.vue';
+import { useToast } from "@/components/ui/toast/use-toast"
+
+const { toast } = useToast()
 
 const router = useRouter()
 const cartStore = useCartStore()
 const { user } = storeToRefs(useAuthStore())
-const { products } = storeToRefs(useCartStore())
+const { products, methods } = storeToRefs(useCartStore())
 
 const preloader = ref(false)
 const cartFromBody = ref<any>({})
 const subTotal = computed(() => products.value.map(p => p.price * (p.qty || 1)).reduce((r, c) => r += c, 0))
 const total = computed(() => products.value.map(p => p.price * (p.qty || 1)).reduce((r, c) => r += c, 0) - (cartFromBody.value.coupon_amount || 0))
 
-// const CheckOutBtn = () => {
-//     const modal = new Modal(document.getElementById('checkout-modal'), null);
-//     modal.show();
-// }
+const selectedMethod = ref<string | null>(null)
 
 // coupon
 const getCoupon = async (event: any) => {
@@ -33,44 +33,50 @@ const getCoupon = async (event: any) => {
 }
 
 const submit = () => {
-    if (user.value) {
-        preloader.value = true
-        const invoices = Object.groupBy(products.value, (product) => product.user_id)
-        let invoiceResponse = []
-        for (let key in invoices) {
-            let products = invoices[key] || []
-            let price: any = {}
-            let quantity: any = {}
-            for (let product of products) {
-                price[product.id] = product.price
-                quantity[product.id] = product.qty
-            }
-            const cost_fields: any = {
-                price,
-                quantity,
-                discount: 0,
-            }
-            if(cartFromBody.value.coupon_code){
-                cost_fields.coupon = cartFromBody.value.coupon_code
-            }
-            
-            let invoice: ICartItem = {
-                seller_id: Number(key),
-                delivery_status: 'placed',
-                method: 'bkash',
-                currency_id: 12,
-                to_address: cartFromBody.value.address || '',
-                cost_fields,
-                mega_id: cartFromBody.value.id
-            }
-            invoiceResponse.push(submitInvoice(invoice))
-        }
-        Promise.all(invoiceResponse).then(res => {
-            preloader.value = false
-            SAVE_CARTS(products.value);
-        })
+    if (!selectedMethod.value) {
+        toast({
+            title: "Info",
+            description: 'Please select payment method.',
+        });
+        return
     } else {
-        router.push('/auth/login')
+        let generatedId = `${Date.now()}-${user.value?.id}`
+        if (user.value) {
+            preloader.value = true
+            const invoices = Object.groupBy(products.value, (product) => product.user_id)
+            let invoiceResponse = []
+            for (let key in invoices) {
+                let products = invoices[key] || []
+                let price: any = {}
+                let quantity: any = {}
+                for (let product of products) {
+                    price[product.id] = product.price
+                    quantity[product.id] = product.qty
+                }
+
+                let invoice: ICartItem = {
+                    seller_id: Number(key),
+                    delivery_status: 'placed',
+                    method: selectedMethod.value,
+                    currency_id: 12,
+                    to_address: cartFromBody.value.address || '',
+                    cost_fields: {
+                        price,
+                        quantity,
+                    },
+                    coupon: cartFromBody.value.coupon_code,
+                    mega_id: generatedId
+                }
+                invoiceResponse.push(submitInvoice(invoice))
+            }
+            Promise.all(invoiceResponse).then(res => {
+                preloader.value = false
+                SAVE_CARTS(products.value);
+                router.push(`/pages/cart/${generatedId}`)
+            })
+        } else {
+            router.push('/auth/login')
+        }
     }
 }
 
@@ -88,7 +94,7 @@ const submitInvoice = async (formData: ICartItem) => {
             }
         )
         console.log(Object.keys(formData.cost_fields.price));
-        
+
         products.value = products.value.filter(p => !Object.keys(formData.cost_fields.price).includes(p.id.toString()))
     } catch (error) {
         const err = error as any;
@@ -98,7 +104,6 @@ const submitInvoice = async (formData: ICartItem) => {
 onMounted(() => {
     // cartStore.fromDateGenerator()
     cartFromBody.value = {
-        id: idGen(),
         address: user.value?.profile.address,
     }
 })
@@ -119,7 +124,7 @@ onMounted(() => {
                             class="pt-3 pb-2 sm:pt-4">
                             <div class="flex items-center">
                                 <nuxt-link :to="`/products/${product.id}`">
-                                    <img class="w-16 h-16 rounded-md object-cover" v-if="product?.picture != ''"
+                                    <img class="w-16 h-16 rounded-md object-cover" v-if="product?.picture.length"
                                         :src="useRuntimeConfig().public.imageUrl + '/' + product?.picture[0].replaceAll('public', 'storage')"
                                         alt="Product" />
                                     <img class="w-16 h-16 rounded-md object-cover" v-else
@@ -172,8 +177,7 @@ onMounted(() => {
                     </template>
                 </ul>
             </div>
-            <div class="w-2/7">
-                <!-- <button class="bg-primary p-3 text-white" @click="submit">Checkout</button> -->
+            <div class="w-[460px]">
                 <div class=" bg-orange-100 p-5 rounded-lg">
                     <ul role="list">
                         <li class="pb-2">
@@ -181,7 +185,7 @@ onMounted(() => {
                                 Apply</h4>
                             <form class="flex items-center gap-x-3 mx-auto" @submit.prevent="getCoupon">
                                 <input type="text" name="text" class="border border-gray-400 ps-4 p-2.5"
-                                    placeholder="Coupon" required />
+                                    autocomplete="off" placeholder="Coupon" required />
                                 <button type="submit"
                                     class="bg-primary hover:bg-orange-500 text-white px-3 py-2 rounded-lg">
                                     Apply
@@ -255,8 +259,17 @@ onMounted(() => {
                                 </div>
                             </div>
                         </li>
+                        <li class="pb-3 pt-4 flex gap-3 flex-wrap">
+                            <div class="flex items-center gap-3"
+                                v-for="(method, index) in [{ value: 'cash', method: 'Cash on delivery' }, ...methods]"
+                                :key="`payment-methods-${index}`">
+                                <input type="radio" name="method" v-model="selectedMethod" :value="method.value"
+                                    required>
+                                <label>{{ method.method }}</label>
+                            </div>
+                        </li>
                         <li class="pb-3 pt-4">
-                            <button @click="submit" type="button"
+                            <button @click="submit" type="button" :disabled="!products.length"
                                 class="w-full bg-primary hover:bg-orange-500 text-white px-3 py-2 rounded-lg">Checkout</button>
                         </li>
                     </ul>
@@ -290,283 +303,6 @@ onMounted(() => {
                             </svg>
                             <span class="sr-only">Close modal</span>
                         </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="p-4 md:p-5 space-y-4">
-                        <div
-                            class="adses rounded grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-8 gap-y-5">
-                            <div>
-                                <form class="p-4 md:p-5">
-                                    <div class="grid gap-4 mb-4 grid-cols-2">
-                                        <h4 class="block text-md font-medium text-gray-900 dark:text-white">Contact</h4>
-                                        <div class="col-span-2 mb-3">
-                                            <input type="text" name="contact" id="contact"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="Email or Mobile Phone Number" required="">
-                                        </div>
-                                        <h4 class="block text-md font-medium text-gray-900 dark:text-white">Delivery
-                                        </h4>
-                                        <div class="col-span-2">
-                                            <select id="category"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                <option selected="">Select category</option>
-                                                <option value="TV">TV/Monitors</option>
-                                                <option value="PC">PC</option>
-                                                <option value="GA">Gaming/Console</option>
-                                                <option value="PH">Phones</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-span-2 sm:col-span-1">
-                                            <input type="text" name="fname" id="fname"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="First Name" required="">
-                                        </div>
-                                        <div class="col-span-2 sm:col-span-1">
-                                            <input type="text" name="lname" id="lname"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="Last Name" required="">
-                                        </div>
-                                        <div class="col-span-2">
-                                            <input type="text" name="address" id="address"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="Address" required="">
-                                        </div>
-                                        <div class="col-span-2">
-                                            <input type="text" name="name" id="name"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="Address" required="">
-                                        </div>
-                                        <div class="col-span-2 sm:col-span-1">
-                                            <input type="text" name="city" id="city"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="City" required="">
-                                        </div>
-                                        <div class="col-span-2 sm:col-span-1">
-                                            <input type="text" name="postal_code" id="postal_code"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                placeholder="Postal Code" required="">
-                                        </div>
-                                        <h4 class="block mt-3 text-md font-medium text-gray-900 dark:text-white">
-                                            Shipping Method
-                                        </h4>
-                                        <div class="col-span-2">
-                                            <div class="flex items-center mb-4">
-                                                <input id="shipping-radio-1" type="radio" value="" name="shipping-radio"
-                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                <label for="shipping-radio-1"
-                                                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default
-                                                    radio</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input checked id="shipping-radio-2" type="radio" value=""
-                                                    name="shipping-radio"
-                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                <label for="shipping-radio-2"
-                                                    class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Checked
-                                                    state</label>
-                                            </div>
-                                        </div>
-                                        <h4 class="block mt-3 text-md font-medium text-gray-900 dark:text-white">Payment
-                                            Method
-                                        </h4>
-                                        <div class="col-span-2">
-                                            <ul class="space-y-4 mb-4">
-                                                <li>
-                                                    <div for="payment-radio-1"
-                                                        class="flex justify-between items-center py-3 px-4 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
-                                                        <div class="flex items-center">
-                                                            <input checked id="payment-radio-1" type="radio" value=""
-                                                                name="payment-radio"
-                                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                            <label
-                                                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Checked
-                                                                state</label>
-                                                        </div>
-                                                        <img src="assets/images/payment/bKash.png" alt="payment"
-                                                            class="h-6 w-12 object-contain">
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div for="payment-radio-2"
-                                                        class="flex justify-between items-center py-3 px-4 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
-                                                        <div class="flex items-center">
-                                                            <input checked id="payment-radio-2" type="radio" value=""
-                                                                name="payment-radio"
-                                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                            <label
-                                                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Checked
-                                                                state</label>
-                                                        </div>
-                                                        <img src="assets/images/payment/nagad.png" alt="payment"
-                                                            class="h-6 w-12 object-contain">
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div for="payment-radio-3"
-                                                        class="flex justify-between items-center py-3 px-4 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
-                                                        <div class="flex items-center">
-                                                            <input checked id="payment-radio-3" type="radio" value=""
-                                                                name="payment-radio"
-                                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                            <label
-                                                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Checked
-                                                                state</label>
-                                                        </div>
-                                                        <img src="assets/images/payment/mastercard.png" alt="payment"
-                                                            class="h-6 w-12 object-contain">
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div for="payment-radio-4"
-                                                        class="flex justify-between items-center py-3 px-4 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">
-                                                        <div class="flex items-center">
-                                                            <input checked id="payment-radio-4" type="radio" value=""
-                                                                name="payment-radio"
-                                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                            <label
-                                                                class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Checked
-                                                                state</label>
-                                                        </div>
-                                                        <img src="assets/images/payment/cach.png" alt="payment"
-                                                            class="h-6 w-12 object-contain">
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                        class="w-full text-white flex justify-center items-center bg-[rgba(245,_127,_32,_1)] hover:bg-[rgb(223,_120,_37,_1)] focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center ease-in-out duration-300">Pay
-                                                        Now</button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div>
-                                <div class="flow-root">
-                                    <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-
-                                        <li v-for="(product, index) in cartStore.products" :key="index"
-                                            class="pt-3 pb-2 pb-0 sm:pt-4">
-
-                                            <div class="flex items-center ">
-                                                <div class="flex-shrink-0">
-                                                    <nuxt-link :to="`/products/${product?.id}`">
-                                                        <img class="w-16 h-16 rounded-md object-cover"
-                                                            v-if="product?.picture != ''"
-                                                            :src="useRuntimeConfig().public.imageUrl + '/' + product?.picture[0].replaceAll('public', 'storage')"
-                                                            alt="Product" />
-                                                        <img class="w-16 h-16 rounded-md object-cover" v-else
-                                                            src="assets/images/dummy-image.jpg" alt="Ads" />
-                                                    </nuxt-link>
-                                                </div>
-                                                <div class="flex-1 min-w-0 ms-4">
-                                                    <h2
-                                                        class="text-md mb-1 font-medium text-gray-900 truncate dark:text-white">
-                                                        <nuxt-link :to="`/products/${product?.id}`">{{
-                                                            product.title
-                                                            }}</nuxt-link>
-                                                    </h2>
-                                                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                                                        Qty: {{ product?.qty }}
-                                                    </p>
-                                                </div>
-                                                <div
-                                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                    {{ product?.currency?.symbol }}{{ product?.price }}
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                    </ul>
-                                    <ul role="list" class="">
-                                        <li class="pb-2">
-                                            <h4
-                                                class="block mt-3 mb-3 text-lg font-semibold text-gray-900 dark:text-white">
-                                                Coupon Code Apply</h4>
-                                            <form class="flex items-center gap-x-3 mx-auto">
-                                                <input type="text" id="simple-search"
-                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-4 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    placeholder="Search branch name..." required />
-                                                <button type="submit"
-                                                    class="py-2.5 px-5 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                    Apply
-                                                </button>
-                                            </form>
-                                        </li>
-                                        <li class="pb-3 mt-3">
-                                            <div class="flex items-center justify-between">
-                                                <div
-                                                    class="inline-flex items-center text-base font-normal text-gray-900 dark:text-white">
-                                                    Subtotal
-                                                </div>
-                                                <!-- <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                    {{ product?.currency?.symbol }}{{ cart.carts?.sum }}
-                                                </div> -->
-                                            </div>
-                                        </li>
-                                        <li class="pb-3">
-                                            <div class="flex items-center justify-between">
-                                                <div
-                                                    class="inline-flex items-center text-base font-normal text-gray-900 dark:text-white">
-                                                    Discount
-                                                </div>
-                                                <div
-                                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                    {{ product?.currency?.symbol }}260
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="pb-3">
-                                            <div class="flex items-center justify-between">
-                                                <div
-                                                    class="inline-flex items-center text-base font-normal text-gray-900 dark:text-white">
-                                                    VAt
-                                                </div>
-                                                <div
-                                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                    {{ product?.currency?.symbol }}60
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="pb-3">
-                                            <div class="flex items-center justify-between">
-                                                <div
-                                                    class="inline-flex items-center text-base font-normal text-gray-900 dark:text-white">
-                                                    Promo Code Discount
-                                                </div>
-                                                <div
-                                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                    {{ product?.currency?.symbol }}50
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="pb-3">
-                                            <div class="flex items-center justify-between">
-                                                <div
-                                                    class="inline-flex items-center text-base font-normal text-gray-900 dark:text-white">
-                                                    Shipping
-                                                </div>
-                                                <div
-                                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                    $50
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="pb-3">
-                                            <div class="flex items-center justify-between">
-                                                <div
-                                                    class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                    Total
-                                                </div>
-                                                <!-- <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                    {{ product?.currency?.symbol }}{{ cart.carts?.sum - 260 + 60 - 50 + 50 }}
-                                                </div> -->
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

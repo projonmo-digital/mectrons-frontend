@@ -26,21 +26,21 @@ const sidebarList: TSidebar = [
         icon: "eva:shopping-bag-outline",
         url: '/seller/order'
     },
+    // {
+    //     header: "Payemnt History",
+    //     icon: "eva:file-text-outline",
+    //     url: '/seller/payment'
+    // },
+    {
+        header: "Money Withdraw",
+        icon: "eva:printer-outline",
+        url: '/seller/withdraw'
+    },
     {
         header: "Settings",
         icon: "mdi:tools",
         url: '/seller/settings'
     },
-    {
-        header: "Payemnt History",
-        icon: "eva:file-text-outline",
-        url: '/seller/payment'
-    },
-    {
-        header: "Money Withdraw",
-        icon: "eva:printer-outline",
-        url: '/seller/withdraw'
-    }
 ]
 
 </script>

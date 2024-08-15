@@ -1,7 +1,15 @@
 import type { IProduct } from "./products";
 
+export type TOrderStatus = "placed" | "received" | "confirmed" | "rejected" | "on the way" | "delivered"
+
 export interface ICartProduct extends IProduct {
   qty?: number;
+}
+
+export interface IInvoice {
+  id: number
+  mega_id: string
+  delivery_status: TOrderStatus
 }
 
 export interface ICartItem {
@@ -11,10 +19,9 @@ export interface ICartItem {
   method: string;
   to_address: string;
   cost_fields: {
-    coupon?: string;
     price: any;
     quantity: any;
-    discount: number;
   };
-  mega_id: number;
+  coupon?: string;
+  mega_id: string;
 }

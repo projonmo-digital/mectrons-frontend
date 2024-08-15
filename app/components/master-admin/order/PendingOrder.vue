@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, h } from 'vue'
 import type { ColumnDef } from "@tanstack/vue-table"
-import Switch from "~/components/ui/switch/Switch.vue"
-import OderInfo from '~/components/master-admin/order/OderInfo.vue'
 import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
 
 import { useToast } from '@/components/ui/toast/use-toast'
 import { getGeneratedID } from '~/helper'
 import UserListViewItem from '~/components/Common/UserListViewItem.vue'
+import type { TOrderStatus } from '~/types/cart'
 const { toast } = useToast()
 
 const router = useRouter()
@@ -56,12 +55,12 @@ const orderDetail = (row: any) => {
   router.push(`/admin/order/${generatedId}`)
 }
 
-const sentToSeller = async (row: any) => {
+const statusChange = async (row: any, status: TOrderStatus) => {
   const token = useCookie('token')
   let generatedId = new Date(row.created_at).toLocaleString('en-BD', { year: '2-digit', month: '2-digit' }).split('/').reverse().join('') + row.id
   
   try {
-    const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/delivery-status/${generatedId}/delivered`,
+    const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/delivery-status/${generatedId}/${status}`,
       {
         method: "PUT",
         headers: {
@@ -130,6 +129,12 @@ const columns: ColumnDef<any>[] = [
   {
     accessorKey: "delivery_status",
     header: () => h("div", { class: "text-start" }, "Status"),
+    cell: ({ row }) => {
+      return h('span', {
+        class: "text-nowrap",
+        innerHTML: row.original.delivery_status
+      });
+    }
   },
   {
     accessorKey: "method",
@@ -145,11 +150,39 @@ const columns: ColumnDef<any>[] = [
         row: row.original,
         action: [
             {
-                title: 'Send to Seller',
+                title: 'Receive',
                 method: (row: any) => {
-                  sentToSeller(row)
+                  statusChange(row, 'received')
                 },
-                hide: row.original.delivery_status !== 'placed'
+                hide: !['placed'].includes(row.original.delivery_status)
+            },
+            {
+                title: 'Confirm',
+                method: (row: any) => {
+                  statusChange(row, 'confirmed')
+                },
+                hide: !['received'].includes(row.original.delivery_status)
+            },
+            {
+                title: 'Reject',
+                method: (row: any) => {
+                  statusChange(row, 'rejected')
+                },
+                hide: !['received'].includes(row.original.delivery_status)
+            },
+            {
+                title: 'Set on the way',
+                method: (row: any) => {
+                  statusChange(row, 'on the way')
+                },
+                hide: !['confirmed'].includes(row.original.delivery_status)
+            },
+            {
+                title: 'Deliverd',
+                method: (row: any) => {
+                  statusChange(row, 'delivered')
+                },
+                hide: !['on the way'].includes(row.original.delivery_status)
             },
             {
                 title: 'Show Detail',

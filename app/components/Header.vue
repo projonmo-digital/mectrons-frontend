@@ -91,7 +91,7 @@ const onChange = (value) => {
                     <NuxtLink class="hover:underline text-sm" :to="{ name: 'auth-login' }">
                         {{ 'Seller Login' }}
                     </NuxtLink>
-                    <NuxtLink class="hover:underline text-sm" :to="{ name: 'auth-login' }">
+                    <NuxtLink class="hover:underline text-sm" to="/pages/cart/search">
                         {{ 'Track Order' }}
                     </NuxtLink>
                 </div>

@@ -5,21 +5,38 @@ import {
   GET_PRODUCTS,
 } from "~/helper/localStorage";
 import type { ICartProduct, ICartItem } from "~/types/cart";
+import type { IMethod } from "~/types/method";
 
-// const { user } = storeToRefs(useAuthStore());
+interface IModifiedMethod extends IMethod {
+  value: string
+}
 
 interface IState {
   loading: boolean;
   products: ICartProduct[];
+  methods: IModifiedMethod[]
 }
 
 export const useCartStore = defineStore("cart", {
   state: () =>
     <IState>{
       loading: false,
-      products: [],
+      methods: [],
+      products: []
     },
   actions: {
+    async getPaymentMethods(params = {}) {
+      const token = useCookie('token')
+      let url = `${useRuntimeConfig().public.baseUrl}/payment-method?${new URLSearchParams(params).toString()}`;
+      const response = await $fetch<IMethod[]>(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token.value}`,
+        },
+      })
+      this.methods = response.map(m => ({...m, value: m.method }))
+    },
     getLocalProducts() {
       return GET_PRODUCTS()
         .then((res) => {

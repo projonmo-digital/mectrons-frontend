@@ -52,4 +52,4 @@ export interface ILoginResponse {
   token: string;
 }
 
-["placed", "received", "confirmed", "reject", "on the way", "delivered"];
+

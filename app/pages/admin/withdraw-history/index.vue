@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
 import type { ColumnDef } from "@tanstack/vue-table"
-import type { IPaymentHistory } from '~/types/payment'
+import type { IPaymentHistory } from '~/types/payment';
 import type { IpaginatedRespoinse } from '~/types/response';
 
 definePageMeta({
@@ -10,7 +9,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Widthdraw - Mectrons Admin',
+  title: 'Withdraw - Mectrons Seller',
   meta: [
     { name: 'description', content: 'Mectrons' }
   ]
@@ -30,7 +29,7 @@ const fetchData = async (params = {}) => {
   const token = useCookie('token')
   try {
     preloader.value = true
-    let url = `${useRuntimeConfig().public.baseUrl}/withdraw/due?${new URLSearchParams(params).toString()}`;
+    let url = `${useRuntimeConfig().public.baseUrl}/withdraw/history?${new URLSearchParams(params).toString()}`;
     const response = await $fetch<IpaginatedRespoinse<IPaymentHistory>>(url, {
       method: "GET",
       headers: {
@@ -54,35 +53,6 @@ const fetchData = async (params = {}) => {
     preloader.value = false
   }
 }
-
-const nextPage = () => {
-  responseParams.value.page++
-  fetchData(responseParams.value)
-}
-
-const previousPage = () => {
-  responseParams.value.page--
-  fetchData(responseParams.value)
-}
-
-const statusChange = async (row: IPaymentHistory) => {
-  const token = useCookie('token')
-  try {
-    const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/withdraw/complete/${row.id}`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token.value}`,
-        }
-      }
-    );
-    fetchData(responseParams.value)
-  } catch (err) {
-  }
-  finally { }
-};
-
 
 const columns: ColumnDef<IPaymentHistory>[] = [
   {
@@ -114,28 +84,18 @@ const columns: ColumnDef<IPaymentHistory>[] = [
         innerHTML: row.original.withdraw_amount || row.original.add_amount,
       });
     }
-  },
-  {
-    accessorKey: "action",
-    header: () => h("div", { class: "text-end" }, "Action"),
-    cell: ({ row }) => {
-      const id = row.original.id;
-      return h(DatatableDropdownAction, {
-        class: "text-right font-medium",
-        row: row.original,
-        action: [
-          {
-            title: 'Complete',
-            method: (row: IPaymentHistory) => {
-              statusChange(row)
-              console.log(row.status);
-            },
-          }
-        ]
-      });
-    }
   }
 ]
+
+const nextPage = () => {
+    responseParams.value.page++
+    fetchData(responseParams.value)
+}
+
+const previousPage = () => {
+    responseParams.value.page--
+    fetchData(responseParams.value)
+}
 
 onMounted(() => {
   fetchData(responseParams.value)
@@ -145,12 +105,10 @@ onMounted(() => {
 
 <template>
   <div class="flex justify-between">
-    <h1 class="text-2xl font-bold">Widthdraw Request</h1>
+    <h1 class="text-2xl font-bold">Withdraw History</h1>
     <div class="flex gap-3 my-2">
-      <button :disabled="responseParams.page <= 1"
-        class="bg-primary px-2 py-1 text-white rounded disabled:bg-orange-300" @click="previousPage">Previous</button>
-      <button :disabled="moreData" class="bg-primary px-2 py-1 text-white rounded disabled:bg-orange-300"
-        @click="nextPage">Next</button>
+        <button :disabled="responseParams.page <= 1" class="bg-primary px-2 py-1 text-white rounded disabled:bg-orange-300" @click="previousPage">Previous</button>
+        <button :disabled="moreData" class="bg-primary px-2 py-1 text-white rounded disabled:bg-orange-300" @click="nextPage">Next</button>
     </div>
   </div>
   <hr class="my-2">
@@ -161,4 +119,5 @@ onMounted(() => {
       <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl"></Icon>
     </div>
   </div>
+
 </template>

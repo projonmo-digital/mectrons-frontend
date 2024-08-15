@@ -51,7 +51,7 @@ console.log()
     <div class="card h-[497px] shadow-xl w-[292px]">
         <div
             class="relative flex h-full  w-[292px]   flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-            <nuxt-link :to="`/product-details/${props.product?.id}`"
+            <nuxt-link :to="`/products/${props.product?.id}`"
                 class="flex h-60 overflow-hidden  justify-center bg-[rgba(239,_239,_239,_1)]">
                 <img class="object-cover" v-if="props.product?.picture != ''"
                     :src="useRuntimeConfig().public.imageUrl + '/' + props.product?.picture[0].replaceAll('public', 'storage')"
@@ -101,7 +101,7 @@ console.log()
                 <hr class="mt-3">
                 <div class="flex items-center mt-3">
 
-                    <nuxt-link :to="`/product-details/${props.product?.id}`">
+                    <nuxt-link :to="`/products/${props.product?.id}`">
                         <h5 class="text-sl font-bold tracking-tight ">{{ props.product?.title }}</h5>
                     </nuxt-link>
                 </div>
