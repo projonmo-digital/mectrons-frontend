@@ -7,7 +7,6 @@ export default defineNuxtRouteMiddleware((to) => {
     const { authenticated } = storeToRefs(useAuthStore());
     const token = useCookie('token');
     if (!(token.value && authenticated)) {
-         console.log('auth','unauthenticated');
          toast({
             class: 'bg-red-500',
             title: 'Error',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import Product from '@/components/Home/Pertials/Product.vue'
+import Product from '@/components/Common/Pertials/Product.vue'
 
 const route = useRoute()
 
@@ -61,15 +61,18 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class="p-5">
-        <div class="flex justify-between">
-            <h1 class=" text-2xl font-bold">Search Products</h1>
+    <div class="p-3 sm:p-8">
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Searched Products</h1>
             <div class="flex gap-3 my-2">
                 <button :disabled="responseParams.page <= 1"
-                    class="bg-primary px-2 py-1 text-white rounded disabled:bg-orange-300" @click="previousPage">Previous
-                    page</button>
-                <button :disabled="moreData" class="bg-primary px-2 py-1 text-white rounded disabled:bg-orange-300"
-                    @click="nextPage">Next page</button>
+                    class="text-primary px-2 py-1 rounded disabled:text-orange-300" @click="previousPage">
+                    <Icon class="w-4 h-4" name="fa:arrow-left"></Icon>
+                </button>
+                <button :disabled="moreData" class="text-primary px-2 py-1 rounded disabled:text-orange-300"
+                    @click="nextPage">
+                    <Icon class="w-4 h-4" name="fa:arrow-right"></Icon>
+                </button>
             </div>
         </div>
         <hr>

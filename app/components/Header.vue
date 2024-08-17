@@ -107,11 +107,11 @@ const onChange = (value) => {
                 <div class="flex flex-wrap items-center justify-between gap-5 my-3">
                     <!-- logo -->
                     <div>
-                        <nuxt-link to="/" class="flex items-center w-[200px]">
+                        <nuxt-link to="/" class="flex items-center w-[160px] sm:[200px]">
                             <img :src="logo_white" alt="">
                         </nuxt-link>
                     </div>
-                    <div class="flex-1 hidden md:block">
+                    <div class="flex-1 hidden sm:block">
                         <form class="w-full flex rounded-lg bg-white" @submit.prevent="handelSearchSubmit">
                             <input v-model="searchText" type="search" class="w-full p-2 rounded-s-lg text-primary"
                                 placeholder="Search all parts here" required />
@@ -187,14 +187,41 @@ const onChange = (value) => {
                                     </span>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent class="w-[100px] p-0">
-                                    <nuxt-link v-for="i in items" :to="i.link" class=" block p-2">{{ i.text
-                                        }}</nuxt-link>
+                                    <template v-for="(item, index) in menu" :key="`menu-item-${index}`">
+                                        <div class="dropdown inline-block relative z-40 border">
+                                            <nuxt-link :to="item.link" class="text-white font-bold inline-flex items-center">
+                                                <span class="mr-1">{{ item.text }}</span>
+                                                <svg v-if="item.children" class="fill-current h-4 w-4"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                                </svg>
+                                            </nuxt-link>
+                                            <ul v-if="item.children" class="dropdown-menu absolute hidden text-gray-700 pt-1 shadow-lg">
+                                                <li class="first:rounded-t-lg last:rounded-b-lg overflow-hidden" v-for="(sub, Sindex) in item.children || []" :key="`menu-${index}-${Sindex}`">
+                                                    <nuxt-link class="bg-white text-sm hover:bg-primary text-primary hover:text-white py-2 px-4 block whitespace-no-wrap w-[300px]"
+                                                        :to="sub.link">{{ sub.text }}</nuxt-link>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </template>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
                     </div>
                 </div>
-                <div class="flex items-center justify-center gap-3 mt-5">
+                <div class="flex-1 block sm:hidden">
+                        <form class="w-full flex rounded-lg bg-white" @submit.prevent="handelSearchSubmit">
+                            <input v-model="searchText" type="search" class="w-full p-2 rounded-s-lg text-primary"
+                                placeholder="Search all parts here" required />
+                            <button type="submit" class="bg-primary bg-opacity-80 px-4 hover:bg-opacity-90">
+                                <span class="">
+                                    <Icon name="fa:search" class="text-white text-xl"></Icon>
+                                </span>
+                            </button>
+                        </form>
+                </div>
+                <div class="hidden md:flex items-center justify-center gap-3 mt-5">
                     <template v-if="!loading">
                         <template v-for="(item, index) in menu" :key="`menu-item-${index}`">
                             <div class="dropdown inline-block relative z-40">

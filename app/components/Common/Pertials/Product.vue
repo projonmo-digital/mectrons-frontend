@@ -55,10 +55,10 @@ const addToCart = (product: IProduct) => {
 <template>
     <div class="border relative border-transparent hover:border-gray-200 shadow-md hover:shadow-xl rounded-xl overflow-hidden my-5 bg-white notranslate">
         <nuxt-link  :to="`/products/${product.id}`">
-            <img class="h-[200px] object-cover" v-if="product?.picture.length"
+            <img class="h-[200px] w-full object-cover" v-if="product?.picture.length"
                 :src="useRuntimeConfig().public.imageUrl + '/' + product.picture[0]?.replaceAll('public', 'storage')"
                 alt="Product" />
-            <img class="h-[200px] object-cover" v-else src="assets/images/dummy-image.jpg" alt="Ads" />
+            <img class="h-[200px] w-full object-cover" v-else src="assets/images/dummy-image.jpg" alt="Ads" />
         </nuxt-link>
         <Icon name="mdi:heart" class="w-8 h-8 absolute top-3 left-3 text-gray-300 cursor-pointer" @click="auth?.user?.id === product?.user_id ? bookmarkRemove(product) :bookmarkAdd(product)"
             :class="{ 'text-red-500': auth?.user?.id === props.product?.user_id }"></Icon>

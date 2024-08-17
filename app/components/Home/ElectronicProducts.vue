@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import FilterBar from './Pertials/FilterBar.vue'
-import Slider from './Pertials/Slider.vue'
+import Slider from '@/components/Common/Pertials/Slider.vue'
 
 // state
 const preloader = ref(false)
