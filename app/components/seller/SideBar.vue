@@ -31,6 +31,12 @@ const sidebarList: TSidebar = [
     //     icon: "eva:file-text-outline",
     //     url: '/seller/payment'
     // },
+
+    {
+        header: "Reviews",
+        icon: "eva:file-text-outline",
+        url: '/seller/reviews'
+    },
     {
         header: "Money Withdraw",
         icon: "eva:printer-outline",

@@ -40,7 +40,7 @@ export interface IUser {
   nid: null | string;
   approved_at: null | string;
   profile_picture: null | string;
-  type: string;
+  type: 'buyer' | 'seller' | 'admin';
   business: null | string;
   profile: IProfile;
 }

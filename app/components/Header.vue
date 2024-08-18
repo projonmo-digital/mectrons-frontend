@@ -20,6 +20,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { getFileUrl } from '~/helper'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -148,7 +149,7 @@ const onChange = (value) => {
                                     <AvatarRoot
                                         class="inline-flex h-[48px] w-[48px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
                                         <AvatarImage class="h-full w-full rounded-[inherit] object-cover"
-                                            :src="auth.user?.profile_picture" alt="Colm Tuite" />
+                                            :src="auth.user?.profile_picture ? getFileUrl(auth.user?.profile_picture) : ''" alt="Colm Tuite" />
                                         <AvatarFallback class="flex h-full w-full items-center justify-center"
                                             :delay-ms="600">
                                             AV

@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { TabsContent, TabsIndicator, TabsList, TabsRoot, TabsTrigger } from 'radix-vue'
+import Reviews from './Reviews.vue';
+import AddReview from './AddReview.vue'
+
+const emit = defineEmits(['success'])
+
 const props = defineProps(['product'])
+
+const re_render = ref(0)
 
 </script>
 
@@ -32,7 +39,11 @@ const props = defineProps(['product'])
             </table>
         </TabsContent>
         <TabsContent value="review">
-            review 2
+            <div>
+                <AddReview :product="product" @success="re_render++" />
+                <hr>
+                <Reviews :product="product" :key="re_render" />
+            </div>
         </TabsContent>
     </TabsRoot>
 </template>

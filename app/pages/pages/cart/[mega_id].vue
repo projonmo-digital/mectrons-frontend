@@ -51,7 +51,7 @@ onMounted(() => {
             <div v-else class="flex-1 gap-5 flex">
                 <div class="flex-1 flex flex-col gap-5">
                     <div v-for="(seller, index) in data" :key="`seller-item-${seller.id}`">
-                        <div class="flex items-center">
+                        <div class="flex items-center gap-3">
                             <UserListViewItem v-model="seller.seller" />
                             <div>
                                 <small class="capitalize bg-primary text-white px-3 py-1 rounded-full">{{ seller.delivery_status

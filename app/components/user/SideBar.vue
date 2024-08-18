@@ -27,11 +27,6 @@ const sidebarList: TSidebar = [
         url: '/user/wishlist'
     },
     {
-        header: "Reviews",
-        icon: "eva:file-text-outline",
-        url: '/user/reviews'
-    },
-    {
         header: "Settings",
         icon: "mdi:tools",
         url: '/user/settings'

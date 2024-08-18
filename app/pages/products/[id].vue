@@ -1,6 +1,6 @@
 <script setup>
 import Product from '~/components/Home/Pertials/Product.vue'
-import ProductDescription from '~/components/ProductDescription.vue'
+import ProductDescription from '~/components/Product/ProductDescription.vue'
 import Slider from '~/components/Home/Pertials/Slider.vue'
 
 const cart = useCartStore();
@@ -145,9 +145,9 @@ const features = [
                             :style="`transform: scale(${transformScale}); transform-origin: ${xBy} ${yBy};`" />
                     </div>
                     <div class="flex flex-wrap gap-3">
-                        <div class="shadow-lg w-32 h-32 overflow-hidden" v-for="(image, index) in product?.picture" :key="index">
-                            <img class="w-full h-full cursor-pointer object-cover rounded-xl"
-                                @click="showImage = image"
+                        <div class="shadow-lg w-32 h-32 overflow-hidden" v-for="(image, index) in product?.picture"
+                            :key="index">
+                            <img class="w-full h-full cursor-pointer object-cover rounded-xl" @click="showImage = image"
                                 :src="useRuntimeConfig().public.imageUrl + '/' + image?.replaceAll('public', 'storage')"
                                 alt="Ads" />
                         </div>
@@ -158,12 +158,18 @@ const features = [
                         <h1 class="text-2xl font-bold">{{ product?.title }}</h1>
                     </div>
                     <div class="flex items-center mb-4 gap-2 border-y py-2">
-                        <i class="fa-solid fa-star text-yellow-300"></i>
-                        <i class="fa-solid fa-star text-yellow-300"></i>
-                        <i class="fa-solid fa-star text-yellow-300"></i>
-                        <i class="fa-solid fa-star text-yellow-300"></i>
-                        <i class="fa-solid fa-star text-[rgba(217,_217,_217,_1)]"></i>
-                        <button type="button" class="text-gray-400"> 1 Reviews </button>
+                        <div class="flex items-center my-3">
+                            <Icon name="mdi:star" class="text-xl text-gray-300"
+                                :class="{ 'text-primary': product?.reviews[0]?.average_rating >= 1 }"></Icon>
+                            <Icon name="mdi:star" class="text-xl text-gray-300"
+                                :class="{ 'text-primary': product?.reviews[0]?.average_rating >= 2 }"></Icon>
+                            <Icon name="mdi:star" class="text-xl text-gray-300"
+                                :class="{ 'text-primary': product?.reviews[0]?.average_rating >= 3 }"></Icon>
+                            <Icon name="mdi:star" class="text-xl text-gray-300"
+                                :class="{ 'text-primary': product?.reviews[0]?.average_rating >= 4 }"></Icon>
+                            <Icon name="mdi:star" class="text-xl text-gray-300"
+                                :class="{ 'text-primary': product?.reviews[0]?.average_rating >= 5 }"></Icon>
+                        </div>
                     </div>
                     <div>
                         <div class="flex flex-col gap-4">
