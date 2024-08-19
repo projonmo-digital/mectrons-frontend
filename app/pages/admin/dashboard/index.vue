@@ -1,11 +1,14 @@
-<script setup>
-import Card1 from '@/components/master-admin/Card1'
-import Card2 from '@/components/master-admin/Card2'
-import Card3 from '@/components/master-admin/Card3'
-import Logos from '@/components/master-admin/Logos'
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import Card1 from '@/components/master-admin/Card1.vue'
+import Card2 from '@/components/master-admin/Card2.vue'
+import Card3 from '@/components/master-admin/Card3.vue'
+import Logos from '@/components/master-admin/Logos.vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
+import type { IAdminDashbordResponse } from '~/types/dashboard'
 
 definePageMeta({
     middleware: ["auth", "admin"]
@@ -18,13 +21,33 @@ useHead({
   ]
 })
 
-const Icon = ['']
 const auth = useAuthStore();
 
-onMounted(() => {
-    initFlowbite();
-})
+const data = ref<IAdminDashbordResponse | null>(null)
+const preloader = ref(false)
 
+const fetchData = async () => {
+    preloader.value = true
+    const token = useCookie('token')
+    try {
+        const response = await $fetch<IAdminDashbordResponse>(`${useRuntimeConfig().public.baseUrl}/dashboard`, {
+            method: 'GET',
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token.value}`,
+            }
+        });
+        data.value = response
+    } catch (error) {
+        console.error(error);
+    } finally {
+        preloader.value = false
+    }
+}
+
+onMounted(() => {
+    fetchData()
+})
 
 </script>
 
