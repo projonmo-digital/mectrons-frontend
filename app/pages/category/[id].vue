@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Slider from '@/components/Category/Pertials/Slider.vue'
 import Filter from '@/components/Common/Filter.vue'
 import FilterSidebar from '@/components/Common/FilterSidebar.vue'
-import Product from '@/components/Home/Pertials/Product.vue'
+import Product from '@/components/Common/Pertials/Product.vue'
+import ProductsByCategories from '~/components/Common/ProductsByCategories.vue'
+import type { IpaginatedRespoinse } from '~/types/response'
+import type { IProduct } from '~/types/products'
+import { discountCalculation } from '~/helper'
+
+const { categories } = storeToRefs(useAppStore())
 
 const store = useUtils()
 const route = useRoute()
@@ -28,7 +33,8 @@ const responseParams = ref({
 const formBody = ref({})
 
 const moreData = ref(true)
-const data = ref<any[] | null>([])
+const products = ref<IProduct[]>([])
+const re_render = ref(0)
 
 // methods
 const search = (event: any) => {
@@ -47,50 +53,89 @@ const previousPage = () => {
     getProducts(responseParams.value)
 }
 
+
 const getProducts = async (params: any, formBody: any = {}) => {
     preloader.value = true
+    const token = useCookie('token')
+
     let formData = new FormData()
     formData.append('category[]', route.params.id.toString())
-
-    for (let key in formBody) {
-        if (typeof formBody[key] === 'string') {
-            formData.append(key, formBody[key])
-        } else if (formBody[key] instanceof Array) {
-            for (let item of formBody[key]) {
+    for (const key in formBody) {
+        let formItem = formBody[key]
+        if(Array.isArray(formItem)){
+            for (const item of formBody[key]) {
                 formData.append(`${key}[]`, item)
             }
         }
+        else{
+            formData.append(key, formBody[key])
+        }
     }
-
     try {
         let url = `${useRuntimeConfig().public.baseUrl}/filter?${new URLSearchParams(params).toString()}`;
-        const response = await $fetch(url, {
+        const response = await $fetch<IpaginatedRespoinse<IProduct>>(url, {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token.value}`,
+            },
             method: 'POST',
-            // body: { ...formBody, 'category[]': Number(route.params.id) },
-            body: formData,
-            server: false
+            body: formData
         });
-        if (response && response.data && response.data) {
-            responseParams.value.page = response.current_page
-            data.value = response.data
-            moreData.value = response.last_page === response.current_page
-            return response
-        } else {
-            console.error("Invalid response format")
-            return []
+        if (response) {
+            products.value = discountCalculation(categories.value, response.data)
         }
     } catch (error) {
         console.error(error);
     } finally {
         preloader.value = false
+        re_render.value++
     }
 }
 
-const filter = (filterData: any) => {
+// const getProducts = async (params: any, formBody: any = {}) => {
+//     preloader.value = true
+//     let formData = new FormData()
+//     formData.append('category[]', route.params.id.toString())
+
+//     for (let key in formBody) {
+//         if (typeof formBody[key] === 'string') {
+//             formData.append(key, formBody[key])
+//         } else if (formBody[key] instanceof Array) {
+//             for (let item of formBody[key]) {
+//                 formData.append(`${key}[]`, item)
+//             }
+//         }
+//     }
+
+//     try {
+//         let url = `${useRuntimeConfig().public.baseUrl}/filter?${new URLSearchParams(params).toString()}`;
+//         const response = await $fetch(url, {
+//             method: 'POST',
+//             // body: { ...formBody, 'category[]': Number(route.params.id) },
+//             body: formData,
+//             server: false
+//         });
+//         if (response && response.data && response.data) {
+//             responseParams.value.page = response.current_page
+//             data.value = response.data
+//             moreData.value = response.last_page === response.current_page
+//             return response
+//         } else {
+//             console.error("Invalid response format")
+//             return []
+//         }
+//     } catch (error) {
+//         console.error(error);
+//     } finally {
+//         preloader.value = false
+//     }
+// }
+
+const filter = (filterData: any) => {    
     formBody.value = { ...formBody.value, ...filterData }
     setTimeout(() => {
         getProducts(responseParams.value, formBody.value)
-    }, 0)
+    })
 }
 
 onMounted(() => {
@@ -106,8 +151,7 @@ onMounted(() => {
             </div>
         </div>
         <div class="col-span-9">
-            <!-- <Slider :items="categoriesList" :loading="false" /> -->
-            <HomeFeaturedProducts></HomeFeaturedProducts>
+            <ProductsByCategories :categories="categories" :params="{ marker: ['featured'] }" title="Featured products"></ProductsByCategories>
         </div>
     </div>
     <div class="mx-auto my-5 max-w-[800px]">
@@ -134,7 +178,7 @@ onMounted(() => {
                     <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl">
                     </Icon>
                 </div>
-                <Product v-for="(product, index) in data" :product="product" :key="`product-${index}`"></Product>
+                <Product v-for="(product, index) in products" :product="product" :key="`product-${index}`"></Product>
             </div>
             <hr>
             <div class="flex gap-3 my-2">

@@ -1,14 +1,18 @@
-<script setup>
-import Product from '~/components/Home/Pertials/Product.vue'
+<script setup lang="ts">
+import Product from '~/components/Common/Pertials/Product.vue'
 import ProductDescription from '~/components/Product/ProductDescription.vue'
-import Slider from '~/components/Home/Pertials/Slider.vue'
+import Slider from '~/components/Common/Pertials/Slider.vue'
+import type { IProduct } from '~/types/products';
+import type { IpaginatedRespoinse } from '~/types/response';
+import { discountCalculation } from '~/helper';
 
-const cart = useCartStore();
+const cartStore = useCartStore();
 const route = useRoute();
 
+const { categories } = storeToRefs(useAppStore())
 // state
-const product = ref(null)
-const suggestion = ref(null)
+const product = ref<IProduct | null>(null)
+const suggestion = ref<IProduct[]>([])
 const quantity = ref(1)
 
 // methods
@@ -19,38 +23,70 @@ const decrement = () => {
 }
 
 const increment = () => {
-    if (quantity.value < product.value.stock_amount) {
+    if (quantity.value < (product.value?.stock_amount || 0)) {
         quantity.value++;
-    } else {
-
     }
 }
 
-const addProduct = (qty) => {
-    for (let i = 0; i < qty; i++) {
-        cart.AddToCart(product.value)
+const addProduct = (qty: number) => {
+    if(product.value){
+        cartStore.addToCart(product.value, qty)
     }
 }
 
-const productview = ref([]);
-const productsuggestion = ref([]);
+const bookmarkAdd = async (product: IProduct) => {
+    const token = useCookie('token')
+    try {
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
+            method: 'PUT',
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token.value}`,
+            },
+        });
+        if (response) {
+            product.is_bookmarked = 1;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const bookmarkRemove = async (product: IProduct) => {
+    const token = useCookie('token');
+    try {
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
+            method: 'DELETE',
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token.value}`,
+            },
+        });
+        if (response) {
+            product.is_bookmarked = 0;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const productview = ref<any>([]);
+const productsuggestion = ref<any>([]);
 const showImage = ref();
 const getProduct = async () => {
     try {
-        const { pending, data, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/view-product/${route.params.id}`, {
+        const token = useCookie('token')
+        const response = await $fetch<{ product: IProduct, suggestion: IpaginatedRespoinse<IProduct>}>(`${useRuntimeConfig().public.baseUrl}/view-product/${route.params.id}`, {
             headers: {
-                Accept: "application/json"
+                Accept: "application/json",
+                Authorization: `Bearer ${token.value}`,
             },
         });
-        if (data.value.product) {
-            product.value = data.value.product
-        }
-        if (data.value.suggestion) {
-            suggestion.value = data.value.suggestion
-        }
-
-        productview.value = data.value?.product;
-        productsuggestion.value = data.value?.suggestion?.data;
+        product.value = discountCalculation(categories.value, [response.product])[0]
+        suggestion.value = discountCalculation(categories.value, response.suggestion.data)
+        
+        productview.value = discountCalculation(categories.value, [response.product])[0];
+        productsuggestion.value = discountCalculation(categories.value, response.suggestion.data);
         showImage.value = productview.value?.picture[0];
 
         if (productview.value) {
@@ -59,8 +95,7 @@ const getProduct = async () => {
                 ogTitle: 'My Amazing Site',
                 description: 'This is my amazing site, let me tell you all about it.',
                 ogDescription: 'This is my amazing site, let me tell you all about it.',
-                ogImage: 'image',
-                twitterCard: 'image',
+                ogImage: 'image'
             })
         }
     } catch (error) {
@@ -73,8 +108,8 @@ onMounted(() => {
 })
 
 // Product Zoom
-const xBy = ref(0);
-const yBy = ref(0);
+const xBy = ref<any>(0);
+const yBy = ref<any>(0);
 const transformScale = ref(1);
 const imageMouseEnter = () => {
     transformScale.value = 2.5;
@@ -82,7 +117,7 @@ const imageMouseEnter = () => {
 const imageMouseLeave = () => {
     transformScale.value = 1;
 }
-const imageMouseMove = (e) => {
+const imageMouseMove = (e: any) => {
     const { offsetX, offsetY, target, } = e;
     const { offsetWidth: width, offsetHeight: height } = target;
     const x = (offsetX / width) * 100;
@@ -157,26 +192,28 @@ const features = [
                     <div>
                         <h1 class="text-2xl font-bold">{{ product?.title }}</h1>
                     </div>
-                    <div class="flex items-center mb-4 gap-2 border-y py-2">
+                    <div class="flex items-center gap-2 border-y py-2">
                         <div class="flex items-center my-3">
                             <Icon name="mdi:star" class="text-xl text-gray-300"
-                                :class="{ 'text-primary': product?.reviews[0]?.average_rating >= 1 }"></Icon>
+                                :class="{ 'text-primary': Number(product?.reviews[0]?.average_rating) >= 1 }"></Icon>
                             <Icon name="mdi:star" class="text-xl text-gray-300"
-                                :class="{ 'text-primary': product?.reviews[0]?.average_rating >= 2 }"></Icon>
+                                :class="{ 'text-primary': Number(product?.reviews[0]?.average_rating) >= 2 }"></Icon>
                             <Icon name="mdi:star" class="text-xl text-gray-300"
-                                :class="{ 'text-primary': product?.reviews[0]?.average_rating >= 3 }"></Icon>
+                                :class="{ 'text-primary': Number(product?.reviews[0]?.average_rating) >= 3 }"></Icon>
                             <Icon name="mdi:star" class="text-xl text-gray-300"
-                                :class="{ 'text-primary': product?.reviews[0]?.average_rating >= 4 }"></Icon>
+                                :class="{ 'text-primary': Number(product?.reviews[0]?.average_rating) >= 4 }"></Icon>
                             <Icon name="mdi:star" class="text-xl text-gray-300"
-                                :class="{ 'text-primary': product?.reviews[0]?.average_rating >= 5 }"></Icon>
+                                :class="{ 'text-primary': Number(product?.reviews[0]?.average_rating) >= 5 }"></Icon>
                         </div>
                     </div>
                     <div>
                         <div class="flex flex-col gap-4">
-                            <div class="text-primary font-bold text-2xl">{{ product?.price }} {{
-                                product?.currency?.symbol }} </div>
+                            <div class="flex items-center flex-wrap gap-x-2">
+                                <span class="text-2xl font-bold  text-primary">{{ product?.currency?.symbol }} {{ product?.discount ? (product.price - (product?.price/100 * product.discount)) : product?.price }}</span>
+                                <span v-if="product?.discount" class="text-lg line-through text-gray-400">{{ product?.currency?.symbol }} {{ product?.price }}</span>
+                            </div>
                             <div class="flex gap-3"
-                                v-for="(ot, index) in product?.others.filter(o => ['brand', 'model'].includes(o.name))"
+                                v-for="(ot, index) in product?.others.filter((o: any) => ['brand', 'model'].includes(o.name))"
                                 :key="ot.id">
                                 <span class="text-gray-500 capitalize">{{ ot.name }}</span>
                                 <span class="text-gray-500">:</span>
@@ -199,20 +236,20 @@ const features = [
                                         @click="increment">+</button>
                                 </div>
                                 <span>
-                                    <span
+                                    <span @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product!)"
                                         class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center cursor-pointer">
-                                        <Icon name="mdi:heart" class="w-5  h-5" :class="{ 'text-red-500': false }">
+                                        <Icon name="mdi:heart" class="w-5  h-5" :class="{ 'text-red-500': !!product?.is_bookmarked }">
                                         </Icon>
                                     </span>
                                 </span>
-                                <button @click="addProduct(quantity)"
+                                <nuxt-link to="/pages/cart"
                                     class="bg-primary text-white p-2 w-12 h-8 flex items-center justify-center rounded-full hover:bg-orange-500">
                                     <i class="fa-solid fa-cart-shopping"></i>
-                                </button>
+                                </nuxt-link>
                             </div>
                         </div>
                     </div>
-                    <button class="w-full bg-primary text-white rounded-md p-2" @click="addProduct(1)">BUY IT
+                    <button v-if="product" class="w-full bg-primary text-white rounded-md p-2" @click="addProduct(quantity)">BUY IT
                         NOW</button>
                     <div>
                         <div class="my-2">
@@ -246,7 +283,7 @@ const features = [
                             fill="#F8F8F8" />
                     </svg>
                 </div>
-                <p class=" text-sm">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto
+                <p class="text-sm">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto
                     laborum,
                     tempora, in cum tenetur
                     enim voluptatibus beatae nobis saepe assumenda at eius voluptatum soluta ea incidunt
@@ -275,7 +312,7 @@ const features = [
             <div class="flex-1 max-w-[360px] flex flex-col gap-5">
                 <h2 class="font-bold text-xl text-center">Products from Seller</h2>
                 <div class="flex flex-col gap-y-4 px-3">
-                    <template v-for="(product, index) in suggestion?.data" :key="`sug-product-${product.id}`">
+                    <template v-for="(product, index) in suggestion" :key="`sug-product-${product.id}`">
                         <Product v-if="index < 2" :product="product" />
                     </template>
                 </div>
@@ -284,7 +321,7 @@ const features = [
         <div class="p-5">
             <h2 class="font-bold text-xl border-b py-3">Related Products</h2>
             <template v-if="suggestion">
-                <Slider :products="suggestion?.data" :loading="false" />
+                <Slider :products="suggestion" :loading="false" />
             </template>
         </div>
     </div>

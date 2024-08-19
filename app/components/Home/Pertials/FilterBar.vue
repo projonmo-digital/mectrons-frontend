@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import type { ICategory } from '~/types/categories';
 
-const { sliderCategories, loading } = storeToRefs(useAppStore())
+// const { sliderCategories, loading } = storeToRefs(useAppStore())
 
-const prop = defineProps(['title', 'categories'])
+// const prop = defineProps(['title', 'categories'])
+interface Props {
+    title: string
+    sliderCategories: ICategory[][]
+}
+
+const props = defineProps<Props>()
 
 const emit = defineEmits(['select'])
 
@@ -16,7 +23,7 @@ const selectCategory = (category: any) => {
     emit('select', category)
 }
 const setNext = () => {
-    if (sliderCategories.value.length > (currentIndex.value + 1)) {
+    if (props.sliderCategories.length > (currentIndex.value + 1)) {
         currentIndex.value++
     }
 };

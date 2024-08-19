@@ -1,6 +1,11 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import Product from '@/components/Common/Pertials/Product.vue'
+import { discountCalculation } from '~/helper';
+import type { IProduct } from '~/types/products';
+import type { IpaginatedRespoinse } from '~/types/response';
+
+const { categories } = storeToRefs(useAppStore())
 
 const route = useRoute()
 
@@ -11,29 +16,32 @@ const responseParams = ref({
     search: route.query.search
 })
 
+const formBody = ref({})
+
 const moreData = ref(true)
 const data = ref<any[] | null>([])
 
 // methods
 const nextPage = () => {
     responseParams.value.page++
-    getProducts(responseParams.value)
+    getProducts(responseParams.value, formBody.value)
 }
 const previousPage = () => {
     responseParams.value.page--
-    getProducts(responseParams.value)
+    getProducts(responseParams.value, formBody.value)
 }
 
-const getProducts = async (params: any) => {
+const getProducts = async (params: any, formBody: any) => {
     preloader.value = true
     try {
-        let url = `${useRuntimeConfig().public.baseUrl}/search?${new URLSearchParams(params).toString()}`;
-        const response = await $fetch(url, {
-            method: 'GET'
+        let url = `${useRuntimeConfig().public.baseUrl}/filter?${new URLSearchParams(params).toString()}`;
+        const response = await $fetch<IpaginatedRespoinse<IProduct>>(url, {
+            method: 'POST',
+            body: formBody
         });
-        if (response && response.data && response.data) {
+        if (response) {
             responseParams.value.page = response.current_page
-            data.value = response.data
+            data.value = discountCalculation(categories.value, response.data)
             moreData.value = response.last_page === response.current_page
             return response
         } else {
@@ -47,19 +55,23 @@ const getProducts = async (params: any) => {
     }
 }
 
-watch(() => route.query.search, (n, o) => {
-    console.log(n);
-    responseParams.value.search = n
-    setTimeout(() => {
-        getProducts(responseParams.value)
-    }, 0);    
-}, { immediate: true, deep: true })
+// watch(() => route.query.search, (n, o) => {
+//     responseParams.value.search = n
+//     setTimeout(() => {
+//         getProducts(responseParams.value, formBody.value)
+//     }, 0);    
+// }, { immediate: true, deep: true })
 
 onMounted(() => {
-    getProducts(responseParams.value)
+    formBody.value = route.query
+    setTimeout(() => {
+        getProducts(responseParams.value, formBody.value)
+    })
 })
 
 </script>
+
+
 <template>
     <div class="p-3 sm:p-8">
         <div class="flex justify-between items-center">

@@ -60,9 +60,9 @@ onMounted(() => {
 
             <h4 class="text-sm font-bold mb-3">Categories</h4>
             <ul class="space-y-2 font-normal pb-3">
-                <li v-for="(cat, index) in categories" :key="`filter-cat-${cat?.id}`">
+                <li v-for="(cat, index) in [...(categories[0]?.children || []),...(categories[1]?.children || []), ...(categories[2]?.children || [])]" :key="`filter-cat-${cat?.id}`">
                     <div class="flex items-center mb-2">
-                        <input type="checkbox" @input="handleList('category', cat.id)" :value="cat.id"
+                        <input type="checkbox" @input="handleList('category', cat.id.toString())" :value="cat.id"
                             :checked="filterData.category.includes(cat.id)">
                         <label for="default-checkbox" class="ms-2 text-xs">{{ cat?.name }}</label>
                     </div>

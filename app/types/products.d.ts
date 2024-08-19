@@ -51,6 +51,7 @@ export interface IProduct {
   approved_at: string;
   picture: string[];
   marker: IMarker[];
+  others?: any;
   discount?: number
   reviews: {
     average_rating: number;

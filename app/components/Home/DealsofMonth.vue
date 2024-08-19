@@ -1,29 +1,48 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useWindowSize } from '@vueuse/core'
-import { discountCalculation } from '~/helper';
 import type { IProduct } from '~/types/products';
 import type { IpaginatedRespoinse } from '~/types/response';
 import Product2 from '../Common/Pertials/Product2.vue';
+import { discountCalculation} from '~/helper';
 
-const { width, height } = useWindowSize()
+import { useWindowSize } from '@vueuse/core'
+
 const { categories } = storeToRefs(useAppStore())
-
+const { width, height } = useWindowSize()
 // state
 const preloader = ref(false)
 const products = ref<IProduct[]>([]);
-const filterParams = ref({
+const filterParams = ref<any>({
     marker: ['deals-month']
 })
 
 const re_render = ref(0)
 
 const getProducts = async (formBody: any) => {
+    const token = useCookie('token')
     preloader.value = true
+
+    let formData = new FormData()
+    for (const key in formBody) {
+        let formItem = formBody[key]
+        if(Array.isArray(formItem)){
+            for (const item of formBody[key]) {
+                formData.append(`${key}[]`, item)
+            }
+        }
+        else{
+            formData.append(key, formBody[key])
+        }
+    }
+
     try {
         const response = await $fetch<IpaginatedRespoinse<IProduct>>(`${useRuntimeConfig().public.baseUrl}/filter`, {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token.value}`,
+            },
             method: 'POST',
-            body: formBody,
+            body: formData
         });
         if (response) {
             products.value = discountCalculation(categories.value, response.data)

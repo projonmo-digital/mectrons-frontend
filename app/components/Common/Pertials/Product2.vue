@@ -18,17 +18,18 @@ const props = defineProps<Props>()
 // const offer = computed<ICategory | null>(() => categories.value)
 
 // Bookmark
+
 const bookmarkAdd = async (product: IProduct) => {
     const token = useCookie('token')
     try {
-        const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
             method: 'PUT',
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
         });
-        if (data) {
+        if (response) {
             product.is_bookmarked = 1;
         }
     } catch (error) {
@@ -39,14 +40,14 @@ const bookmarkAdd = async (product: IProduct) => {
 const bookmarkRemove = async (product: IProduct) => {
     const token = useCookie('token');
     try {
-        const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
             method: 'DELETE',
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
         });
-        if (data) {
+        if (response) {
             product.is_bookmarked = 0;
         }
     } catch (error) {
@@ -71,16 +72,9 @@ const addToCart = (product: IProduct) => {
                     src="assets/images/dummy-image.jpg" alt="Ads" />
             </nuxt-link>
 
-            <div v-if="auth?.user?.id != props.product?.user_id">
-                <span v-if="props.product.is_bookmarked == 0" @click="bookmarkAdd(props.product)"
-                    class="absolute top-2 left-3 rounded-full text-center text-2xl font-medium">
-                    <span class="w-5"><i class="fa-solid fa-heart"></i></span>
-                </span>
-                <span v-else @click="bookmarkRemove(props.product)"
-                    class="absolute top-2 left-3 rounded-full text-center text-2xl font-medium text-[rgb(223,_120,_37,_1)]">
-                    <span class="w-5"><i class="fa-solid fa-heart"></i></span>
-                </span>
-            </div>
+            <Icon name="mdi:heart" class="w-8 h-8 absolute top-3 left-3 text-gray-300 cursor-pointer"
+            @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product!)"
+            :class="{ 'text-red-500': !!product.is_bookmarked }"></Icon>
         </div>
         <div class="flex flex-col justify-between py-2 pe-2 w-[calc(100%-11rem)] md:w-[calc(100%-13rem)]">
             <div class="flex gap-3 items-center">

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import type { ICategory, IFlashSale } from '~/types/categories';
-import type { IOffer } from '~/types/offer';
+import { ref } from 'vue'
 import type { IProduct } from '~/types/products';
 
 const { categories } = storeToRefs(useAppStore())
 
 const auth = useAuthStore();
+const loading = ref(false);
 const cartStore = useCartStore();
 
 interface Props {
@@ -15,20 +14,18 @@ interface Props {
 
 const props = defineProps<Props>()
 
-// const offer = computed<ICategory | null>(() => categories.value)
-
 // Bookmark
 const bookmarkAdd = async (product: IProduct) => {
     const token = useCookie('token')
     try {
-        const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
             method: 'PUT',
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
         });
-        if (data) {
+        if (response) {
             product.is_bookmarked = 1;
         }
     } catch (error) {
@@ -39,14 +36,14 @@ const bookmarkAdd = async (product: IProduct) => {
 const bookmarkRemove = async (product: IProduct) => {
     const token = useCookie('token');
     try {
-        const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
             method: 'DELETE',
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
         });
-        if (data) {
+        if (response) {
             product.is_bookmarked = 0;
         }
     } catch (error) {
@@ -69,8 +66,8 @@ const addToCart = (product: IProduct) => {
             <img class="h-[200px] w-full object-cover" v-else src="assets/images/dummy-image.jpg" alt="Ads" />
         </nuxt-link>
         <Icon name="mdi:heart" class="w-8 h-8 absolute top-3 left-3 text-gray-300 cursor-pointer"
-            @click="auth?.user?.id === product?.user_id ? bookmarkRemove(product) : bookmarkAdd(product)"
-            :class="{ 'text-red-500': auth?.user?.id === props.product?.user_id }"></Icon>
+            @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product!)"
+            :class="{ 'text-red-500': !!product.is_bookmarked }"></Icon>
         <div>
             <div class="flex gap-3 items-center py-2 px-3">
                 <div class="flex items-center my-3">
@@ -91,7 +88,7 @@ const addToCart = (product: IProduct) => {
             <div class="px-3 py-2">
                 <div class="flex items-center gap-x-1">
                     <span v-if="product.discount" class="text-sm px-1 py-0.5 bg-primary text-white rounded-lg">-{{ product.discount }}%</span>
-                    <div class="flex items-center gap-x-2">
+                    <div class="flex items-center flex-wrap gap-x-2">
                         <span class="text-xl font-bold  text-primary">{{ product?.currency?.symbol }} {{ product.discount ? (product.price - (product?.price/100 * product.discount)) : product.price }}</span>
                         <span v-if="product.discount" class="text-lg line-through text-gray-400">{{ product?.currency?.symbol }} {{ product?.price }}</span>
                     </div>

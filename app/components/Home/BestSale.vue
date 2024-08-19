@@ -3,25 +3,45 @@ import { ref } from 'vue'
 import Slider from '@/components/Common/Pertials/Slider.vue'
 import type { IProduct } from '~/types/products';
 import type { IpaginatedRespoinse } from '~/types/response';
-import { discountCalculation } from '~/helper';
+import { discountCalculation, getCategoryIds } from '~/helper';
+import type { ICategory } from '~/types/categories';
 
 const { categories } = storeToRefs(useAppStore())
 
 // state
 const preloader = ref(false)
 const products = ref<IProduct[]>([]);
-const filterParams = ref({
+
+const filterParams = ref<any>({
     marker: ['best-sale']
 })
 
 const re_render = ref(0)
 
 const getProducts = async (formBody: any) => {
+    const token = useCookie('token')
     preloader.value = true
+    let formData = new FormData()
+    for (const key in formBody) {
+        let formItem = formBody[key]
+        if(Array.isArray(formItem)){
+            for (const item of formBody[key]) {
+                formData.append(`${key}[]`, item)
+            }
+        }
+        else{
+            formData.append(key, formBody[key])
+        }
+    }
+
     try {
         const response = await $fetch<IpaginatedRespoinse<IProduct>>(`${useRuntimeConfig().public.baseUrl}/filter`, {
             method: 'POST',
-            body: formBody
+            body: formData,
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token.value}`,
+            },
         });
         if (response) {
             products.value = discountCalculation(categories.value, response.data)
@@ -34,19 +54,11 @@ const getProducts = async (formBody: any) => {
     }
 }
 
-const chooseCategory = (category: any) => {
-    if (category.id) {
-        getProducts({ ...filterParams.value, category: [category.id] })
-    } else {
-        getProducts({ ...filterParams.value })
-    }
-}
-
 onMounted(() => {
     getProducts({ ...filterParams.value })
 })
-
 </script>
+
 
 
 <template>
@@ -78,6 +90,5 @@ onMounted(() => {
         <div class="w-full">
             <Slider :products="products" :loading="preloader" :key="re_render"/>
         </div>
-
     </div>
 </template>
