@@ -51,6 +51,12 @@ export interface IProduct {
   approved_at: string;
   picture: string[];
   marker: IMarker[];
+  discount?: number
+  reviews: {
+    average_rating: number;
+    total_reviews: number;
+    product_id: number;
+  }[];
   category: ICategory;
   currency: ICurrency;
   user: IProductUser;
@@ -72,5 +78,5 @@ export interface IReview {
   user: IUser;
 }
 export interface IReviewWithProduct extends IReview {
-  product: IProduct
+  product: IProduct;
 }

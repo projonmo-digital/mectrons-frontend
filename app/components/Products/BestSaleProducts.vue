@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import FilterBar from '~/components/Common/Pertials/FilterBar.vue';
 import Slider from '~/components/Common/Pertials/Slider.vue'
+import { discountCalculation } from '~/helper';
+import type { IProduct } from '~/types/products';
+import type { IpaginatedRespoinse } from '~/types/response';
+
+const { categories } = storeToRefs(useAppStore())
 
 // state
 const preloader = ref(false)
-const products = ref([]);
+const products = ref<IProduct[]>([]);
 const filterParams = ref({
     marker: ['best-sale']
 })
@@ -15,12 +19,12 @@ const re_render = ref(0)
 const getProducts = async (formBody: any) => {
     preloader.value = true
     try {
-        const response = await $fetch<any>(`${useRuntimeConfig().public.baseUrl}/filter`, {
+        const response = await $fetch<IpaginatedRespoinse<IProduct>>(`${useRuntimeConfig().public.baseUrl}/filter`, {
             method: 'POST',
-            body: formBody
+            body: formBody,
         });
-        if (response && response) {
-            products.value = response.data;
+        if (response) {
+            products.value = discountCalculation(categories.value, response.data)
         }
     } catch (error) {
         console.error(error);
@@ -47,6 +51,6 @@ onMounted(() => {
 
 <template>
     <div class="w-full">
-        <Slider :products="products" :loading="preloader" :key="re_render"/>
+        <Slider :products="products" :loading="preloader" :key="re_render" />
     </div>
 </template>

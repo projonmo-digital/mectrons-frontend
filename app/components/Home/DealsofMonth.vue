@@ -1,25 +1,47 @@
-<script setup>
+<script setup lang="ts">
+import { ref } from 'vue'
 import { useWindowSize } from '@vueuse/core'
-const { width, height } = useWindowSize()
+import { discountCalculation } from '~/helper';
+import type { IProduct } from '~/types/products';
+import type { IpaginatedRespoinse } from '~/types/response';
+import Product2 from '../Common/Pertials/Product2.vue';
 
-const products = ref([]);
-const getProducts = async () => {
-    // refreshNuxtData();
+const { width, height } = useWindowSize()
+const { categories } = storeToRefs(useAppStore())
+
+// state
+const preloader = ref(false)
+const products = ref<IProduct[]>([]);
+const filterParams = ref({
+    marker: ['deals-month']
+})
+
+const re_render = ref(0)
+
+const getProducts = async (formBody: any) => {
+    preloader.value = true
     try {
-        const { pending, data } = await useFetch(`${useRuntimeConfig().public.baseUrl}/filter`, {
+        const response = await $fetch<IpaginatedRespoinse<IProduct>>(`${useRuntimeConfig().public.baseUrl}/filter`, {
             method: 'POST',
-            body: {
-                marker: ['deals-month'],
-            }
+            body: formBody,
         });
-        products.value = data.value.data;
+        if (response) {
+            products.value = discountCalculation(categories.value, response.data)
+        }
     } catch (error) {
-        console.log(error);
+        console.error(error);
+    } finally {
+        preloader.value = false
+        re_render.value++
     }
 }
-getProducts();
 
+onMounted(() => {
+    getProducts({ ...filterParams.value })
+})
 </script>
+
+
 <template>
     <div class=" bg-[url('assets/images/car.jpeg')] py-16">
         <div class="flex  justify-center ">
@@ -48,8 +70,7 @@ getProducts();
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <div v-for="(product, index) of products" :key="product.id" class="p-3 border-r">
-                <ProductCard1 :product="product">
-                </ProductCard1>
+                <Product2 :product="product" />
                 <hr v-if="products.length- ( width < 768 ? 1: width < 1024 ? 2: 3 ) > index" class="my-2">
             </div>
         </div>

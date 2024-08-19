@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import { useToast } from '@/components/ui/toast/use-toast'
-import type { ICategory, IFlashSale } from '~/types/categories'
+import type { ICategory } from '~/types/categories'
 import type { IOffer } from '~/types/offer'
 
 interface IState {
@@ -8,7 +7,6 @@ interface IState {
     categories: ICategory[],
     offerList: IOffer[],
     sliderCategories: any [],
-    flatCategories: any[],
     local: string
 }
 
@@ -18,13 +16,12 @@ export const useAppStore = defineStore('app', {
         loading: false,
         sliderCategories: [],
         offerList: [],
-        flatCategories: [],
         local: localStorage.local || 'en'
     }),
     actions: {
         async getCetagories(loading = true) {
             this.loading = loading
-            const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`);
+            const { data, pending, error } = await useFetch<any>(`${useRuntimeConfig().public.baseUrl}/general-categories`);
             this.categories = data.value?.categories
             if (data.value) {
                 let itemArray: any[] = []
@@ -38,7 +35,6 @@ export const useAppStore = defineStore('app', {
                 if (itemArray.length) {
                     this.$state.sliderCategories.push(itemArray)
                 }
-                this.$state.flatCategories = flattenCategories(data.value.categories, null)
             }
             this.loading = false
         },
@@ -51,7 +47,6 @@ export const useAppStore = defineStore('app', {
                     }
                 }
             );
-
             this.offerList = response
             this.loading = false
         },
@@ -61,18 +56,3 @@ export const useAppStore = defineStore('app', {
         }
     }
 })
-
-const getFlattenCategories = () => {
-    let itemArray = []
-    return (categories: any[], parent: any) => {
-        for(let cat of categories){
-            itemArray.push({ id: cat.id, value: `${ parent ? `${parent.name} > ${cat.name}` : cat.name }` })
-            if(cat.children.length){
-                flattenCategories(cat.children, cat)
-            }
-        }
-        return itemArray;
-    }
-}
-
-const flattenCategories = getFlattenCategories()
