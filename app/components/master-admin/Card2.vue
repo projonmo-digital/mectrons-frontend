@@ -1,7 +1,8 @@
 <script setup>
 defineProps({
     icon: String,
-    type: String
+    type: String,
+    value: Number
 })
 
 </script>
@@ -9,7 +10,7 @@ defineProps({
 
     <div class="w-full h-full  flex flex-col gap-2 shadow-lg  p-8 border m-2  rounded-xl  ">
         <div class="flex items-center  justify-between">
-            <h1 class=" text-[40px]">45</h1>
+            <h1 class=" text-[40px]">{{ value || 0 }}</h1>
             <Icon :name="icon" class="text-[70px] text-[#C95E08]"></Icon>
 
         </div>

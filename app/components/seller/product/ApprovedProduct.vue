@@ -138,18 +138,13 @@ onMounted(() => {
 
 <template>
     <div class="my-5">
-        <div class="my-5 grid grid-cols-3 gap-5">
-          <div class="shadow-lg bg-gradient-to-tr from-primary to-orange-900 rounded-xl p-3 text-white flex flex-col items-center">
-            <Icon class="text-5xl text-primary" name="fa:download" />
-            <p class="my-3 text-3xl font-bold">{{ total_upload }}</p>
-            <p class="">Total download</p>
-          </div>
-          <NuxtLink to="/seller/product/add" class="border rounded-lg hover:bg-primary cursor-pointer p-5 flex justify-center items-center shadow-lg" >
+      <div class="my-5 grid grid-cols-2 gap-5">
+          <NuxtLink to="/seller/product/add" class="scale-100 hover:scale-105 transform transition duration-300 ease-in-out border rounded-lg cursor-pointer p-5 flex justify-center items-center shadow-lg" >
             <div class="w-16 h-16 rounded-full flex items-center justify-center bg-primary p-2">
               <Icon class="text-white w-10 h-10" name="fa:plus" />
             </div>
           </NuxtLink>
-          <div class="shadow-lg rounded-lg bg-primary text-white flex flex-col items-center">
+          <div class="shadow-lg bg-gradient-to-tr from-primary to-orange-900 rounded-xl p-3 text-white flex flex-col items-center">
             <Icon class="text-5xl text-primary" name="fa:download" />
             <p class="my-3 text-3xl font-bold">{{ total_sold }}</p>
             <p class="">Product sold</p>

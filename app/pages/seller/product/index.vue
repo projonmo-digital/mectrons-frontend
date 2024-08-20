@@ -15,10 +15,7 @@ useHead({
 })
 
 const selectedTab = ref('pending')
-
-
 </script>
-
 
 <template>
     <div class="flex justify-between">
