@@ -13,6 +13,9 @@ export default defineNuxtConfig({
       appName: process.env.APP_NAME,
       baseUrl: process.env.API_BASE_URL,
       imageUrl: process.env.API_IMAGE_URL,
+      twakToAPI: process.env.TWAK_TO_API,
+      twakToPropertyId: process.env.TWAK_TO_PROPERTY_ID,
+      twakToWidgetId: process.env.TWAK_TO_WIDGET_ID,
     },
   },
   app: {

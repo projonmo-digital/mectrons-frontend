@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import type { ICategory, IFlashSale } from '~/types/categories';
-import type { IOffer } from '~/types/offer';
 import type { IProduct } from '~/types/products';
-
-const { categories } = storeToRefs(useAppStore())
-
-const auth = useAuthStore();
+const { categories } = storeToRefs(useAppStore());
+const { user } = storeToRefs(useAuthStore());
 const cartStore = useCartStore();
 
 interface Props {
@@ -15,10 +10,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-// const offer = computed<ICategory | null>(() => categories.value)
-
 // Bookmark
-
 const bookmarkAdd = async (product: IProduct) => {
     const token = useCookie('token')
     try {
@@ -72,7 +64,7 @@ const addToCart = (product: IProduct) => {
                     src="assets/images/dummy-image.jpg" alt="Ads" />
             </nuxt-link>
 
-            <Icon name="mdi:heart" class="w-8 h-8 absolute top-3 left-3 text-gray-300 cursor-pointer"
+            <Icon v-if="user?.type === 'buyer'" name="mdi:heart" class="w-8 h-8 absolute top-3 left-3 text-gray-300 cursor-pointer"
             @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product!)"
             :class="{ 'text-red-500': !!product.is_bookmarked }"></Icon>
         </div>

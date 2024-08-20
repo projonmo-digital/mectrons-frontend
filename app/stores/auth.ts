@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useToast } from "@/components/ui/toast/use-toast";
 import type { ILoginResponse, IUser } from "@/types/auth";
-
+import { initTawkTo, getHashValue } from '~/helper/twakTo';
 const { toast } = useToast();
 interface IState {
   authenticated: boolean;
@@ -43,6 +43,11 @@ export const useAuthStore = defineStore("auth", {
           title: "Success",
           description: response?.message,
         });
+        if(response.user.type === 'buyer'){
+          getHashValue().then((hash: any) => {
+            initTawkTo(response.user, hash) 
+          })
+        }
       } catch (error) {
         const err = error as any;
         if (err.response._data) {

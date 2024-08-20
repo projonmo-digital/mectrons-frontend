@@ -10,6 +10,7 @@ const cartStore = useCartStore();
 const route = useRoute();
 
 const { categories } = storeToRefs(useAppStore())
+const { user } = storeToRefs(useAuthStore())
 // state
 const product = ref<IProduct | null>(null)
 const suggestion = ref<IProduct[]>([])
@@ -29,7 +30,7 @@ const increment = () => {
 }
 
 const addProduct = (qty: number) => {
-    if(product.value){
+    if (product.value) {
         cartStore.addToCart(product.value, qty)
     }
 }
@@ -76,7 +77,7 @@ const showImage = ref();
 const getProduct = async () => {
     try {
         const token = useCookie('token')
-        const response = await $fetch<{ product: IProduct, suggestion: IpaginatedRespoinse<IProduct>}>(`${useRuntimeConfig().public.baseUrl}/view-product/${route.params.id}`, {
+        const response = await $fetch<{ product: IProduct, suggestion: IpaginatedRespoinse<IProduct> }>(`${useRuntimeConfig().public.baseUrl}/view-product/${route.params.id}`, {
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
@@ -84,7 +85,7 @@ const getProduct = async () => {
         });
         product.value = discountCalculation(categories.value, [response.product])[0]
         suggestion.value = discountCalculation(categories.value, response.suggestion.data)
-        
+
         productview.value = discountCalculation(categories.value, [response.product])[0];
         productsuggestion.value = discountCalculation(categories.value, response.suggestion.data);
         showImage.value = productview.value?.picture[0];
@@ -101,6 +102,14 @@ const getProduct = async () => {
     } catch (error) {
         console.log('Somthing Wrong!');
     }
+}
+
+const messagePanelOpen = () => {
+    window.Tawk_API.setAttributes({
+        'product_url': route.fullPath
+    }, function (error) { });
+    window.Tawk_API.maximize();
+    window.Tawk_API.start();
 }
 
 onMounted(() => {
@@ -126,22 +135,6 @@ const imageMouseMove = (e: any) => {
     xBy.value = `${x}%`;
     yBy.value = `${y}%`;
 }
-
-// const quantity = ref(1);
-// const Decrement = () => {
-//     if (quantity.value >= 2) {
-//         quantity.value - 1;
-//     }
-// }
-// const Increment = () => {
-//     if (quantity.value <= 1000) {
-//         quantity.value + 1;
-//     }
-// }
-// const BuyNowBtn = (product) => {
-//     product.qty = quantity.value;
-//     cart.AddToCart(product);
-// }
 
 const features = [
     {
@@ -209,8 +202,11 @@ const features = [
                     <div>
                         <div class="flex flex-col gap-4">
                             <div class="flex items-center flex-wrap gap-x-2">
-                                <span class="text-2xl font-bold  text-primary">{{ product?.currency?.symbol }} {{ product?.discount ? (product.price - (product?.price/100 * product.discount)) : product?.price }}</span>
-                                <span v-if="product?.discount" class="text-lg line-through text-gray-400">{{ product?.currency?.symbol }} {{ product?.price }}</span>
+                                <span class="text-2xl font-bold  text-primary">{{ product?.currency?.symbol }} {{
+                                    product?.discount ? (product.price - (product?.price / 100 * product.discount)) :
+                                        product?.price }}</span>
+                                <span v-if="product?.discount" class="text-lg line-through text-gray-400">{{
+                                    product?.currency?.symbol }} {{ product?.price }}</span>
                             </div>
                             <div class="flex gap-3"
                                 v-for="(ot, index) in product?.others.filter((o: any) => ['brand', 'model'].includes(o.name))"
@@ -235,10 +231,12 @@ const features = [
                                     <button class="text-gray-500 hover:text-gray-700 text-2xl"
                                         @click="increment">+</button>
                                 </div>
-                                <span>
-                                    <span @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product!)"
+                                <span v-if="user?.type === 'buyer'">
+                                    <span
+                                        @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product!)"
                                         class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex justify-center items-center cursor-pointer">
-                                        <Icon name="mdi:heart" class="w-5  h-5" :class="{ 'text-red-500': !!product?.is_bookmarked }">
+                                        <Icon name="mdi:heart" class="w-5  h-5"
+                                            :class="{ 'text-red-500': !!product?.is_bookmarked }">
                                         </Icon>
                                     </span>
                                 </span>
@@ -249,7 +247,8 @@ const features = [
                             </div>
                         </div>
                     </div>
-                    <button v-if="product" class="w-full bg-primary text-white rounded-md p-2" @click="addProduct(quantity)">BUY IT
+                    <button v-if="product" class="w-full bg-primary text-white rounded-md p-2"
+                        @click="addProduct(quantity)">BUY IT
                         NOW</button>
                     <div>
                         <div class="my-2">
@@ -262,7 +261,8 @@ const features = [
                                 </div>
                                 <h3>{{ product?.user?.name }}</h3>
                             </div>
-                            <button class="flex items-center gap-2 hover:bg-primary/10 rounded-xl p-3">
+                            <button v-if="user?.type === 'buyer'"@click="messagePanelOpen"
+                                class="flex items-center gap-2 hover:bg-primary/10 rounded-xl p-3">
                                 <Icon name="fluent:chat-20-filled" class="text-primary text-2xl" />
                                 <span>Chat now</span>
                             </button>

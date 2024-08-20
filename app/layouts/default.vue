@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { onMounted, nextTick } from 'vue';
 import Toaster from '@/components/ui/toast/Toaster.vue'
+import { initTawkTo, getHashValue } from '~/helper/twakTo';
 const appStore = useAppStore()
 const cartStore = useCartStore()
+const { user } = storeToRefs(useAuthStore())
 
 // 
 function googleTranslateElementInit() {
@@ -14,6 +17,11 @@ onMounted(() => {
   appStore.getFlashSale()
   cartStore.getLocalProducts()
   cartStore.getPaymentMethods()
+  if (user.value?.type === 'buyer') {
+    getHashValue().then((hash: any) => {
+      initTawkTo(user.value!, hash) 
+    })
+  }
 })
 </script>
 

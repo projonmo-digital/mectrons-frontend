@@ -55,12 +55,12 @@ const getProducts = async (params: any, formBody: any) => {
     }
 }
 
-// watch(() => route.query.search, (n, o) => {
-//     responseParams.value.search = n
-//     setTimeout(() => {
-//         getProducts(responseParams.value, formBody.value)
-//     }, 0);    
-// }, { immediate: true, deep: true })
+watch(() => route.query.search, (n, o) => {
+    responseParams.value.search = n
+    setTimeout(() => {
+        getProducts(responseParams.value, formBody.value)
+    }, 0);    
+}, { immediate: true, deep: true })
 
 onMounted(() => {
     formBody.value = route.query

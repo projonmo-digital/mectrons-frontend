@@ -15,7 +15,8 @@ const { products, methods } = storeToRefs(useCartStore())
 const preloader = ref(false)
 const cartFromBody = ref<any>({})
 const subTotal = computed(() => products.value.map(p => p.price * (p.qty || 1)).reduce((r, c) => r += c, 0))
-const total = computed(() => products.value.map(p => p.price * (p.qty || 1)).reduce((r, c) => r += c, 0) - (cartFromBody.value.coupon_amount || 0))
+const discount = computed(() => products.value.map(p => (p.discount || 0) * (p.qty || 1)).reduce((r, c) => r += c, 0))
+const total = computed(() => products.value.map(p => p.price * (p.qty || 1)).reduce((r, c) => r += c, 0) - (cartFromBody.value.coupon_amount || 0) - discount.value)
 
 const selectedMethod = ref<string | null>(null)
 
@@ -211,7 +212,7 @@ onMounted(() => {
                                 </div>
                             </div>
                         </li>
-                        <!-- <li class="pb-3">
+                        <li class="pb-3">
                             <div class="flex items-center justify-between">
                                 <div
                                     class="inline-flex items-center text-base font-normal text-gray-900 dark:text-white">
@@ -219,10 +220,10 @@ onMounted(() => {
                                 </div>
                                 <div
                                     class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                    {{ 'BDT' }} 260
+                                    {{ 'BDT' }} {{ discount }}
                                 </div>
                             </div>
-                        </li> -->
+                        </li>
                         <!-- <li class="pb-3">
                             <div class="flex items-center justify-between">
                                 <div

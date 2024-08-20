@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import type { IProduct } from '~/types/products';
 
 const { categories } = storeToRefs(useAppStore())
+const { user } = storeToRefs(useAuthStore())
 
-const auth = useAuthStore();
 const loading = ref(false);
 const cartStore = useCartStore();
 
@@ -65,17 +65,22 @@ const addToCart = (product: IProduct) => {
                 alt="Product" />
             <img class="h-[200px] w-full object-cover" v-else src="assets/images/dummy-image.jpg" alt="Ads" />
         </nuxt-link>
-        <Icon name="mdi:heart" class="w-8 h-8 absolute top-3 left-3 text-gray-300 cursor-pointer"
+        <Icon v-if="user?.type === 'buyer'" name="mdi:heart" class="w-8 h-8 absolute top-3 left-3 text-gray-300 cursor-pointer"
             @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product!)"
             :class="{ 'text-red-500': !!product.is_bookmarked }"></Icon>
         <div>
             <div class="flex gap-3 items-center py-2 px-3">
                 <div class="flex items-center my-3">
-                    <Icon name="mdi:star" class="text-xl text-gray-300" :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 1 }"></Icon>
-                    <Icon name="mdi:star" class="text-xl text-gray-300" :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 2 }"></Icon>
-                    <Icon name="mdi:star" class="text-xl text-gray-300" :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 3 }"></Icon>
-                    <Icon name="mdi:star" class="text-xl text-gray-300" :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 4 }"></Icon>
-                    <Icon name="mdi:star" class="text-xl text-gray-300" :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 5 }"></Icon>
+                    <Icon name="mdi:star" class="text-xl text-gray-300"
+                        :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 1 }"></Icon>
+                    <Icon name="mdi:star" class="text-xl text-gray-300"
+                        :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 2 }"></Icon>
+                    <Icon name="mdi:star" class="text-xl text-gray-300"
+                        :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 3 }"></Icon>
+                    <Icon name="mdi:star" class="text-xl text-gray-300"
+                        :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 4 }"></Icon>
+                    <Icon name="mdi:star" class="text-xl text-gray-300"
+                        :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 5 }"></Icon>
                 </div>
                 <span class="text-gray-700 text-sm">({{ product.reviews[0]?.total_reviews || 0 }} Reviews)</span>
             </div>
@@ -87,10 +92,14 @@ const addToCart = (product: IProduct) => {
             <hr>
             <div class="px-3 py-2">
                 <div class="flex items-center gap-x-1">
-                    <span v-if="product.discount" class="text-sm px-1 py-0.5 bg-primary text-white rounded-lg">-{{ product.discount }}%</span>
+                    <span v-if="product.discount" class="text-sm px-1 py-0.5 bg-primary text-white rounded-lg">-{{
+                        product.discount }}%</span>
                     <div class="flex items-center flex-wrap gap-x-2">
-                        <span class="text-xl font-bold  text-primary">{{ product?.currency?.symbol }} {{ product.discount ? (product.price - (product?.price/100 * product.discount)) : product.price }}</span>
-                        <span v-if="product.discount" class="text-lg line-through text-gray-400">{{ product?.currency?.symbol }} {{ product?.price }}</span>
+                        <span class="text-xl font-bold  text-primary">{{ product?.currency?.symbol }} {{
+                            product.discount ? (product.price - (product?.price / 100 * product.discount)) : product.price
+                            }}</span>
+                        <span v-if="product.discount" class="text-lg line-through text-gray-400">{{
+                            product?.currency?.symbol }} {{ product?.price }}</span>
                     </div>
                 </div>
             </div>
