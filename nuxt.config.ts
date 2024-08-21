@@ -40,14 +40,21 @@ export default defineNuxtConfig({
         { name: 'twitter:image', content: ogSource },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:description', content: metaDescription },
+        { name: 'creator', content: 'Projonmo Digital Ltd.'},
+        { name: 'designer', content: 'Projonmo Digital Ltd.'}
       ],
       link: [
+        { type:"text/plain", rel:"author", href:"/humans.txt" },
         {
           rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css",
           integrity: "sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==",
           crossorigin: "anonymous", referrerpolicy: "no-referrer"
         },
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: "image/png", sizes:"32x32", href:"/favicon-32x32.png"},
+        { rel: 'icon', type:"image/png", sizes:"16x16", href:"/favicon-16x16.png"},
+        { rel: 'apple-touch-icon', sizes:"180x180", href:"/apple-touch-icon.png"},
+        { rel: 'manifest', href:"/site.webmanifest"}
       ],
       script: [
         { src:"https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"}

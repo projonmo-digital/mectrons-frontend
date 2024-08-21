@@ -27,6 +27,16 @@ export const initTawkTo = (user: IUser, hash: string) => {
     //@ts-ignore
     window.Tawk_API.maximize();
   };
+  //@ts-ignore
+  window.Tawk_API.onChatMessageVisitor = function (message) {
+    //@ts-ignore
+    window.Tawk_API.maximize();
+  };
+  //@ts-ignore
+  window.Tawk_API.onChatMessageSystem = function (message) {
+    //@ts-ignore
+    window.Tawk_API.maximize();
+  };
 
   // //@ts-ignore
   // window.Tawk_API.onBeforeLoad = function () {
