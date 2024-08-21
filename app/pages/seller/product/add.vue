@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { getUrl } from '~/helper'
+import RadioInput from './RadioInput/RadioInput.vue';
 const { toast } = useToast()
 definePageMeta({
     middleware: ["auth", "seller"]
@@ -40,9 +41,12 @@ const categoryIdProxy = reactive({
 })
 
 const loading = ref(false)
-const formData = ref({})
+const formData = ref({
+    category_id: '132'
+})
 const isBn = ref(false)
 const errors = ref({})
+
 const response = ref({
     title: '',
     description: "",
@@ -73,10 +77,10 @@ const response = ref({
 const proxyResponse = ref({
     title: '',
     description: "",
-    tags: '',
-    location: [''],
+    // tags: '',
+    // location: [''],
     price: 1000,
-    currency_id: 4,
+    currency_id: 12,
     stock_amount: '5',
     model: '',
     make: '',
@@ -86,11 +90,11 @@ const proxyResponse = ref({
     parts: '',
 
     category_id: '',
-    condition_id: "dfsadf",
-    negotiable: '1',
-    age: '500',
-    origin: 'dsfsa',
-    typeId: 'fasds',
+    // condition_id: "dfsadf",
+    // negotiable: '1',
+    // age: '500',
+    // origin: 'dsfsa',
+    // typeId: 'fasds',
     bd: 'afs',
     location: ['sdklf'],
     type_id: 1,
@@ -235,18 +239,17 @@ watch(productOrService, () => {
 })
 </script>
 
-
 <template>
     <HeaderWithHr header="Add New Prouduct"></HeaderWithHr>
     <div>
-        <div>
+        <div class="flex flex-col gap-8">
             <div class="my-3">
                 <div class="py-3 border-b-2 border-dashed">
                     <h1 class="text-primary text-xl font-bold">Product information</h1>
                 </div>
-                <div class="shadow-xl border p-4">
-                    <h1 class="text-primary text-xl font-bold">Product Category</h1>
-                    <div class="flex p-5">
+                <div class="shadow-xl border p-4 mt-5">
+                    <RadioInput v-model="formData.category_id" :list="categoryData.categories" />
+                    <!-- <div class="flex p-5">
                         <div class="flex-1 flex flex-col gap-2">
                             <div class="flex gap-2 items-center text-xl">
                                 <Icon name="fluent:box-16-regular"></Icon>
@@ -334,11 +337,14 @@ watch(productOrService, () => {
                                 </div>
                             </RadioGroup>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
-            <div class="flex gap-5 items-start">
+            <div class="flex flex-col gap-4 w-full max-w-[600px]">
+                <div class="py-3 border-b-2 border-dashed">
+                    <h1 class="text-primary text-xl font-bold">Price Stock</h1>
+                </div>
                 <table class="flex-1">
                     <tr>
                         <td class="py-3"><Label for="productName">Product Name</Label></td>
@@ -353,7 +359,19 @@ watch(productOrService, () => {
                         <td class="py-3"><Input id="brandName" type="text" v-model="response.brand"
                                 placeholder="Brand" /></td>
                     </tr>
-                    <tr class=" align-top">
+                    <tr>
+                        <td class="py-3"><Label for="unitPrice">Unit Price</Label></td>
+                        <td class="py-3"><Input id="unitPrice" type="number" v-model="response.price"
+                                placeholder="0" /></td>
+                    </tr>
+                    <tr>
+                        <td class="py-3"><Label for="unitPrice">Stock</Label></td>
+                        <td class="py-3">
+                            <Input id="unitPrice" type="number" :min="0" v-model="response.stock_amount"
+                                placeholder="Stock" />
+                        </td>
+                    </tr>
+                    <tr class="align-top">
                         <td class="py-3"><Label for="tags">Description</Label></td>
                         <td class="py-3">
                             <div class="relative notranslate">
@@ -371,50 +389,6 @@ watch(productOrService, () => {
                         </td>
                     </tr>
                 </table>
-                <table class="flex-1">
-                    <tr>
-                        <td class="py-3"><Label for="stock">Stock</Label></td>
-                        <td class="py-3"><Input id="stock" type="text" v-model="response.stock_amount"
-                                placeholder="Stock" /></td>
-                    </tr>
-                    <tr>
-                        <td class="py-3"><Label for="tags">Tags</Label></td>
-                        <td class="py-3"><Input id="tags" type="text" v-model="response.tags" placeholder="Tags" /></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div v-if="isDisabled" class="grid grid-cols-2 md:grid-cols-2 gap-4 max-w-[600px] w-full my-5">
-                <select class="h-[35px] border rounded-lg" @change="getModel" v-model="response.make">
-                    <option value="" disabled selected>Select Model </option>
-                    <option v-for="i in secondSearchBar.make">{{ i.make }}</option>
-
-                </select>
-                <select @change="getYear" :disabled="!response.make" class="h-[35px] border rounded-lg"
-                    v-model="response.model">
-                    <option value="" disabled selected>Select Model </option>
-                    <option v-for="i in secondSearchBar.model">{{ i.models }}</option>
-                </select>
-                <select @change="getCC" :disabled="!secondSearchBar.year" class="h-[35px] border rounded-lg"
-                    v-model="response.year">
-                    <option value="" disabled selected>Select Year</option>
-                    <option v-for="i in secondSearchBar.year">{{ i.year }}</option>
-                </select>
-                <select @change="getEngyne" :disabled="!secondSearchBar.cc" class="h-[35px] border rounded-lg"
-                    v-model="response.cc">
-                    <option value="" disabled selected>Select CC</option>
-                    <option v-for="i in secondSearchBar.cc">{{ i.cc }}</option>
-                </select>
-                <select @change="getParts" :disabled="!secondSearchBar.engyne" class="h-[35px] border rounded-lg"
-                    v-model="response.engyne">
-                    <option value="" disabled selected>Select Engine</option>
-                    <option v-for="i in secondSearchBar.engyne">{{ i.engine }}</option>
-                </select>
-
-                <select :disabled="!secondSearchBar.parts" class="h-[35px] border rounded-lg" v-model="response.parts">
-                    <option value="" disabled selected>Select Parts</option>
-                    <option v-for="i in categoryData.categories">{{ i.name }}</option>
-                </select>
             </div>
 
             <div class="flex flex-col gap-4 w-full max-w-[600px]">
@@ -442,7 +416,7 @@ watch(productOrService, () => {
                     <span v-if="Object.keys(errors).includes('image')" class="text-sm text-red-500">{{ errors.image[0]
                         }}</span>
                 </div>
-                <div class="flex gap-8">
+                <!-- <div class="flex gap-8">
                     <div class="w-full max-w-sm flex text-nowrap items-center gap-2">
                         <Label for="videoProvider">Video Provider</Label>
                         <Select v-model="response.extra_field_1">
@@ -461,68 +435,44 @@ watch(productOrService, () => {
                         <Label for="videoLinks">Video Links</Label>
                         <Input id="videoLinks" type="text" v-model="response.extra_field_2" placeholder="Video Links" />
                     </div>
-                </div>
+                </div> -->
             </div>
 
-            <div class="w-full max-w-[600px] my-5">
+            <div v-if="isDisabled" class="max-w-[600px] w-full">
                 <div class="py-3 border-b-2 border-dashed">
-                    <h1 class="text-primary text-xl font-bold">Price Stock</h1>
+                    <h1 class="text-primary text-xl font-bold">Others</h1>
                 </div>
-                <div>
-                    <table class="w-full">
-                        <tr>
-                            <td class="py-3"><Label for="unitPrice">Unit Price</Label></td>
-                            <td class="py-3"><Input id="unitPrice" type="number" v-model="response.price"
-                                    placeholder="0" /></td>
-                        </tr>
-                        <tr>
-                            <td class="py-3"><Label for="currencyId">Currency</Label></td>
-                            <td class="py-3"><Input id="currencyId" type="text" v-model="response.currency_Id"
-                                    placeholder="Currency" /></td>
-                        </tr>
-                        <tr>
-                            <td class="py-3"><Label for="conditionId">Condition</Label></td>
-                            <td class="py-3"><Input id="conditionId" type="text" v-model="response.condition_id"
-                                    placeholder="Condition" /></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
-            <div class="w-full max-w-[600px]">
-                <div class="py-3 border-b-2 border-dashed">
-                    <h1 class="text-primary text-xl font-bold">Shipping Configuration</h1>
-                </div>
-                <div class="grid grid-cols-2 gap-16">
-                    <table class="w-full">
-                        <tr>
-                            <td class="py-3"><Label for="cashOnDelivery">Cash on Delivery</Label></td>
-                            <td class="py-3">
-                                <Switch id="cashOnDelivery" v-model="response.negotiable" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-3"><Label for="flashRate">Flash Rate</Label></td>
-                            <td class="py-3">
-                                <Switch id="flashRate" v-model="response.extra_field_1" />
-                            </td>
-                        </tr>
-                    </table>
-                    <table class="w-full">
-                        <tr>
-                            <td class="py-3"><Label for="freeShipping">Free Shipping</Label></td>
-                            <td class="py-3">
-                                <Switch id="freeShipping" v-model="response.extra_field_2" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-3"><Label for="isProductQuantityMultiply">Is Product Quantity Multiply</Label>
-                            </td>
-                            <td class="py-3">
-                                <Switch id="isProductQuantityMultiply" v-model="response.bd" />
-                            </td>
-                        </tr>
-                    </table>
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-4 my-5">
+                    <select class="h-[35px] border rounded-lg" @change="getModel" v-model="response.make">
+                        <option value="" disabled selected>Select Model </option>
+                        <option v-for="i in secondSearchBar.make">{{ i.make }}</option>
+    
+                    </select>
+                    <select @change="getYear" :disabled="!response.make" class="h-[35px] border rounded-lg"
+                        v-model="response.model">
+                        <option value="" disabled selected>Select Model </option>
+                        <option v-for="i in secondSearchBar.model">{{ i.models }}</option>
+                    </select>
+                    <select @change="getCC" :disabled="!secondSearchBar.year" class="h-[35px] border rounded-lg"
+                        v-model="response.year">
+                        <option value="" disabled selected>Select Year</option>
+                        <option v-for="i in secondSearchBar.year">{{ i.year }}</option>
+                    </select>
+                    <select @change="getEngyne" :disabled="!secondSearchBar.cc" class="h-[35px] border rounded-lg"
+                        v-model="response.cc">
+                        <option value="" disabled selected>Select CC</option>
+                        <option v-for="i in secondSearchBar.cc">{{ i.cc }}</option>
+                    </select>
+                    <select @change="getParts" :disabled="!secondSearchBar.engyne" class="h-[35px] border rounded-lg"
+                        v-model="response.engyne">
+                        <option value="" disabled selected>Select Engine</option>
+                        <option v-for="i in secondSearchBar.engyne">{{ i.engine }}</option>
+                    </select>
+    
+                    <select :disabled="!secondSearchBar.parts" class="h-[35px] border rounded-lg" v-model="response.parts">
+                        <option value="" disabled selected>Select Parts</option>
+                        <option v-for="i in categoryData.categories">{{ i.name }}</option>
+                    </select>
                 </div>
             </div>
 
@@ -545,9 +495,10 @@ watch(productOrService, () => {
                     </tr>
                 </table>
             </div>
-            <hr class="my-5 w-full max-w-[600px] border-dashed border-b-2">
-            <div class="flex justify-end w-full max-w-[600px]">
-                <div class="flex gap-4">
+
+            <div class="w-full max-w-[600px]">
+                <hr class="my-5 w-full max-w-[600px] border-dashed border-b-2">
+                <div class="flex justify-end">
                     <Button :disable="loading" type="submit" @click="handleSubmit">Save & Publish</Button>
                 </div>
             </div>

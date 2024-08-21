@@ -43,6 +43,7 @@ export const useAuthStore = defineStore("auth", {
           title: "Success",
           description: response?.message,
         });
+        location.reload()
         setTimeout(() => {
           if (response.user.type === "buyer") {
             getHashValue().then((hash: any) => {

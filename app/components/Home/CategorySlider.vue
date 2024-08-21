@@ -19,7 +19,7 @@ const onSlideChange = (e) => {
 </script>
 <template>
     <div class="flex">
-        <aside class="lg:block hidden w-[310px]  bg-gray-200">
+        <aside class="lg:block hidden w-[310px] bg-gray-200">
             <div class="h-full flex justify-center items-center bg-[#EAE5E2] py-4" v-if="loading">
                 <Icon name="fluent:spinner-ios-16-filled" class="h-9 w-9 text-primary animate-spin"></Icon>
             </div>
@@ -29,11 +29,11 @@ const onSlideChange = (e) => {
                 </nav>
             </div>
         </aside>
-        <swiper class="flex-1" :modules="[Autoplay]" :autoplay="{ delay: 5000, disableOnInteraction: false, }"
+        <swiper class="flex-1 bg-blue-300" :modules="[Autoplay]" :autoplay="{ delay: 5000, disableOnInteraction: false, }"
             :slides-per-view="1" :space-between="0" @swiper="onSwiper" @slideChange="onSlideChange">
-            <swiper-slide><img src="assets/images/slide.png" alt=""></swiper-slide>
-            <swiper-slide><img src="assets/images/slide.png" alt=""></swiper-slide>
-            <swiper-slide><img src="assets/images/slide.png" alt=""></swiper-slide>
+            <swiper-slide><img class="min-w-full min-h-full object-cover" src="assets/images/slide.png" alt=""></swiper-slide>
+            <swiper-slide><img class="min-w-full min-h-full object-cover" src="assets/images/slide.png" alt=""></swiper-slide>
+            <swiper-slide><img class="min-w-full min-h-full object-cover" src="assets/images/slide.png" alt=""></swiper-slide>
         </swiper>
     </div>
 </template>

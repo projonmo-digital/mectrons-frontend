@@ -1,73 +1,65 @@
-/* TEAM */
-	Chef:Juanjo Bernabeu
-	Contact: hello [at] humanstxt.org
-	Twitter: @juanjobernabeu
-	From:Barcelona, Catalonia, Spain
+ /* COMPANY */
+Website    : https://projonmodigital.com/
+Facebook   : https://www.facebook.com/projonmodigitalltd/
+Linkedin   : https://www.linkedin.com/company/13307501/admin/dashboard/
+Instagram  : https://www.instagram.com/projonmodigital/  
+X (Twitter): https://x.com/projonmoagency
+Pinterest  : https://www.pinterest.com/projonmodigital/
+Youtube    : https://www.youtube.com/@projonmodigital
+WhatsApp   : +8801856128089
 
-	UI developer: Maria Macias
-	Twitter: @maria_ux
-	From:Barcelona, Catalonia, Spain
+🌟Our Portfolios:
+Behance : https://www.behance.net/projonmoagency
+Dribble : https://dribbble.com/projonmodigital
+Fiverr  : https://www.fiverr.com/projonmodigital?up_rollout=true
+ 
+🏢Office : 15/12D (2nd Floor), Haji Chinu Miah Road, Tikkapara, Mohammadpur 
+(Near Suchona Community Center), Dhaka,-1207 
 
-	One eyed illustrator: Carlos Mañas
-	Twitter: @oneeyedman
-	From:Madrid, Spain
+ /* TEAM */
+Managing Director        : MD. Najmul haque 
+Contact                  : hello@najmulhaque.com
+Linkedin                 : https://www.linkedin.com/in/officialnajmulhaque/
+From                     : Tikkapara, Mohammadpur,Dhaka. 
 
-	Standard Man: Abel Cabans
-	Twitter: @abelcabans
-	From:Barcelona, Catalonia, Spain
+Business Development     : Md. Mufidul Hassan 
+Contact                  : mhassan@projonmodigital.com
+Linkedin                 : https://www.linkedin.com/in/md-mufidul-hassan/
+From                     : Mogbazar ,Dhaka 
 
-	Web designer: Abel Sutilo
-	Twitter: @abelsutilo
-	From:Sevilla, Andalucia, Spain
+Senior Laravel Developer : AL MASUM NISHAT	
+Contact                  : masum.nishat21@gmail.com
+Linkedin                 : https://www.linkedin.com/in/masum-nishat-6270b5135/
+From                     : Tikkapara, Mohammadpur,Dhaka.
+	
+Sr. Frontend Developer   : Asaduzzaman Shishir
+Contact                  : shishir0019@gmail.com
+Linkedin                 : https://www.linkedin.com/in/shishir0019
+From                     : 
+	
+Frontend Developer       : Ashir Mahmud 
+Contact                  : 
+Linkedin                 : https://www.linkedin.com/in/asir-mahmud-4a5981278/
+From                     : 
+	
+Graphic Designer         : Pinki Akter 	
+Contact                  : 
+Linkedin                 : https://www.linkedin.com/in/kazipinki15/
+From                     : 
 
-/* THANKS */
-
-	(First) EN Translator: Jos Flores
-	Twitter: @prosciuttos
-	From: Barcelona, Catalonia, Spain
-
-	CA Translator: Eva AC
-	Twitter: @evaac
-	From:Barcelona, Catalonia, Spain
-
-	EN Translator: Marta Armada
-	Twitter: @martuishere
-	From: Barcelona, Catalonia, Spain
+UI UX DESIGNER           : Arman Sheikh 
+Contact                  : 
+Linkedin                 : https://www.linkedin.com/in/md-arman-sheikh-1368a6237/
+From                     :  	
 	
-	RU Translator: Alexey Bass
-	Twitter: @alexey_bass
-	Location: Israel, Netanya
-	
-	RU Translator: Vladimir Epifanov
-	Twitter: @voldmar
-	Location: Moscow, Russia
-	
-	NL Translator: Rowdy Rabouw
-	Twitter: @rowdyrabouw
-	Location: Gouda, The Netherlands
-	
-	DE Translator: Dennis Fischer
-	Twitter: @ichderfisch
-	Location: Düsseldorf / Germany
-	
-	CZ Translator: Daniel Kršiak
-	Twitter: @krsiakdaniel
-	Location: Czech Republic
-	
-	ZH Translator: Ana Villalba
-	Location: Spain
-	
-	JA Translator: Clémence Haure
-	Location: Spain
-	
-	FR Translator: Thibaud Desodt
-	Location: Belgium
-	
-	Media Queries by: Marta Armada (@martuishere) and Javier Usobiaga (@htmlboy)
-		
+Senior  Degital Marketer : Mahmud Billa	
+Contact                  : mahmud@projonmodigital.com
+Linkedin                 : https://www.linkedin.com/in/dmmahmudbilla/
+From                     : Lalbaugh, Dhaka
 
 /* SITE */
 	Last update:2012/02/04
-	Language: Català / Czech / Deutsch / English / Castellano / Japanese / Dutch / Russian / Chinese
+	Language: English / Bangla
 	Doctype:HTML5
+    Framework: Laravel, Nuxt, Tailwindcss
 	IDE: Sublime Text, Notepad++, FileZilla, Photoshop

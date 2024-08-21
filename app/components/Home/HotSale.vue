@@ -9,7 +9,7 @@ const { offerList } = storeToRefs(useAppStore())
             <span>HOT Sale</span>
             <span class="w-28 h-2 bg-primary"></span>
         </h1>
-        <div class="grid grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <div class="relative border h-[200px] overflow-hidden" v-for="(offer, index) in offerList"
                 :key="`offfer-item-${offer.id}`">
                 <div class="absolute inset-0">
@@ -20,7 +20,7 @@ const { offerList } = storeToRefs(useAppStore())
                 </div>
                 <div class="absolute inset-0 flex flex-col items-center justify-center gap-3">
                     <div class="text-2xl font-bold text-white text-stock">{{ offer.name }}</div>
-                    <div class="text-sm font-medium text-stock text-white">
+                    <div class="text-sm hidden lg:inline-block font-medium text-stock text-white">
                         {{ new Date(offer.from).toLocaleString('en-BD', { dateStyle: 'medium' }) }} - {{ new Date(offer.to).toLocaleString('en-BD', { dateStyle: 'medium' }) }}</div>
                     <div class="text-3xl font-bold text-primary text-stock">{{ offer.amount }}% OFF</div>
                 </div>
