@@ -22,20 +22,18 @@ const fetchData = async (params = {}) => {
     try {
         preloader.value = true
         let url = `${useRuntimeConfig().public.baseUrl}/pending/products?${new URLSearchParams(params).toString()}`;
-        const response = await $fetch(url, {
+        const response = await $fetch<any>(url, {
             method: "GET",
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
         })
-        // console.log(response.data);
-        
         if (response && response.data) {
             responseParams.value.page = response.current_page
             data.value = response.data
             moreData.value = response.last_page === response.current_page
-            total.value = response.total
+            // total_sold.value = response.total
             return response
         } else {
             console.error("Invalid response format")
@@ -52,19 +50,14 @@ const getTotalSale = async () => {
     const token = useCookie('token')
     try {
         let url = `${useRuntimeConfig().public.baseUrl}/sell-count`;
-        const response = await $fetch(url, {
+        const response = await $fetch<number>(url, {
             method: "GET",
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
         })
-        if (response) {
-          total_sold.value = response as number
-        } else {
-            console.error("Invalid response format")
-            return []
-        }
+        total_sold.value = response
     } catch (error) {
         console.error(error)
         return []

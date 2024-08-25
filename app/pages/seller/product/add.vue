@@ -2,8 +2,10 @@
 import { ref } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { getUrl } from '~/helper'
-import RadioInput from './RadioInput/RadioInput.vue';
+import { RadioTree } from '@shishir0019/radio-tree'
+import '@shishir0019/radio-tree/style.css'
 const { toast } = useToast()
+
 definePageMeta({
     middleware: ["auth", "seller"]
 })
@@ -16,7 +18,6 @@ useHead({
 })
 
 const router = useRouter()
-
 const secondSearchBar = reactive({
     model: '',
     make: '',
@@ -30,7 +31,6 @@ const categoryId = reactive({
     grandparentCategoryId: '',
     parentCategoryId: '',
     childrenCategoryId: ''
-
 })
 
 const categoryIdProxy = reactive({
@@ -42,10 +42,15 @@ const categoryIdProxy = reactive({
 
 const loading = ref(false)
 const formData = ref({
-    category_id: '132'
+    image: [],
+    attributes: []
 })
 const isBn = ref(false)
 const errors = ref({})
+
+const addAttribute = () => {
+    formData.value.attributes.push({ key: '', value: '' })
+}
 
 const response = ref({
     title: '',
@@ -102,37 +107,41 @@ const proxyResponse = ref({
 });
 
 const chooseImageHandler = () => {
-    console.log('c');
     let input = document.createElement('input')
     input.type = 'file'
     input.multiple = true
-    input.accept = 'image/png, image/gif, image/jpeg'
+    input.accept = 'image/png, image/gif, image/jpeg, image/webp'
     input.onchange = (event) => {
         let files = event.target.files
-        response.value.image.push(...files)
+        formData.value.image.push(...files)
     }
     input.click()
 }
 
 const removeFile = (index) => {
-    response.value.image.splice(index, 1)
+    formData.value.image.splice(index, 1)
 }
 
-const setProducts = async () => {
+const handleSubmit = async (e) => {
     errors.value = {}
     const token = useCookie('token');
     const body = new FormData();
+    loading.value = true
 
-    Object.keys(response.value).forEach(key => {
+    Object.keys(formData.value).forEach(key => {
         if (key === 'image') {
-            response.value.image.forEach((file, index) => {
+            formData.value.image.forEach((file, index) => {
                 body.append(`image[${index}]`, file);
             });
-        } else {
-            body.append(key, response.value[key]);
+        }else if(key === 'attributes') {
+            formData.value.attributes.forEach((attribute, index) => {
+                body.append(attribute.key, attribute.value);
+            });
+        }else {
+            body.append(key, formData.value[key]);
         }
     });
-    
+
     try {
         const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/product`, {
             method: 'POST',
@@ -142,7 +151,7 @@ const setProducts = async () => {
             },
             body
         });
-        loading.value = pending
+        errors.value = error.value.data.errors    
         if (error) {
             errors.value = error.value.data.errors
             toast({
@@ -157,20 +166,13 @@ const setProducts = async () => {
                 title: 'Success',
                 description: data.value.message
             });
-            response.value = proxyResponse.value
-            categoryId.childrenCategoryId = ''
-            categoryId.parentCategoryId = ''
-            categoryId.grandparentCategoryId = ''
             router.go('/seller/product')
         }
     } catch (error) {
-        console.log(error);
-    }
-};
 
-const handleSubmit = (e) => {
-    e.preventDefault();
-    setProducts();
+    } finally {
+        loading.value = false
+    }
 };
 
 
@@ -248,96 +250,10 @@ watch(productOrService, () => {
                     <h1 class="text-primary text-xl font-bold">Product information</h1>
                 </div>
                 <div class="shadow-xl border p-4 mt-5">
-                    <RadioInput v-model="formData.category_id" :list="categoryData.categories" />
-                    <!-- <div class="flex p-5">
-                        <div class="flex-1 flex flex-col gap-2">
-                            <div class="flex gap-2 items-center text-xl">
-                                <Icon name="fluent:box-16-regular"></Icon>
-                                <p>Product</p>
-                                <RadioGroup v-model="productOrService">
-                                    <RadioGroupItem value="product"></RadioGroupItem>
-                                </RadioGroup>
-                            </div>
-                            <RadioGroup
-                                :class="!isDisabled ? 'bg-slate-red-500  opacity-50  cursor-not-allowed' : 'flex flex-col gap-y-2'"
-                                v-model="categoryId.grandparentCategoryId" class="flex flex-col gap-y-2">
-                                <div class="flex flex-col " v-for="i in categoryData.categories" :key="i.id">
-                                    <div v-if="!i.name.includes('Service')">
-                                        <div class="flex gap-2 items-center">
-                                            <RadioGroupItem :disabled="!isDisabled" :id="i.id" :value="i.id" />
-                                            <Label :for="i.id">{{ i.name }}</Label>
-                                        </div>
-                                        <RadioGroup v-if="categoryId.grandparentCategoryId === i.id"
-                                            class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
-                                            v-model="categoryId.parentCategoryId">
-                                            <div class="flex flex-col gap-2  " v-for="j in i.children" :key="j.id">
-                                                <div class="flex  items-center">
-                                                    <RadioGroupItem :id="j.id" :value="j.id" />
-                                                    <Label :for="j.id">{{ j.name }}</Label>
-                                                </div>
-                                                <RadioGroup
-                                                    class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
-                                                    v-if="categoryId.parentCategoryId === j.id"
-                                                    v-model="response.category_id">
-                                                    <div class="flex justify-start  flex-col" v-for="k in j.children"
-                                                        :key="k.id">
-                                                        <div class="flex gap-2 ">
-                                                            <RadioGroupItem :id="k.id" :value="k.id" />
-                                                            <Label :for="k.id">{{ k.name }}</Label>
-                                                        </div>
-                                                    </div>
-                                                </RadioGroup>
-                                            </div>
-                                        </RadioGroup>
-                                    </div>
-                                </div>
-                            </RadioGroup>
-                        </div>
-                        <div class="flex-1 flex flex-col gap-2">
-                            <div class="flex gap-2 items-center text-xl">
-                                <Icon name="fluent:key-20-regular"></Icon>
-                                <p>Services</p>
-                                <RadioGroup v-model="productOrService">
-                                    <RadioGroupItem value="service"></RadioGroupItem>
-                                </RadioGroup>
-                            </div>
-
-                            <RadioGroup
-                                :class="isDisabled ? 'bg-slate-red-500  opacity-50  cursor-not-allowed' : 'flex flex-col gap-y-2'"
-                                v-model="categoryId.grandparentCategoryId" class="flex flex-col gap-y-2">
-                                <div class="flex flex-col " v-for="i in categoryData.categories" :key="i.id">
-                                    <div v-if="i.name.includes('Service')">
-                                        <div class="flex gap-2 items-center">
-                                            <RadioGroupItem :disabled="isDisabled" :id="i.id" :value="i.id" />
-                                            <Label :for="i.id">{{ i.name }}</Label>
-                                        </div>
-                                        <RadioGroup v-if="categoryId.grandparentCategoryId === i.id"
-                                            class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
-                                            v-model="categoryId.parentCategoryId">
-                                            <div class="flex flex-col gap-2  " v-for="j in i.children" :key="j.id">
-                                                <div class="flex  items-center">
-                                                    <RadioGroupItem :id="j.id" :value="j.id" />
-                                                    <Label :for="j.id">{{ j.name }}</Label>
-                                                </div>
-                                                <RadioGroup
-                                                    class="flex flex-col gap-2 border-l pl-2 border-primary ml-4 justify-start"
-                                                    v-model="response.category_id"
-                                                    v-if="categoryId.parentCategoryId === j.id">
-                                                    <div class="flex justify-start  flex-col" v-for="k in j.children"
-                                                        :key="k.id">
-                                                        <div class="flex gap-2 ">
-                                                            <RadioGroupItem :id="k.id" :value="k.id" />
-                                                            <Label :for="k.id">{{ k.name }}</Label>
-                                                        </div>
-                                                    </div>
-                                                </RadioGroup>
-                                            </div>
-                                        </RadioGroup>
-                                    </div>
-                                </div>
-                            </RadioGroup>
-                        </div>
-                    </div> -->
+                    <RadioTree v-model="formData.category_id" value="id" color="#f85606" label="name" name="category_id"
+                        :list="categoryData.categories" />
+                        <span v-if="Object.keys(errors).includes('category_id')" class="text-sm text-red-500">{{
+                                errors.category_id[0] }}</span>
                 </div>
             </div>
 
@@ -349,26 +265,31 @@ watch(productOrService, () => {
                     <tr>
                         <td class="py-3"><Label for="productName">Product Name</Label></td>
                         <td class="py-3">
-                            <Input type="text" v-model="response.title" placeholder="Product Name" />
+                            <Input type="text" v-model="formData.title" placeholder="Product Name" />
                             <span v-if="Object.keys(errors).includes('title')" class="text-sm text-red-500">{{
                                 errors.title[0] }}</span>
                         </td>
                     </tr>
                     <tr>
                         <td class="py-3"><Label for="productName">Brand Name</Label></td>
-                        <td class="py-3"><Input id="brandName" type="text" v-model="response.brand"
+                        <td class="py-3"><Input id="brandName" type="text" v-model="formData.brand"
                                 placeholder="Brand" /></td>
                     </tr>
                     <tr>
                         <td class="py-3"><Label for="unitPrice">Unit Price</Label></td>
-                        <td class="py-3"><Input id="unitPrice" type="number" v-model="response.price"
-                                placeholder="0" /></td>
+                        <td class="py-3">
+                            <Input id="unitPrice" type="number" v-model="formData.price" placeholder="Unit Price" />
+                            <span v-if="Object.keys(errors).includes('price')" class="text-sm text-red-500">{{
+                                errors.price[0] }}</span>
+                        </td>
                     </tr>
                     <tr>
                         <td class="py-3"><Label for="unitPrice">Stock</Label></td>
                         <td class="py-3">
-                            <Input id="unitPrice" type="number" :min="0" v-model="response.stock_amount"
+                            <Input id="unitPrice" type="number" :min="0" v-model="formData.stock_amount"
                                 placeholder="Stock" />
+                            <span v-if="Object.keys(errors).includes('stock_amount')" class="text-sm text-red-500">{{
+                            errors.stock_amount[0] }}</span>
                         </td>
                     </tr>
                     <tr class="align-top">
@@ -376,14 +297,19 @@ watch(productOrService, () => {
                         <td class="py-3">
                             <div class="relative notranslate">
                                 <div class="p-1 bg-primary/40 flex items-center absolute top-0 right-0 rounded-bl-lg">
-                                    <button class="text-primary hover:bg-primary hover:text-white text-sm w-12" :class="{ 'bg-primary text-white': !isBn }" @click="isBn = false">EN</button>
-                                    <button class="text-primary hover:bg-primary hover:text-white text-sm w-12" :class="{ 'bg-primary text-white': isBn }" @click="isBn = true">BN</button>
+                                    <button class="text-primary hover:bg-primary hover:text-white text-sm w-12"
+                                        :class="{ 'bg-primary text-white': !isBn }" @click="isBn = false">EN</button>
+                                    <button class="text-primary hover:bg-primary hover:text-white text-sm w-12"
+                                        :class="{ 'bg-primary text-white': isBn }" @click="isBn = true">BN</button>
                                 </div>
                                 <div>
-                                    <Textarea id="description" v-if="isBn" v-model="response['bn[description]']" rows="8"></Textarea>
-                                    <Textarea id="description" v-else v-model="response.description" rows="8"></Textarea>
-                                    <span v-if="Object.keys(errors).includes('description')" class="text-sm text-red-500">{{
-                                errors.description[0] }}</span>
+                                    <Textarea placeholder="Description BN" v-if="isBn" v-model="formData['bn[description]']"
+                                        rows="8"></Textarea>
+                                    <Textarea placeholder="Description EN" v-else v-model="formData.description"
+                                        rows="8"></Textarea>
+                                    <span v-if="Object.keys(errors).includes('description')"
+                                        class="text-sm text-red-500">{{
+                                            errors.description[0] }}</span>
                                 </div>
                             </div>
                         </td>
@@ -396,22 +322,19 @@ watch(productOrService, () => {
                     <h1 class="text-primary text-xl font-bold">File & Media</h1>
                 </div>
                 <div class="flex flex-col gap-3">
-                    <!-- <table class="w-fflex flex-col gap-3ull">
-                        <tr>
-                            <td class="py-3"><Label for="stock">Picture</Label></td>
-                            <td class="py-3"><Input id="picture" type="file" multiple @change="handleFileChange" /></td>
-                        </tr>
-                    </table> -->
-                    <div class="border rounded-lg flex gap-x-3 p-5 items-center h-[132px]">
-                        <template class="w-full h-full" v-for="(file, index) in response.image" :key="index">
-                            <div class="w-20 h-20 relative">
+                    <div class="border rounded-lg flex flex-wrap gap-3 p-5 items-center min-h-[132px]">
+                        <template class="w-full h-full" v-for="(file, index) in formData.image" :key="index">
+                            <div class="w-20 h-20 relative border">
                                 <img :src="getUrl(file)" class="min-w-full min-h-full object-cover"></img>
-                                <button @click="removeFile(index)" class="w-4 h-4 absolute flex items-center justify-center -top-2 -right-2 bg-red-500 rounded-full p-[2px] text-white" v-if="typeof file !== 'string'">
-                                    <Icon name="material-symbols:close" />            
+                                <button @click="removeFile(index)"
+                                    class="w-4 h-4 absolute flex items-center justify-center -top-2 -right-2 bg-red-500 rounded-full p-[2px] text-white"
+                                    v-if="typeof file !== 'string'">
+                                    <Icon name="material-symbols:close" />
                                 </button>
                             </div>
                         </template>
-                        <Icon name="fluent:add-circle-16-filled" @click="chooseImageHandler" class="text-6xl text-gray-700 cursor-pointer hover:text-gray-900"></Icon>
+                        <Icon name="fluent:add-circle-16-filled" @click="chooseImageHandler"
+                            class="text-6xl text-gray-700 cursor-pointer hover:text-gray-900"></Icon>
                     </div>
                     <span v-if="Object.keys(errors).includes('image')" class="text-sm text-red-500">{{ errors.image[0]
                         }}</span>
@@ -446,7 +369,6 @@ watch(productOrService, () => {
                     <select class="h-[35px] border rounded-lg" @change="getModel" v-model="response.make">
                         <option value="" disabled selected>Select Model </option>
                         <option v-for="i in secondSearchBar.make">{{ i.make }}</option>
-    
                     </select>
                     <select @change="getYear" :disabled="!response.make" class="h-[35px] border rounded-lg"
                         v-model="response.model">
@@ -468,12 +390,41 @@ watch(productOrService, () => {
                         <option value="" disabled selected>Select Engine</option>
                         <option v-for="i in secondSearchBar.engyne">{{ i.engine }}</option>
                     </select>
-    
-                    <select :disabled="!secondSearchBar.parts" class="h-[35px] border rounded-lg" v-model="response.parts">
+
+                    <select :disabled="!secondSearchBar.parts" class="h-[35px] border rounded-lg"
+                        v-model="formData.parts">
                         <option value="" disabled selected>Select Parts</option>
                         <option v-for="i in categoryData.categories">{{ i.name }}</option>
                     </select>
                 </div>
+            </div>
+            <div class="max-w-[600px] w-full">
+                <div class="py-3 border-b-2 border-dashed">
+                <h1 class="text-primary text-xl font-bold">Attributes</h1>
+                </div>
+                <div>
+                    <table class="table">
+                        <tr v-if="formData.attributes.length">
+                            <td class="p-1">#</td>
+                            <td class="p-1">Key</td>
+                            <td class="p-1">Value</td>
+                            <td class="p-1"></td>
+                        </tr>
+                        <tr v-for="(attribute, index) in formData.attributes" :key="`attribute-${index}`">
+                            <td>{{ index+1 }}</td>
+                            <td><input class="border w-full p-1" placeholder="Key" v-model="attribute['key']" type="text"></td>
+                            <td><input class="border w-full p-1" placeholder="Value" v-model="attribute['value']" type="text"></td>
+                            <td>
+                                <button @click="formData.attributes.splice(index, 1)">
+                                    <icon class="text-gray-500 hover:text-red-500 text-2xl" name="lets-icons:dell"/>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <button @click="addAttribute" class="mt-3 border border-primary text-primary hover:text-orange-500 text-sm px-2 py-1 rounded-full">
+                    <icon class="text-xl" name="ic:baseline-plus"/>
+                    Add Attribute</button>
             </div>
 
             <div class="w-full max-w-[600px]">
@@ -483,13 +434,13 @@ watch(productOrService, () => {
                 <table class="w-full">
                     <tr>
                         <td class="py-3"><Label for="seoTitle">Media Title</Label></td>
-                        <td class="py-3"><Input id="seoTitle" type="text" v-model="response.meta_title"
+                        <td class="py-3"><Input id="seoTitle" type="text" v-model="formData.meta_title"
                                 placeholder="Media Title" />
                         </td>
                     </tr>
                     <tr class="align-top">
-                        <td class="py-3"><Label for="seoDescription" class="">Description</Label></td>
-                        <td class="py-3"><Textarea id="seoDescription" v-model="response.meta_description"
+                        <td class="py-3"><Label>Description</Label></td>
+                        <td class="py-3"><Textarea placeholder="Meta Description" v-model="formData.meta_description"
                                 rows="8"></Textarea>
                         </td>
                     </tr>
@@ -499,7 +450,26 @@ watch(productOrService, () => {
             <div class="w-full max-w-[600px]">
                 <hr class="my-5 w-full max-w-[600px] border-dashed border-b-2">
                 <div class="flex justify-end">
-                    <Button :disable="loading" type="submit" @click="handleSubmit">Save & Publish</Button>
+                    <div class="w-[200px]">
+                        <ButtonPrimary type="button" :disabled="loading" @click="handleSubmit">
+                            <div class="flex items-center justify-center gap-x-2">
+                                <div role="status" v-if="loading">
+                                    <svg aria-hidden="true"
+                                        class="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                            fill="currentColor" />
+                                        <path
+                                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                            fill="currentFill" />
+                                    </svg>
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                                <span>Save & Publish</span>
+                            </div>
+                        </ButtonPrimary>
+                    </div>
                 </div>
             </div>
         </div>

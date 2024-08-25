@@ -13,6 +13,7 @@
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/sitemap": "^6.0.0-beta.1",
     "@pinia/nuxt": "^0.5.1",
+    "@shishir0019/radio-tree": "^0.0.2",
     "@tanstack/vue-table": "^8.17.3",
     "@vee-validate/zod": "^4.12.8",
     "@vueuse/core": "^10.11.0",

@@ -30,9 +30,9 @@ const re_render = ref(0)
         </TabsContent>
         <TabsContent value="specification">
             <h1 class="text-2xl my-3">Specification</h1>
-            <table class="w-full border">
+            <table class="w-full table border">
                 <tr class="border" v-for="(ot, index) in product?.others" :key="ot.id">
-                    <td class="p-3 capitalize">{{ ot.name }}</td>
+                    <td class="p-3 capitalize">{{ ot.name.split('_').join(' ') }}</td>
                     <td>:</td>
                     <td class="p-3">{{ ot.value }}</td>
                 </tr>

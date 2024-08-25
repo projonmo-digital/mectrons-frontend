@@ -85,8 +85,8 @@ const addToCart = (product: IProduct) => {
                 <span class="text-gray-700 text-sm">({{ product.reviews[0]?.total_reviews || 0 }} Reviews)</span>
             </div>
             <hr>
-            <div class="flex items-center px-3 py-2">
-                <nuxt-link class="text-xl font-bold" :to="`/products/${props.product?.id}`">{{ props.product?.title
+            <div class="flex items-center px-3 py-2 h-[70px]">
+                <nuxt-link class="font-bold text-2xl clamp" :to="`/products/${product?.id}`" :title="product?.title">{{ product?.title
                     }}</nuxt-link>
             </div>
             <hr>
@@ -117,3 +117,12 @@ const addToCart = (product: IProduct) => {
         </div>
     </div>
 </template>
+
+<style scoped lang="scss">
+.clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+</style>
