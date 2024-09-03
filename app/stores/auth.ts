@@ -36,7 +36,7 @@ export const useAuthStore = defineStore("auth", {
         token.value = response?.token;
         user.value = JSON.stringify(response?.user);
         if (response?.user) {
-          this.user = { ...response.user, role: getRole(response.user) };
+          this.user = { ...response.user};
         }
         this.authenticated = true;
         toast({

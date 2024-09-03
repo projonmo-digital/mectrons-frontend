@@ -14,8 +14,7 @@ nuxtApp.hook("page:finish", () => {
 </script>
 
 <template>
-    <div v-show="loading"
-        class="w-screen h-screen bg-white z-[500] fixed inset-0 flex flex-col items-center justify-center">
+    <div v-show="loading" class="w-screen h-screen bg-white z-[500] fixed inset-0 flex flex-col items-center justify-center">
         <img :src="logo" class="w-[200px]" alt="">
     </div>
     <NuxtLoadingIndicator color="#f85606" />

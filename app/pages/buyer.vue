@@ -1,5 +1,5 @@
 <template>
-    <NuxtLayout name="user">
+    <NuxtLayout name="buyer">
         <NuxtPage />
     </NuxtLayout>
 </template>

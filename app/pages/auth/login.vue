@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { Modal, initFlowbite } from 'flowbite';
 
@@ -11,9 +11,10 @@ useSeoMeta({
     ogTitle: 'My Amazing Site',
     description: 'This is my amazing site, let me tell you all about it.',
     ogDescription: 'This is my amazing site, let me tell you all about it.',
-    ogImage: 'image',
-    twitterCard: 'image',
+    ogImage: 'image'
 })
+
+const messages = ref<string[]>([])
 
 const auth = useAuthStore();
 definePageMeta({
@@ -28,97 +29,120 @@ const handleSubmit = async () => {
 }
 
 const passHideShow = ref(false);
+
+onMounted(() => {
+    if(auth.user && auth.user?.type !== 'seller'){
+        messages.value.push('To access the seller panel, please log out of your current session first, then log in again to enter the seller panel.')
+    }
+})
 </script>
 
-
 <template>
-    <div class="mx-auto w-full max-w-3xl my-4">
-        <div class="flex gap-x-3 bg-white rounded shadow">
-            <div
-                class="mx-auto w-full max-w-sm bg-gray-100 border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-                <form class="space-y-6" @submit.prevent="handleSubmit">
-                    <div>
-                        <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center">Sign In</h5>
-                        <div class="flex justify-center items-center gap-x-3 text-gray-400 mt-2">
-                            <hr class="border-gray-400 w-12">
-                            <p class="text-center text-sm">&#10051;</p>
-                            <hr class="border-gray-400 w-12">
-                        </div>
-                    </div>
-                    <div>
-                        <FormLabel>Email</FormLabel>
-                        <FormInput type="email" name="email" placeholder="name@gmail.com"
-                            v-model="form.email" />
-                        <span v-if="Object.keys(auth.errors).includes('email')" class="text-sm text-red-500">{{ auth.errors.email[0] }}</span>
-                    </div>
-                    <div>
-                        <FormLabel for="password">Password</FormLabel>
-                        <div class="relative">
-                            <FormInput :type="passHideShow ? 'text' : 'password'" class="pe-7" name="password"
-                                placeholder="password" v-model="form.password" />
-                            <div v-if="passHideShow" @click="passHideShow = false"
-                                class="absolute inset-y-0 end-2 flex items-center ps-3 cursor-default">
-                                <svg class="w-5 h-5 text-gray-500 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 14c-.5-.6-.9-1.3-1-2 0-1 4-6 9-6m7.6 3.8A5 5 0 0 1 21 12c0 1-3 6-9 6h-1m-6 1L19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>
+    <div class="mx-auto w-full max-w-[800px] my-8">
+        <div v-for="(message, index) in messages" :key="index" class="bg-orange-50 text-primary text-sm p-3 my-5 rounded-xl border border-primary">
+            {{ message }}
+        </div>
+        <div class="grid lg:grid-cols-2 gap-3">
+            <div>
+                <div v-if="!auth.user" class="flex h-full items-center">
+                    <div
+                        class="bg-transparent w-full lg:bg-gray-100 border border-transparent lg:border-gray-200 p-5 rounded-lg lg:shadow">
+                        <form class="space-y-6" @submit.prevent="handleSubmit">
+                            <div>
+                                <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center">Sign In</h5>
+                                <div class="flex justify-center items-center gap-x-3 text-gray-400 mt-2">
+                                    <hr class="border-gray-400 w-12">
+                                    <p class="text-center text-sm">&#10051;</p>
+                                    <hr class="border-gray-400 w-12">
+                                </div>
                             </div>
-                            <div v-else @click="passHideShow = true"
-                                class="absolute inset-y-0 end-2 flex items-center ps-3 cursor-default">
-                                <svg class="w-5 h-5 text-gray-500 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-width="2"
-                                        d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
-                                    <path stroke="currentColor" stroke-width="2"
-                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>
+                            <div>
+                                <FormLabel>Email</FormLabel>
+                                <FormInput type="email" name="email" placeholder="name@gmail.com"
+                                    v-model="form.email" />
+                                <span v-if="Object.keys(auth.errors).includes('email')" class="text-sm text-red-500">{{
+                                    auth.errors.email[0] }}</span>
                             </div>
-                        </div>
-                        <span v-if="Object.keys(auth.errors).includes('password')" class="text-sm text-red-500">{{ auth.errors.password[0] }}</span>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="flex items-start">
-                            <div class="flex items-center h-5">
-                                <input type="checkbox" value=""
-                                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
+                            <div>
+                                <FormLabel for="password">Password</FormLabel>
+                                <div class="relative">
+                                    <FormInput :type="passHideShow ? 'text' : 'password'" class="pe-7" name="password"
+                                        placeholder="password" v-model="form.password" />
+                                    <div v-if="passHideShow" @click="passHideShow = false"
+                                        class="absolute inset-y-0 end-2 flex items-center ps-3 cursor-default">
+                                        <svg class="w-5 h-5 text-gray-500 dark:text-white" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M4 14c-.5-.6-.9-1.3-1-2 0-1 4-6 9-6m7.6 3.8A5 5 0 0 1 21 12c0 1-3 6-9 6h-1m-6 1L19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </div>
+                                    <div v-else @click="passHideShow = true"
+                                        class="absolute inset-y-0 end-2 flex items-center ps-3 cursor-default">
+                                        <svg class="w-5 h-5 text-gray-500 dark:text-white" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-width="2"
+                                                d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
+                                            <path stroke="currentColor" stroke-width="2"
+                                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <span v-if="Object.keys(auth.errors).includes('password')"
+                                    class="text-sm text-red-500">{{ auth.errors.password[0] }}</span>
                             </div>
-                            <FormLabel class="ml-2">Remember me</FormLabel>
-                        </div>
-                        <nuxt-link to="/auth/forget-password"
-                            class="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500">Lost
-                            Password?</nuxt-link>
-                    </div>
+                            <div class="flex items-start">
+                                <div class="flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input type="checkbox" value=""
+                                            class="accent-primary w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
+                                    </div>
+                                    <FormLabel class="ml-2">Remember me</FormLabel>
+                                </div>
+                                <nuxt-link to="/auth/forget-password"
+                                    class="ms-auto text-sm text-primary hover:underline">Lost
+                                    Password?</nuxt-link>
+                            </div>
 
-                    <ButtonPrimary type="submit" :disabled="auth.loading">
-                        <div class="flex items-center justify-center gap-x-2">
-                            <div role="status" v-if="auth.loading">
-                                <svg aria-hidden="true"
-                                    class="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                                    viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                        fill="currentColor" />
-                                    <path
-                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                        fill="currentFill" />
-                                </svg>
-                                <span class="sr-only">Loading...</span>
+                            <ButtonPrimary type="submit" :disabled="auth.loading">
+                                <div class="flex items-center justify-center gap-x-2">
+                                    <div role="status" v-if="auth.loading">
+                                        <svg aria-hidden="true"
+                                            class="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                fill="currentColor" />
+                                            <path
+                                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                fill="currentFill" />
+                                        </svg>
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                    <span>Login</span>
+                                </div>
+                            </ButtonPrimary>
+                            <div class="text-sm font-medium text-center text-gray-500 dark:text-gray-300">
+                                Not registered? <nuxt-link to="/auth/register"
+                                    class="text-primary hover:underline">Create account</nuxt-link>
                             </div>
-                            <span>Login</span>
-                        </div>
-                    </ButtonPrimary>
-                    <div class="text-sm font-medium text-center text-gray-500 dark:text-gray-300">
-                        Not registered? <nuxt-link to="/auth/register"
-                            class="text-blue-700 hover:underline dark:text-blue-500">Create account</nuxt-link>
-                    </div>
 
-                    <!-- <SocialLogin/> -->
-                </form>
+                            <!-- <SocialLogin/> -->
+                        </form>
+                    </div>
+                </div>
+                <div v-else>
+                    <p class="text-2xl font-medium text-gray-500">Your already login as {{ auth.user.type }}</p>
+                    <NuxtLink v-if="auth.user" class="text-primary hover:underline text-sm"
+                        :to="`/${auth.user?.type}/dashboard`">
+                        {{ 'Go to your Panel' }}
+                    </NuxtLink>
+                    <hr class="my-5">
+                    <button @click="auth.logUserOut()" class="cursor-pointer bg-primary hover:bg-orange-500 px-3 py-2 rounded-lg text-white">Logout
+                    </button>
+                </div>
             </div>
-
-            <div class="mx-auto w-full max-w-sm ">
+            <div class="hidden lg:block">
                 <div class="flex flex-col gap-x-5 px-4 py-3">
                     <img class="w-60 mx-auto mb-6" src="assets/images/auth/auth.png" alt="Auth Image" />
                     <div class="shadow-md p-4 rounded-lg bg-gray-100">

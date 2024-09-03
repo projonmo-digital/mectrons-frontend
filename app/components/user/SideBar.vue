@@ -14,22 +14,22 @@ const sidebarList: TSidebar = [
     {
         header: 'Dashboard',
         icon: "eva:home-outline",
-        url: '/user/dashboard'
+        url: '/buyer/dashboard'
     },
     {
         header: 'Purchased History',
         icon: "eva:inbox-outline",
-        url: '/user/purchased-history'
+        url: '/buyer/purchased-history'
     },
     {
         header: "Wishlist",
         icon: "eva:shopping-bag-outline",
-        url: '/user/wishlist'
+        url: '/buyer/wishlist'
     },
     {
         header: "Settings",
         icon: "mdi:tools",
-        url: '/user/settings'
+        url: '/buyer/settings'
     }
 ]
 

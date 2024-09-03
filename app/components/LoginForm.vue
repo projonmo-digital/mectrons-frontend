@@ -4,7 +4,6 @@ import { Modal, initFlowbite } from 'flowbite';
 const props = defineProps(['toggleBtn']);
 const emit = defineEmits(['loginToggleBtn']);
 
-const toaster = useToasterStore();
 const auth = useAuthStore();
 const form = reactive({
     email: '',

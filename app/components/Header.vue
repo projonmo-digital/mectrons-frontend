@@ -1,14 +1,11 @@
-<script setup>
-import { onMounted } from 'vue'
+<script setup lang="ts">
 import { ref } from 'vue'
 
 import { AvatarFallback, AvatarImage, AvatarRoot } from 'radix-vue'
-import { Button } from '@/components/ui/button'
 import logo_white from '~/assets/images/logo_white.svg'
 
 const { categories, loading, local } = storeToRefs(useAppStore())
 const appStore = useAppStore()
-const cartStore = useCartStore()
 
 const { products } = storeToRefs(useCartStore())
 
@@ -33,14 +30,14 @@ const handelSearchSubmit = () => {
 }
 
 const store = useAuthStore()
-const loginToggleBtnFun = async (value) => {
+const loginToggleBtnFun = async (value: any) => {
     let button;
     if (value == 'sellerLogin') {
         button = document?.getElementById('sellerLoginButton');
     } else {
         button = document?.getElementById('userLoginButton');
     }
-    button.click();
+    button?.click();
 }
 
 const menu = computed(() => {
@@ -75,11 +72,13 @@ const menu = computed(() => {
     ]
 })
 
-const onChange = (value) => {
-    const element = document.querySelector(".goog-te-combo")
-    element.value = value;
-    element.dispatchEvent(new Event("change"))
-    appStore.setLocal(value)
+const onChange = (value: any) => {
+    const element: any = document.querySelector(".goog-te-combo")
+    if(element){
+        element.value = value;
+        element.dispatchEvent(new Event("change"))
+        appStore.setLocal(value)
+    }
 };
 
 </script>
@@ -94,6 +93,9 @@ const onChange = (value) => {
                     </NuxtLink>
                     <NuxtLink class="hover:underline text-sm" to="/pages/cart/search">
                         {{ 'Track Order' }}
+                    </NuxtLink>
+                    <NuxtLink v-if="auth.user" class="hover:underline text-sm" :to="`/${auth.user.type}/dashboard`">
+                        {{ 'My Panel' }}
                     </NuxtLink>
                 </div>
                 <div class="flex gap-8">
@@ -157,7 +159,7 @@ const onChange = (value) => {
                                     </AvatarRoot>
                                 </div>
                                 <DropdownMenuItem class="justify-center cursor-pointer"
-                                    @select="router.push(`/${auth.user.role}/dashboard`)">
+                                    @select="router.push(`/${auth.user?.type}/dashboard`)">
                                     <div class="flex items-center gap-3 text-gray-700">
                                         <icon class="text-2xl" name="ion:log-in-outline" />
                                         <span>Go inside Your Panel</span>

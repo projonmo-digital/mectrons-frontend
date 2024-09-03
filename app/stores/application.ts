@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { getCategoryIds } from '~/helper'
 import type { ICategory } from '~/types/categories'
 import type { IOffer } from '~/types/offer'
 
