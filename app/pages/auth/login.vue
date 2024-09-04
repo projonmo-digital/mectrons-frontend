@@ -31,7 +31,7 @@ const handleSubmit = async () => {
 const passHideShow = ref(false);
 
 onMounted(() => {
-    if(auth.user && auth.user?.type !== 'seller'){
+    if (auth.user && auth.user?.type !== 'seller') {
         messages.value.push('To access the seller panel, please log out of your current session first, then log in again to enter the seller panel.')
     }
 })
@@ -39,7 +39,8 @@ onMounted(() => {
 
 <template>
     <div class="mx-auto w-full max-w-[800px] my-8">
-        <div v-for="(message, index) in messages" :key="index" class="bg-orange-50 text-primary text-sm p-3 my-5 rounded-xl border border-primary">
+        <div v-for="(message, index) in messages" :key="index"
+            class="bg-orange-50 text-primary text-sm p-3 my-5 rounded-xl border border-primary">
             {{ message }}
         </div>
         <div class="grid lg:grid-cols-2 gap-3">
@@ -61,7 +62,7 @@ onMounted(() => {
                                 <FormInput type="email" name="email" placeholder="name@gmail.com"
                                     v-model="form.email" />
                                 <span v-if="Object.keys(auth.errors).includes('email')" class="text-sm text-red-500">{{
-                                    auth.errors.email[0] }}</span>
+            auth.errors.email[0] }}</span>
                             </div>
                             <div>
                                 <FormLabel for="password">Password</FormLabel>
@@ -132,13 +133,14 @@ onMounted(() => {
                     </div>
                 </div>
                 <div v-else>
-                    <p class="text-2xl font-medium text-gray-500">Your already login as {{ auth.user.type }}</p>
+                    <p class="text-2xl font-medium text-gray-500">Already logged in as a {{ auth.user.type }}.</p>
                     <NuxtLink v-if="auth.user" class="text-primary hover:underline text-sm"
                         :to="`/${auth.user?.type}/dashboard`">
                         {{ 'Go to your Panel' }}
                     </NuxtLink>
                     <hr class="my-5">
-                    <button @click="auth.logUserOut()" class="cursor-pointer bg-primary hover:bg-orange-500 px-3 py-2 rounded-lg text-white">Logout
+                    <button @click="auth.logUserOut()"
+                        class="cursor-pointer bg-[#ff0000cf] hover:bg-[#f00] px-5 py-2 rounded-lg text-white">Logout
                     </button>
                 </div>
             </div>

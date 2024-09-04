@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import Slider from '@/components/Category/Pertials/Slider.vue'
 import Filter from '@/components/Common/Filter.vue'
 import FilterSidebar from '@/components/Common/FilterSidebar.vue'
-import Product from '@/components/Home/Pertials/Product.vue'
+import Product from '@/components/Common/Pertials/Product.vue'
 
 const store = useUtils()
 const route = useRoute()

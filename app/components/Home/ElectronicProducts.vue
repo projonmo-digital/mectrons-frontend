@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Slider from '@/components/Common/Pertials/Slider.vue'
-import FilterBar from './Pertials/FilterBar.vue'
+import FilterBar from '@/components/Common/Pertials/FilterBar.vue'
 import type { IProduct } from '~/types/products';
 import type { IpaginatedRespoinse } from '~/types/response';
 import { discountCalculation, getCategoryIds, SliderArrayGen } from '~/helper';

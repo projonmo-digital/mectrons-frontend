@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import { useToast } from "@/components/ui/toast/use-toast"
 import { ref } from 'vue'
 import type { IProduct } from '~/types/products';
-
-import { useAlert } from "~/composables/sweetalert";
-const alert = useAlert()
-
-const { toast } = useToast();
-const { user } = storeToRefs(useAuthStore())
+import Rating from '@/components/seller/review/Rating.vue'
 
 const loading = ref(false);
 const cartStore = useCartStore();
@@ -19,7 +13,9 @@ interface Props {
 const props = defineProps<Props>()
 
 // Bookmark
+const loadingBookmark = ref(false);
 const bookmarkAdd = async (product: IProduct) => {
+    loadingBookmark.value = true
     const token = useCookie('token')
     try {
         const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
@@ -34,10 +30,13 @@ const bookmarkAdd = async (product: IProduct) => {
         }
     } catch (error) {
         console.log(error);
+    } finally {
+        loadingBookmark.value = false
     }
 }
 
 const bookmarkRemove = async (product: IProduct) => {
+    loadingBookmark.value = true
     const token = useCookie('token');
     try {
         const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/bookmark/${product.id}`, {
@@ -53,22 +52,16 @@ const bookmarkRemove = async (product: IProduct) => {
     } catch (error) {
         console.log(error);
     }
+    finally {
+        loadingBookmark.value = false
+    }
 }
 
 const addToCart = (product: IProduct) => {
     loading.value = true
-    setTimeout(() => {
-        cartStore.addToCart(product)
+    cartStore.addToCart(product).then(() => {
         loading.value = false
-        alert({
-            title: 'Added',
-            text: 'Product has been added'
-        })
-        // toast({
-        //   title: "Adde",
-        //   description: 'Product has been added',
-        // });
-    },500)
+    })
 }
 </script>
 
@@ -81,23 +74,18 @@ const addToCart = (product: IProduct) => {
                 alt="Product" />
             <img class="h-[200px] w-full object-cover" v-else src="assets/images/dummy-image.jpg" alt="Ads" />
         </nuxt-link>
-        <Icon v-if="user?.type === 'buyer'" name="mdi:heart" class="w-8 h-8 absolute top-3 left-3 text-gray-300 cursor-pointer"
-            @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product!)"
-            :class="{ 'text-red-500': !!product.is_bookmarked }"></Icon>
+            <span
+                @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product)"
+                class="w-8 h-8 absolute top-3 left-3 text-gray-300 rounded-full flex justify-center items-center cursor-pointer">
+                <Icon v-if="loadingBookmark" name="eos-icons:loading" class="w-8 h-8">
+                </Icon>
+                <Icon v-else name="mdi:heart" class="w-8 h-8"
+                    :class="{ 'text-red-500': !!product?.is_bookmarked }">
+                </Icon>
+            </span>
         <div>
             <div class="flex gap-3 items-center py-2 px-3">
-                <div class="flex items-center my-3">
-                    <Icon name="mdi:star" class="text-xl text-gray-300"
-                        :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 1 }"></Icon>
-                    <Icon name="mdi:star" class="text-xl text-gray-300"
-                        :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 2 }"></Icon>
-                    <Icon name="mdi:star" class="text-xl text-gray-300"
-                        :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 3 }"></Icon>
-                    <Icon name="mdi:star" class="text-xl text-gray-300"
-                        :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 4 }"></Icon>
-                    <Icon name="mdi:star" class="text-xl text-gray-300"
-                        :class="{ 'text-primary': (product.reviews[0]?.average_rating || 0) >= 5 }"></Icon>
-                </div>
+                <Rating :model-value="product.reviews[0]?.average_rating" />
                 <span class="text-gray-700 text-sm">({{ product.reviews[0]?.total_reviews || 0 }} Reviews)</span>
             </div>
             <hr>

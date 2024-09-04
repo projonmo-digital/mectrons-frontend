@@ -7,6 +7,10 @@ import {
 import type { ICartProduct, ICartItem } from "~/types/cart";
 import type { IMethod } from "~/types/method";
 
+import { useAlert } from "~/composables/sweetalert";
+const alert = useAlert()
+
+
 interface IModifiedMethod extends IMethod {
   value: string
 }
@@ -35,24 +39,33 @@ export const useCartStore = defineStore("cart", {
           Authorization: `Bearer ${token.value}`,
         },
       })
-      this.methods = response.map(m => ({...m, value: m.method }))
+      this.methods = response.map(m => ({ ...m, value: m.method }))
     },
     getLocalProducts() {
       return GET_PRODUCTS()
         .then((res) => {
           this.products = res;
         })
-        .then(() => {});
+        .then(() => { });
     },
     addToCart(product: ICartProduct, qty = 1) {
-      let p = this.products.find((p) => p.id === product.id);
-      if (p) {
-        this.increment(p);
-      } else {
-        product.qty = qty;
-        this.products.push(product);
-      }
-      SAVE_CARTS(this.products);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          let p = this.products.find((p) => p.id === product.id);
+          if (p) {
+            this.increment(p);
+          } else {
+            product.qty = qty;
+            this.products.push(product);
+          }
+          return resolve(SAVE_CARTS(this.products).then(() => {
+            alert({
+              title: 'Added',
+              text: 'Product has been added'
+            })
+          }));
+        }, 500)
+      })
     },
     removeFromCart(product: ICartProduct) {
       this.products = this.products.filter((p) => p.id !== product.id);

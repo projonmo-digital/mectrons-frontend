@@ -1,6 +1,7 @@
 <script setup>
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Autoplay } from 'swiper/modules'
+import NavItemsListSkeleton from '@/components/Skeleton/NavItemsListSkeleton.vue'
 import 'swiper/css'
 
 // components
@@ -20,9 +21,7 @@ const onSlideChange = (e) => {
 <template>
     <div class="flex">
         <aside class="lg:block hidden w-[310px] bg-gray-200">
-            <div class="h-full flex justify-center items-center bg-[#EAE5E2] py-4" v-if="loading">
-                <Icon name="fluent:spinner-ios-16-filled" class="h-9 w-9 text-primary animate-spin"></Icon>
-            </div>
+            <NavItemsListSkeleton v-if="loading" />
             <div v-if="!loading && categories.length" class="h-full">
                 <nav class="nav-side-menu p-5">
                     <NavItems :items="[...categories[0].children, ...categories[1].children, ...categories[2].children]" />
