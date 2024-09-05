@@ -21,9 +21,6 @@ export const useAppStore = defineStore('app', {
             this.loading = loading
             const { data, pending, error } = await useFetch<any>(`${useRuntimeConfig().public.baseUrl}/general-categories`);
             this.categories = data.value?.categories
-            
-            // data.value?.categories.forEach((c: ICategory) => {
-            // })
             this.loading = false
         },
         async getFlashSale() {

@@ -65,41 +65,41 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="bg-primary rounded-xl flex notranslate">
-        <div class="flex-1 flex items-center p-3 gap-3">
-            <select class="h-[35px] w-1/6 rounded px-2" @change="getModel" v-model="selectedsecondSearchBar.make">
+    <div class="bg-primary rounded-xl flex flex-col md:flex-row notranslate">
+        <div class="flex-1 grid grid-cols-4 md:grid-cols-12 items-center p-3 gap-3">
+            <select class="h-[35px] col-span-2 rounded px-2" @change="getModel" v-model="selectedsecondSearchBar.make">
                 <option value="" disabled selected>Model </option>
                 <option v-for="i in secondSearchBar.make" :value="i.make">{{ i.make }}</option>
             </select>
-            <select @change="getYear" :disabled="!selectedsecondSearchBar.make" class="h-[35px]  rounded px-2"
+            <select @change="getYear" :disabled="!selectedsecondSearchBar.make" class="h-[35px] col-span-2 rounded px-2"
                 v-model="selectedsecondSearchBar.model">
                 <option value="" disabled selected>Model </option>
                 <option v-for="i in secondSearchBar.model" :value="i.models">{{ i.models }}</option>
             </select>
-            <select @change="getCC" :disabled="!secondSearchBar.year" class="h-[35px] w-1/6 rounded px-2"
+            <select @change="getCC" :disabled="!secondSearchBar.year" class="h-[35px] col-span-2 rounded px-2"
                 v-model="selectedsecondSearchBar.year">
                 <option value="" disabled selected>Year</option>
                 <option v-for="i in secondSearchBar.year" :value="i.year">{{ i.year }}</option>
             </select>
-            <select @change="getEngyne" :disabled="!secondSearchBar.cc" class="h-[35px] w-1/6 rounded px-2"
+            <select @change="getEngyne" :disabled="!secondSearchBar.cc" class="h-[35px] col-span-2 rounded px-2"
                 v-model="selectedsecondSearchBar.cc">
                 <option value="" disabled selected>CC</option>
                 <option v-for="i in secondSearchBar.cc" :value="i.cc">{{ i.cc }}</option>
             </select>
-            <select @change="getParts" :disabled="!secondSearchBar.engyne" class="h-[35px] w-1/6 rounded px-2"
+            <select @change="getParts" :disabled="!secondSearchBar.engyne" class="h-[35px] col-span-2 rounded px-2"
                 v-model="selectedsecondSearchBar.engyne">
                 <option value="" disabled selected>Engine</option>
                 <option v-for="i in secondSearchBar.engyne" :value="i.engine">{{ i.engine }}</option>
             </select>
 
-            <select :disabled="!secondSearchBar.parts" class="h-[35px] w-1/6 rounded px-2"
+            <select :disabled="!secondSearchBar.parts" class="h-[35px] col-span-2 rounded px-2"
                 v-model="selectedsecondSearchBar.parts">
                 <option value="" disabled selected>Parts</option>
                 <option v-for="i in categoryData?.categories" :value="i.name">{{ i.name }}</option>
             </select>
         </div>
         <button :disabled="!secondSearchBar.parts"
-            class=" cursor-pointer text-primary bg-white bg-opacity-50 hover:bg-opacity-30 px-5 rounded-e-xl" @click="submit">
+            class=" cursor-pointer text-primary bg-white bg-opacity-50 hover:bg-opacity-30 px-5 py-2 md:my-0 rounded-e-none rounded-b-xl md:rounded-b-none md:rounded-e-xl" @click="submit">
             <Icon class="text-2xl" name="fa:search"></Icon>
         </button>
     </div>

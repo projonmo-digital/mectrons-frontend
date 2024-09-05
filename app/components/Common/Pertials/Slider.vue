@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation } from 'swiper/modules'
+import type { Swiper as ISwiper } from 'swiper'
 import ProductGridSkeleton from '@/components/Skeleton/ProductGridSkeleton.vue'
 
 import Next from './swiper/Next.vue'
@@ -18,7 +19,11 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const breakpoints = {
+const breakpoints = ref<ISwiper['originalParams']['breakpoints']>({
+    '375': {
+        slidesPerView: 1,
+        spaceBetween: 20,
+    },
     '640': {
         slidesPerView: 2,
         spaceBetween: 20,
@@ -35,7 +40,7 @@ const breakpoints = {
         slidesPerView: 4,
         spaceBetween: 20,
     },
-}
+})
 
 </script>
 

@@ -65,7 +65,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="p-8">
+    <div class="p-0 lg:p-8">
         <FilterBar @select="chooseCategory" :sliderCategories="SliderArrayGen()(categories)" title="Featured Products"></FilterBar>
         <div>
             <Slider :products="products" :loading="preloader" :key="re_render"/>

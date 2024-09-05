@@ -1,3 +1,5 @@
+import type { IAddvertisementPostion, IAdvertisement } from "~/types/advertisment";
+
 export const useUtils = defineStore("useUtils", () => {
   const getCetagories = async () => {
     const res = await useFetch(
@@ -7,31 +9,27 @@ export const useUtils = defineStore("useUtils", () => {
     return res.data.value;
   };
 
-  const getAds = async (position) => {
+  const getAds = async <T>(position: IAddvertisementPostion) => {
     const token = useCookie("token");
     try {
-      const response = await useFetch(
-        `${
-          useRuntimeConfig().public.baseUrl
+      const response = await $fetch<T>(
+        `${useRuntimeConfig().public.baseUrl
         }/advertisement?position=${position}`,
         {
           method: "GET",
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${token.getToken}`,
+            Authorization: `Bearer ${token.value}`,
           },
         }
       );
-
-      return response.data;
-
-      // Refresh products list after update
+      return response;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const imageUrlChanger = (url) => {
+  const imageUrlChanger = (url: string) => {
     return (
       useRuntimeConfig().public.imageUrl +
       "/" +

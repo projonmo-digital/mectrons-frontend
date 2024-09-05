@@ -103,7 +103,6 @@ const submitInvoice = async (formData: ICartItem) => {
 }
 
 onMounted(() => {
-    // cartStore.fromDateGenerator()
     cartFromBody.value = {
         address: user.value?.profile.address,
     }
@@ -111,43 +110,45 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class="max-w-screen-2xl mx-auto p-8">
-        <div class="flex gap-x-8">
+    <div class="max-w-screen-2xl mx-auto p-3 md:p-8">
+        <div class="flex flex-col md:flex-row gap-8">
             <div class="flex-1">
+                <h1 class="text-3xl text-gray-500 font-medium">Cart items</h1>
+                <hr class="my-3">
                 <ul role="list" class="divide-y divide-gray-200">
                     <li v-if="!cartStore.products.length" class="pt-3 pb-2 sm:pt-4">
-                        <div class="flex items-center justify-center">
-                            Cart Empty!!
+                        <div class="flex flex-col items-center justify-center opacity-25">
+                            <img src="assets/images/cart-empty.png" class="w-72 me-3" alt="" srcset="">
+                            <span class="text-3xl font-bold">Cart Empty!!</span>
                         </div>
                     </li>
                     <template v-else>
                         <li v-for="(product, index) in cartStore.products" :key="`cart-product-${index}-${product.id}`"
                             class="pt-3 pb-2 sm:pt-4">
-                            <div class="flex items-center">
-                                <nuxt-link :to="`/products/${product.id}`">
-                                    <img class="w-16 h-16 rounded-md object-cover" v-if="product?.picture.length"
-                                        :src="useRuntimeConfig().public.imageUrl + '/' + product?.picture[0].replaceAll('public', 'storage')"
-                                        alt="Product" />
-                                    <img class="w-16 h-16 rounded-md object-cover" v-else
-                                        src="assets/images/dummy-image.jpg" alt="Ads" />
-                                </nuxt-link>
-                                <div class="flex-1 min-w-0 ms-4">
-                                    <h2 class=" font-semibold text-primary">
-                                        <nuxt-link :to="`/products/${product?.id}`">{{ product.title }}</nuxt-link>
-                                    </h2>
-                                    <h4 class="text-md font-medium text-gray-800 truncate dark:text-gray-200 mb-1">
-                                        {{ product?.currency?.symbol }}{{ product?.price }}
-                                    </h4>
-                                    <svg @click="cartStore.removeFromCart(product)"
-                                        class="w-5 h-5 text-gray-500 hover:text-red-400 dark:text-white cursor-pointer"
-                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                    </svg>
+                            <div class="flex flex-col lg:flex-row gap-1 items-start lg:items-center">
+                                <div class="flex-1 flex items-start">
+                                    <nuxt-link :to="`/products/${product.id}`">
+                                        <img class="w-16 h-16 rounded-md object-cover" v-if="product?.picture.length"
+                                            :src="useRuntimeConfig().public.imageUrl + '/' + product?.picture[0].replaceAll('public', 'storage')"
+                                            alt="Product" />
+                                        <img class="w-16 h-16 rounded-md object-cover" v-else
+                                            src="assets/images/dummy-image.jpg" alt="Ads" />
+                                    </nuxt-link>
+                                    <div class="flex-1 min-w-0 ms-4">
+                                        <h2 class="text-sm font-medium text-gary-500 hover:underline">
+                                            <nuxt-link :to="`/products/${product?.id}`">{{ product.title }}</nuxt-link>
+                                        </h2>
+                                        <div class="flex items-center gap-2">
+                                            <icon
+                                                class="w-5 h-5 text-gray-500 hover:text-red-400 dark:text-white cursor-pointer"
+                                                name="ep:delete" @click="cartStore.removeFromCart(product)" />
+                                            <h4 class="text-lg font-medium text-primary mt-1">
+                                                {{ product?.currency?.symbol }} {{ product?.price }}
+                                            </h4>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="max-w-xs mx-auto">
+                                <div class="max-w-xs">
                                     <div class="relative flex items-center max-w-[8rem]">
                                         <button @click="cartStore.decrement(product)" type="button"
                                             id="decrement-button" data-input-counter-decrement="quantity-input"
@@ -178,14 +179,14 @@ onMounted(() => {
                     </template>
                 </ul>
             </div>
-            <div class="w-[460px]">
+            <div class="w-full max-w-[460px]">
                 <div class=" bg-orange-100 p-5 rounded-lg">
                     <ul role="list">
                         <li class="pb-2">
                             <h4 class="block mt-3 mb-3 text-lg font-semibold text-gray-900 dark:text-white">Coupon Code
                                 Apply</h4>
                             <form class="flex items-center gap-x-3 mx-auto" @submit.prevent="getCoupon">
-                                <input type="text" name="text" class="border border-gray-400 ps-4 p-2.5"
+                                <input type="text" name="text" class="w-full border border-gray-400 ps-4 p-2.5"
                                     autocomplete="off" placeholder="Coupon" required />
                                 <button type="submit"
                                     class="bg-primary hover:bg-orange-500 text-white px-3 py-2 rounded-lg">
@@ -278,7 +279,9 @@ onMounted(() => {
             </div>
         </div>
 
-        <div class="best-seller mt-8">
+        <hr class="my-5">
+
+        <div>
             <h4 class="text-2xl font-semibold">Best Sales</h4>
             <BestSaleProducts />
         </div>

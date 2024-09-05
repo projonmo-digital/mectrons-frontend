@@ -1,23 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Slider from '@/components/Category/Pertials/Slider.vue'
 import Filter from '@/components/Common/Filter.vue'
 import FilterSidebar from '@/components/Common/FilterSidebar.vue'
 import Product from '@/components/Common/Pertials/Product.vue'
 
+import type { IAddvertisementPostion, IAdvertisement } from "~/types/advertisment";
+import type { IProduct } from '~/types/products';
+import type { IpaginatedRespoinse } from '~/types/response';
+
 const store = useUtils()
 const route = useRoute()
 
-const categoryPageUpAds: any = await store.getAds('Category Page - Up')
-const categoryPageDownAds: any = await store.getAds('Category Page - Down')
-
-// const categoriesList = ref([
-//     { id: 1, name: 'Brakes', img: 'assets/images/categories/disc-brake-1.png' },
-//     { id: 2, name: 'Tyres', img: 'assets/images/categories/disc-brake-2.png' },
-//     { id: 3, name: 'Lubricant', img: 'assets/images/categories/disc-brake-3.png' },
-//     { id: 4, name: 'Brakes', img: 'assets/images/categories/disc-brake-4.png' },
-//     { id: 5, name: 'Brakes', img: 'assets/images/categories/disc-brake-5.png' },
-// ])
+const categoryPageUpAds = await store.getAds<IAdvertisement>('Category Page - Up')
+const categoryPageDownAds = await store.getAds<IAdvertisement>('Category Page - Down')
 
 const preloader = ref(false)
 const responseParams = ref({
@@ -64,13 +59,11 @@ const getProducts = async (params: any, formBody: any = {}) => {
 
     try {
         let url = `${useRuntimeConfig().public.baseUrl}/filter?${new URLSearchParams(params).toString()}`;
-        const response = await $fetch(url, {
+        const response = await $fetch<IpaginatedRespoinse<IProduct>>(url, {
             method: 'POST',
-            // body: { ...formBody, 'category[]': Number(route.params.id) },
-            body: formData,
-            server: false
+            body: formData
         });
-        if (response && response.data && response.data) {
+        if (response) {
             responseParams.value.page = response.current_page
             data.value = response.data
             moreData.value = response.last_page === response.current_page
@@ -106,7 +99,6 @@ onMounted(() => {
             </div>
         </div>
         <div class="col-span-9">
-            <!-- <Slider :items="categoriesList" :loading="false" /> -->
             <HomeFeaturedProducts></HomeFeaturedProducts>
         </div>
     </div>
@@ -117,11 +109,11 @@ onMounted(() => {
         <div class="col-span-3">
             <div class="h-full p-3">
                 <div class="min-w-[310px] w-[310px] h-[285px] lg:block hidden">
-                    <img v-if="categoryPageUpAds.type === 'image'" class="w-full h-full object-cover"
+                    <img v-if="categoryPageUpAds?.type === 'image'" class="w-full h-full object-cover"
                         :src="useRuntimeConfig().public.imageUrl + '/' + categoryPageUpAds.url.replaceAll('public', 'storage')">
                 </div>
                 <div class="min-w-[310px] w-[310px] h-[285px] lg:block hidden">
-                    <img v-if="categoryPageDownAds.type === 'image'" class="w-full h-full object-cover"
+                    <img v-if="categoryPageDownAds?.type === 'image'" class="w-full h-full object-cover"
                         :src="useRuntimeConfig().public.imageUrl + '/' + categoryPageDownAds.url.replaceAll('public', 'storage')">
                 </div>
             </div>

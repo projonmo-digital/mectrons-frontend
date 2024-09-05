@@ -6,8 +6,8 @@ const appStore = useAppStore()
 const cartStore = useCartStore()
 const { user } = storeToRefs(useAuthStore())
 
-// 
 function googleTranslateElementInit() {
+  //@ts-ignore
   new google.translate.TranslateElement({}, 'google_translate_element')
 }
 
@@ -33,8 +33,6 @@ onMounted(() => {
       <Header></Header>
       <slot></slot>
       <Footer></Footer>
-      <!-- <ToasterAlert></ToasterAlert> -->
-      <!-- <Toaster /> -->
     </div>
   </div>
 </template>

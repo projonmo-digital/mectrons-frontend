@@ -32,15 +32,15 @@ const passHideShow = ref(false);
 
 onMounted(() => {
     if (auth.user && auth.user?.type !== 'seller') {
-        messages.value.push('To access the seller panel, please log out of your current session first, then log in again to enter the seller panel.')
+        messages.value.push('To access the seller panel, please log out of your current session first, then log in again as a seller to enter the seller panel.')
     }
 })
 </script>
 
 <template>
-    <div class="mx-auto w-full max-w-[800px] my-8">
+    <div class="mx-auto w-full max-w-[800px] p-3 lg:px-8">
         <div v-for="(message, index) in messages" :key="index"
-            class="bg-orange-50 text-primary text-sm p-3 my-5 rounded-xl border border-primary">
+            class="bg-orange-50 text-primary text-sm p-3 mb-5 rounded-xl border border-primary">
             {{ message }}
         </div>
         <div class="grid lg:grid-cols-2 gap-3">

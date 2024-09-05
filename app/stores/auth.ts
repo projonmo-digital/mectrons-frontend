@@ -80,10 +80,3 @@ export const useAuthStore = defineStore("auth", {
     },
   },
 });
-
-const getRole = (user: any) => {
-  if (user.email === "admin@admin") return "admin";
-  else {
-    return user.nid ? "seller" : "user";
-  }
-};

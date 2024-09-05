@@ -3,6 +3,7 @@ import Swal, { type SweetAlertOptions } from "sweetalert2";
 export const useAlert = () => {
   return (obj: SweetAlertOptions) => {
     Swal.fire({
+      position: "top",
       text: "Do you want to continue",
       icon: "success",
       iconColor: '#f85606',
@@ -27,7 +28,7 @@ export const useConfirmation = () => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#32a852",
       cancelButtonColor: "#d33",
       confirmButtonText: "YES",
       cancelButtonText: "No",

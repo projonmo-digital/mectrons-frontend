@@ -22,8 +22,8 @@ const icons = [
 ]
 
 const store = useUtils()
-const upperLeftAds = await store.getAds('Home Page - Upper Left')
-const upperRightAds = await store.getAds('Home Page - Upper Right')
+const upperLeftAds: any = await store.getAds('Home Page - Upper Left')
+const upperRightAds: any = await store.getAds('Home Page - Upper Right')
 
 // methods
 const search = (event: any) => {
@@ -52,7 +52,7 @@ const search = (event: any) => {
                 </div>
             </div>
             <div class="w-full h-[160px] overflow-hidden">
-                <img src="https://img.freepik.com/free-psd/car-rental-automotive-facebook-cover-template_106176-2473.jpg"
+                <img src="assets/images/automotive-cover.jpg"
                     class="w-full h-full object-cover">
             </div>
         </div>

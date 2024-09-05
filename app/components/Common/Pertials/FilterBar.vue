@@ -35,7 +35,7 @@ const setPrev = () => {
 <template>
     <div class="flex justify-between items-center px-5 my-5">
         <h2 class="text-[20px] font-bold notranslate">{{title}}</h2>
-        <div class="flex justify-end items-center gap-1">
+        <div class="hidden lg:flex justify-end items-center gap-1">
             <div class="flex">
                 <button
                     class="skew hover:bg-primary hover:text-white -skew-x-12 text-gray-500 px-3 py-2 font-bold text-sm"

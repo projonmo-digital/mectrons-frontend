@@ -175,10 +175,10 @@ const features = [
 </script>
 <template>
     <div v-if="!preloader">
-        <div class="flex gap-3 p-5">
+        <div class="flex gap-3 p-3 lg:p-5">
             <div class="flex-1">
-                <div class="grid grid-cols-7">
-                    <div class="col-span-4 flex flex-col gap-3">
+                <div class="grid grid-cols-1 lg:grid-cols-7 gap-5">
+                    <div class="col-span-1 lg:col-span-4 flex flex-col gap-3">
                         <div class="h-96 rounded-lg shadow-lg overflow-hidden">
                             <img class="w-full h-full rounded-lg object-cover transition duration-150 ease-out cursor-zoom-in"
                                 @mouseenter="imageMouseEnter" @mouseleave="imageMouseLeave" @mousemove="imageMouseMove"
@@ -200,24 +200,12 @@ const features = [
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-3 p-5 flex flex-col gap-5">
+                    <div class="col-span-1 lg:col-span-3 flex flex-col gap-5">
                         <div>
                             <h1 class="text-2xl font-bold">{{ product?.title }}</h1>
                         </div>
                         <div class="flex items-center gap-2 border-y py-2">
                             <Rating :model-value="product?.reviews[0]?.average_rating" />
-                            <!-- <div class="flex items-center my-3">
-                                <Icon name="mdi:star" class="text-xl text-gray-300"
-                                    :class="{ 'text-primary': Number(product?.reviews[0]?.average_rating) >= 1 }"></Icon>
-                                <Icon name="mdi:star" class="text-xl text-gray-300"
-                                    :class="{ 'text-primary': Number(product?.reviews[0]?.average_rating) >= 2 }"></Icon>
-                                <Icon name="mdi:star" class="text-xl text-gray-300"
-                                    :class="{ 'text-primary': Number(product?.reviews[0]?.average_rating) >= 3 }"></Icon>
-                                <Icon name="mdi:star" class="text-xl text-gray-300"
-                                    :class="{ 'text-primary': Number(product?.reviews[0]?.average_rating) >= 4 }"></Icon>
-                                <Icon name="mdi:star" class="text-xl text-gray-300"
-                                    :class="{ 'text-primary': Number(product?.reviews[0]?.average_rating) >= 5 }"></Icon>
-                            </div> -->
                         </div>
                         <div>
                             <div class="flex flex-col gap-4">
@@ -331,7 +319,7 @@ const features = [
                     </div>
                 </div>
             </div>
-            <div class="flex-1 max-w-[360px] flex flex-col gap-5">
+            <div class="flex-1 max-w-[360px] hidden lg:flex flex-col gap-5">
                 <div class="shadow-lg bg-white p-3 rounded-lg border">
                     <h1 class="text-xl font-bold">Stay Safe</h1>
                     <div class="flex items-center">
@@ -365,13 +353,13 @@ const features = [
             </div>
         </div>
         <div>
-            <div class="flex gap-3 p-5">
+            <div class="flex flex-col lg:flex-row gap-3 p-5">
                 <div class="flex-1">
                     <ProductDescription :product="product" />
                 </div>
-                <div class="flex-1 max-w-[360px] flex flex-col gap-5">
+                <div class="flex-1 max-w-full lg:max-w-[360px] flex flex-col gap-5">
                     <h2 class="font-bold text-xl text-center">Products from Seller</h2>
-                    <div class="flex flex-col gap-y-4 px-3">
+                    <div class="flex flex-wrap gap-5 px-3">
                         <template v-for="(product, index) in suggestion" :key="`sug-product-${product.id}`">
                             <Product v-if="index < 2" :product="product" />
                         </template>

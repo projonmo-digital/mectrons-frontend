@@ -1,20 +1,14 @@
-import {
-  SAVE_CARTS,
-  UPDATE_CART,
-  DELETE_CART,
-  GET_PRODUCTS,
-} from "~/helper/localStorage";
-import type { ICartProduct, ICartItem } from "~/types/cart";
+import { SAVE_CARTS, GET_PRODUCTS } from "~/helper/localStorage";
+import type { ICartProduct } from "~/types/cart";
 import type { IMethod } from "~/types/method";
 
-import { useAlert } from "~/composables/sweetalert";
+import { useAlert, useConfirmation } from "~/composables/sweetalert";
 const alert = useAlert()
-
+const confirmation = useConfirmation()
 
 interface IModifiedMethod extends IMethod {
   value: string
 }
-
 interface IState {
   loading: boolean;
   products: ICartProduct[];
@@ -61,17 +55,22 @@ export const useCartStore = defineStore("cart", {
           return resolve(SAVE_CARTS(this.products).then(() => {
             alert({
               title: 'Added',
-              text: 'Product has been added'
+              text: 'Product has been added to cart.'
             })
           }));
         }, 500)
       })
     },
     removeFromCart(product: ICartProduct) {
-      this.products = this.products.filter((p) => p.id !== product.id);
-      setTimeout(() => {
-        SAVE_CARTS(this.products);
-      });
+      confirmation({
+        icon: "question",
+        text: 'Would you like to remove this item from your cart?'
+      }).then(() => {
+        this.products = this.products.filter((p) => p.id !== product.id);
+        setTimeout(() => {
+          SAVE_CARTS(this.products);
+        });
+      })
     },
     increment(product: ICartProduct) {
       let p = this.products.find((p) => p.id === product.id);
