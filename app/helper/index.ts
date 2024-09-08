@@ -1,5 +1,5 @@
-import type { ICategory, IFlashSale } from "~/types/categories";
-import type { IProduct } from "~/types/products";
+import type { ICategory, IFlashSale } from "@/types/categories";
+import type { IProduct } from "@/types/products";
 
 export const getGeneratedID = (row: any) => {
   return (

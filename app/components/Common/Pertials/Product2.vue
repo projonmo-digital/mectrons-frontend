@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { IProduct } from '~/types/products';
-import Rating from '@/components/seller/review/Rating.vue'
+import Rating from '@/components/Seller/Review/Rating.vue'
 
 const cartStore = useCartStore();
 

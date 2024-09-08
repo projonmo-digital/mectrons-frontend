@@ -11,10 +11,10 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Settings - Mectrons User',
-  meta: [
-    { name: 'description', content: 'Mectrons' }
-  ]
+    title: 'Settings - Mectrons User',
+    meta: [
+        { name: 'description', content: 'Mectrons' }
+    ]
 })
 
 
@@ -26,7 +26,7 @@ const errors = ref<any>({})
 const chooseImageHandler = (event: any) => {
     let input = document.createElement('input')
     input.type = 'file'
-    input.addEventListener('change', async(event: any) => {
+    input.addEventListener('change', async (event: any) => {
         let imageFile = event.target.files[0]
         const fd = new FormData()
         const token = useCookie('token')
@@ -39,7 +39,7 @@ const chooseImageHandler = (event: any) => {
             },
             body: fd
         });
-        if(response){
+        if (response) {
             getSettings()
         }
     })
@@ -65,7 +65,7 @@ const submit = async () => {
 };
 
 const getUrl = (data: File | string) => {
-    if(data instanceof File) return URL.createObjectURL(data)
+    if (data instanceof File) return URL.createObjectURL(data)
     else return getFileUrl(data)
 }
 
@@ -101,7 +101,7 @@ const getSettings = async (params = {}) => {
     } catch (error) {
         console.error(error)
         return []
-    }finally{
+    } finally {
         preloader.value = false
     }
 }
@@ -114,11 +114,17 @@ onMounted(() => {
 <template>
     <div class="flex flex-col gap-5 relative">
         <div class="flex flex-col">
-            <HeaderWithHr header="Settings" />
-        </div>
-        <div v-if="preloader" class=" absolute inset-0 bg-white bg-opacity-50 w-full h-screen  flex justify-center items-center">
-                <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl"></Icon>
+            <div>
+                <div class="flex justify-between">
+                    <h1 class="text-2xl font-bold">Settings</h1>
+                </div>
+                <hr class="h-[2px] bg-slate-400 mt-4">
             </div>
+        </div>
+        <div v-if="preloader"
+            class=" absolute inset-0 bg-white bg-opacity-50 w-full h-screen  flex justify-center items-center">
+            <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl"></Icon>
+        </div>
         <div v-else class="flex flex-col gap-5">
             <div class="flex flex-col">
                 <div class="flex flex-col gap-8">
@@ -127,37 +133,44 @@ onMounted(() => {
                             <tr>
                                 <td class="py-3"><Label for="email">Email</Label></td>
                                 <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.email" disabled type="text" placeholder="email" />
+                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.email" disabled
+                                        type="text" placeholder="email" />
                                     <small class="text-red-500" v-if="errors['email']">{{ errors['email'][0] }}</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="name">Name</Label></td>
                                 <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.name" type="text" placeholder="Name" />
+                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.name"
+                                        type="text" placeholder="Name" />
                                     <small class="text-red-500" v-if="errors['name']">{{ errors['name'][0] }}</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="mobile">Mobile</Label></td>
                                 <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.mobile" type="text" placeholder="mobile" />
-                                    <small class="text-red-500" v-if="errors['mobile']">{{ errors['mobile'][0] }}</small>
+                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.mobile"
+                                        type="text" placeholder="mobile" />
+                                    <small class="text-red-500" v-if="errors['mobile']">{{ errors['mobile'][0]
+                                        }}</small>
                                 </td>
                             </tr>
-                            
+
                             <tr>
                                 <td class="py-3"><Label for="address">Address</Label></td>
                                 <td class="py-3">
                                     <textarea class="w-full border" v-model="formData.address"></textarea>
-                                    <small class="text-red-500" v-if="errors['address']">{{ errors['address'][0] }}</small>
+                                    <small class="text-red-500" v-if="errors['address']">{{ errors['address'][0]
+                                        }}</small>
                                 </td>
                             </tr>
                         </table>
                         <div class="flex-1">
                             <div class="flex justify-center items-center mt-24">
-                                <div @click="chooseImageHandler" class="border cursor-pointer rounded-lg bg-gray-200 w-[160px] h-[160px] relative overflow-hidden">
-                                    <img :src="getUrl(formData.profile_picture)" class="w-full h-full object-cover" alt="">
+                                <div @click="chooseImageHandler"
+                                    class="border cursor-pointer rounded-lg bg-gray-200 w-[160px] h-[160px] relative overflow-hidden">
+                                    <img :src="getUrl(formData.profile_picture)" class="w-full h-full object-cover"
+                                        alt="">
                                 </div>
                             </div>
                         </div>

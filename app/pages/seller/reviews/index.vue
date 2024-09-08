@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import Review from '~/components/seller/review/Review.vue'
+import Review from '@/components/Seller/Review/Review.vue'
 
 definePageMeta({
     middleware: ["auth", "seller"]

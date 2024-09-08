@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Invoice from '~/components/user/purchase-history/Invoice.vue'
+import Invoice from '@/components/User/PurchaseHistory/Invoice.vue'
 
 definePageMeta({
     middleware: ["auth", "user"]

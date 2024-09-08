@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { IuserDashboardResponse } from '~/types/dashboard';
-import Card1 from '@/components/master-admin/Card1.vue'
+import Card1 from '@/components/Admin/Card1.vue'
 
 definePageMeta({
     middleware: ["auth", "user"]

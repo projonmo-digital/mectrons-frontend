@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import Catogories from '~/components/master-admin/categories/Catagories.vue'
+import Catogories from '~/components/Admin/Categories/Catagories.vue'
 
 definePageMeta({
     middleware: ["auth", "admin"]

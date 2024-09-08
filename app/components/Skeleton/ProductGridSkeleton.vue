@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SkeletonLoader from '@/components/Common/SkeletonLoader.vue'
-import Rating from '@/components/seller/review/Rating.vue'
+import Rating from '@/components/Seller/Review/Rating.vue'
 </script>
 <template>
     <SkeletonLoader>

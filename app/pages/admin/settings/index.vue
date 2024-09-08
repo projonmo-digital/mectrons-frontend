@@ -1,20 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-
-import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
-import { useToast } from '@/components/ui/toast/use-toast'
-
-import type { ColumnDef } from "@tanstack/vue-table"
+import PaymentMethod from '~/components/Admin/Settings/PaymentMethod.vue'
 import type { IMethod } from '~/types/method'
-import PaymentMethod from '~/components/master-admin/settings/PaymentMethod.vue'
-
-const { toast } = useToast()
 
 definePageMeta({
   middleware: ["auth", "admin"]
 })
-
-const router = useRouter()
 
 const preloader = ref(false)
 const data = ref<IMethod[]>([])

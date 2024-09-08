@@ -8,10 +8,10 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Settings - Mectrons Seller',
-  meta: [
-    { name: 'description', content: 'Mectrons' }
-  ]
+    title: 'Settings - Mectrons Seller',
+    meta: [
+        { name: 'description', content: 'Mectrons' }
+    ]
 })
 
 // state
@@ -20,8 +20,8 @@ const formData = ref({})
 const errors = ref({})
 
 const chooseImageHandler = (event) => {
-        let imageFile = event.target.files[0]
-        formData.value.logo = imageFile
+    let imageFile = event.target.files[0]
+    formData.value.logo = imageFile
 }
 
 const submit = async () => {
@@ -29,10 +29,10 @@ const submit = async () => {
     const fd = new FormData();
 
     Object.keys(formData.value).forEach(key => {
-        if(key !== 'logo'){
+        if (key !== 'logo') {
             fd.append(key, formData.value[key])
         }
-        if(key === 'logo' && formData.value[key] instanceof File){
+        if (key === 'logo' && formData.value[key] instanceof File) {
             fd.append(key, formData.value[key])
         }
     });
@@ -54,7 +54,7 @@ const submit = async () => {
 };
 
 const getUrl = (data) => {
-    if(data instanceof File) return URL.createObjectURL(data)
+    if (data instanceof File) return URL.createObjectURL(data)
     else return getFileUrl(data)
 }
 
@@ -95,7 +95,7 @@ const getSettings = async (params = {}) => {
     } catch (error) {
         console.error(error)
         return []
-    }finally{
+    } finally {
         preloader.value = false
     }
 }
@@ -108,11 +108,17 @@ onMounted(() => {
 <template>
     <div class="flex flex-col gap-5 relative">
         <div class="flex flex-col">
-            <HeaderWithHr header="Settings" />
-        </div>
-        <div v-if="preloader" class=" absolute inset-0 bg-white bg-opacity-50 w-full h-screen  flex justify-center items-center">
-                <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl"></Icon>
+            <div>
+                <div class="flex justify-between">
+                    <h1 class="text-2xl font-bold">Settings</h1>
+                </div>
+                <hr class="h-[2px] bg-slate-400 mt-4">
             </div>
+        </div>
+        <div v-if="preloader"
+            class=" absolute inset-0 bg-white bg-opacity-50 w-full h-screen  flex justify-center items-center">
+            <Icon name="fluent:spinner-ios-16-filled" class=" text-primary animate-spin text-8xl"></Icon>
+        </div>
         <div v-else class="flex flex-col gap-5">
             <div class="flex flex-col border p-5 rounded-lg">
                 <div class="pb-2">
@@ -125,48 +131,58 @@ onMounted(() => {
                             <tr>
                                 <td class="py-3"><Label for="shop_name">Shop Name</Label></td>
                                 <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.name" type="text" placeholder="Shop Name" />
+                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.name"
+                                        type="text" placeholder="Shop Name" />
                                     <small class="text-red-500" v-if="errors['name']">{{ errors['name'][0] }}</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="shop_name">Shop Name BN</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.name_bn" type="text" placeholder="Shop Name" /></td>
+                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full"
+                                        v-model="formData.name_bn" type="text" placeholder="Shop Name" /></td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="picture">Picture</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" type="file" @change="chooseImageHandler" /></td>
+                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" type="file"
+                                        @change="chooseImageHandler" /></td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="shop_phone">Shop Phone</Label></td>
                                 <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.phone" type="text" placeholder="Shop Phone" />
+                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.phone"
+                                        type="text" placeholder="Shop Phone" />
                                     <small class="text-red-500" v-if="errors['phone']">{{ errors['phone'][0] }}</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="shop_address">Shop Location</Label></td>
                                 <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.location" type="text" placeholder="Shop Phone" />
-                                    <small class="text-red-500" v-if="errors['location']">{{ errors['location'][0] }}</small>
+                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.location"
+                                        type="text" placeholder="Shop Phone" />
+                                    <small class="text-red-500" v-if="errors['location']">{{ errors['location'][0]
+                                        }}</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="street_address">Street Address</Label></td>
                                 <td class="py-3">
-                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.address" type="text" placeholder="Street Address" />
-                                    <small class="text-red-500" v-if="errors['address']">{{ errors['address'][0] }}</small>
+                                    <input class="border px-3 py-2 rounded-md w-full" v-model="formData.address"
+                                        type="text" placeholder="Street Address" />
+                                    <small class="text-red-500" v-if="errors['address']">{{ errors['address'][0]
+                                        }}</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="meta_title">Meta Title</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.meta_title" type="text" placeholder="Meta Title" /></td>
+                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full"
+                                        v-model="formData.meta_title" type="text" placeholder="Meta Title" /></td>
                             </tr>
                             <tr>
                                 <td class="py-3" style="vertical-align: top;">
                                     <Label for="description">Meta Description</Label>
                                 </td>
-                                <td class="py-3"><Textarea v-model="formData.meta_desc" class="h-[331px] resize-none"></Textarea></td>
+                                <td class="py-3"><Textarea v-model="formData.meta_desc"
+                                        class="h-[331px] resize-none"></Textarea></td>
                             </tr>
                         </table>
                         <div class="flex-1">
@@ -189,23 +205,28 @@ onMounted(() => {
                         <table class="w-full max-w-[600px]">
                             <tr>
                                 <td class="py-3"><Label for="shop_name">Facebook</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.facebook" type="text" placeholder="Facebook" /></td>
+                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full"
+                                        v-model="formData.facebook" type="text" placeholder="Facebook" /></td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="instagram">Instagram</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.intstagram" type="text" placeholder="Instagram" /></td>
+                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full"
+                                        v-model="formData.intstagram" type="text" placeholder="Instagram" /></td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="twitter">Twitter</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.twitter" type="text" placeholder="Twitter" /></td>
+                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full"
+                                        v-model="formData.twitter" type="text" placeholder="Twitter" /></td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="google">Google</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.google" type="text" placeholder="Google" /></td>
+                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full"
+                                        v-model="formData.google" type="text" placeholder="Google" /></td>
                             </tr>
                             <tr>
                                 <td class="py-3"><Label for="youtube">Youtube</Label></td>
-                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full" v-model="formData.youtube" type="text" placeholder="Youtube" /></td>
+                                <td class="py-3"><input class="border px-3 py-2 rounded-md w-full"
+                                        v-model="formData.youtube" type="text" placeholder="Youtube" /></td>
                             </tr>
                         </table>
                     </div>

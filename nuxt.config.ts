@@ -104,7 +104,7 @@ export default defineNuxtConfig({
   tailwindcss: {
     exposeConfig: true,
   },
-  css: ["~/assets/css/input.css"],
+  css: ["@/assets/css/input.css"],
   modules: [
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",

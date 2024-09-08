@@ -12,8 +12,8 @@ useHead({
   ]
 })
 
-import ActiveCustomer from '~/components/master-admin/customer/ActiveCustomer.vue'
-import InactiveCustomer from '~/components/master-admin/customer/InactiveCustomer.vue'
+import ActiveCustomer from '@/components/Admin/Customer/ActiveCustomer.vue'
+import InactiveCustomer from '@/components/Admin/Customer/InactiveCustomer.vue'
 
 const selectedTab = ref('active')
 

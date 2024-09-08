@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import PendingProduct from '~/components/master-admin/product/PendingProduct.vue'
-import ApprovedProduct from '~/components/master-admin/product/ApprovedProduct.vue'
+import PendingProduct from '~/components/Admin/Product/PendingProduct.vue'
+import ApprovedProduct from '~/components/Admin/Product/ApprovedProduct.vue'
 
 definePageMeta({
     middleware: ["auth", "admin"]

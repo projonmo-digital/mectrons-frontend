@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { IProduct } from '~/types/products';
-import Rating from '@/components/seller/review/Rating.vue'
+import Rating from '@/components/Seller/Review/Rating.vue'
 
 const loading = ref(false);
 const cartStore = useCartStore();

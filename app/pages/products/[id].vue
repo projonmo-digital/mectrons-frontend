@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Product from '~/components/Common/Pertials/Product.vue'
+import Product from '@/components/Common/Pertials/Product.vue'
 import ProductDescription from '~/components/Product/ProductDescription.vue'
-import Slider from '~/components/Common/Pertials/Slider.vue'
-import type { IProduct } from '~/types/products';
-import type { IpaginatedRespoinse } from '~/types/response';
-import { discountCalculation } from '~/helper';
-import Rating from '@/components/seller/review/Rating.vue'
+import Slider from '@/components/Common/Pertials/Slider.vue'
+import type { IProduct } from '@/types/products';
+import type { IpaginatedRespoinse } from '@/types/response';
+import { discountCalculation } from '@/helper';
+import Rating from '@/components/Seller/Review/Rating.vue'
 import SingleProductSkeleton from '@/components/Skeleton/SingleProductSkeleton.vue'
 
 const cartStore = useCartStore();

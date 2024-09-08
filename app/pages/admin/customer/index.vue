@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import ActiveCustomer from '~/components/master-admin/customer/ActiveCustomer.vue'
-import InactiveCustomer from '~/components/master-admin/customer/InactiveCustomer.vue'
+import ActiveCustomer from '~/components/Admin/Customer/ActiveCustomer.vue'
+import InactiveCustomer from '~/components/Admin/Customer/InactiveCustomer.vue'
 
 definePageMeta({
     middleware: ["auth", "admin"]

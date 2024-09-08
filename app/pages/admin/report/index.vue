@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import PendingReport from '~/components/master-admin/report/PendingReport.vue'
-import DoneReport from '~/components/master-admin/report/DoneReport.vue'
+import PendingReport from '~/components/Admin/Report/PendingReport.vue'
+import DoneReport from '~/components/Admin/Report/DoneReport.vue'
 
 definePageMeta({
     middleware: ["auth", "admin"]

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import PendingOrder from '~/components/master-admin/order/PendingOrder.vue'
-import DeliveredOrder from '~/components/master-admin/order/DeliveredOrder.vue'
+import PendingOrder from '~/components/Admin/Order/PendingOrder.vue'
+import DeliveredOrder from '~/components/Admin/Order/DeliveredOrder.vue'
 
 definePageMeta({
     middleware: ["auth", "seller"]

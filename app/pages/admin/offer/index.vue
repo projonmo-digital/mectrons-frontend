@@ -6,7 +6,7 @@ import type { IOffer } from '~/types/offer'
 import { useToast } from '@/components/ui/toast/use-toast'
 import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
 import ConfirmationModal from '@/components/Common/ConfirmationModal.vue'
-import AddEditOfferModal from '~/components/master-admin/offer/AddEditOfferModal.vue'
+import AddEditOfferModal from '~/components/Admin/Offer/AddEditOfferModal.vue'
 
 const { toast } = useToast()
 const appStore = useAppStore()

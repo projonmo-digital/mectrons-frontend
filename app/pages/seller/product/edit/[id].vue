@@ -240,7 +240,12 @@ watch(productOrService, () => {
 
 
 <template>
-    <HeaderWithHr header="Add New Prouduct"></HeaderWithHr>
+    <div>
+        <div class="flex justify-between">
+            <h1 class="text-2xl font-bold">Add New Prouduct</h1>
+        </div>
+        <hr class="h-[2px] bg-slate-400 mt-4">
+    </div>
     <form @submit.prevent="handleSubmit">
         <div>
             <div class="my-3">

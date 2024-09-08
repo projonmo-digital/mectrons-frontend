@@ -14,7 +14,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import DataTableDropDown from './DataTableDropDown.vue';
 
 const props = defineProps<{
     columns: ColumnDef<TData, TValue>[]

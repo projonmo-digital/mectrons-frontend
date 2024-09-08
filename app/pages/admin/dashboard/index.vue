@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import Card1 from '@/components/master-admin/Card1.vue'
-import Card2 from '@/components/master-admin/Card2.vue'
-import Card3 from '@/components/master-admin/Card3.vue'
-import Logos from '@/components/master-admin/Logos.vue'
+import Card1 from '@/components/Admin/Card1.vue'
+import Card2 from '@/components/Admin/Card2.vue'
+import Card3 from '@/components/Admin/Card3.vue'
+import Logos from '@/components/Admin/Logos.vue'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'

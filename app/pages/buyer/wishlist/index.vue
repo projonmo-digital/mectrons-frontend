@@ -5,7 +5,7 @@ import type { ColumnDef } from "@tanstack/vue-table"
 import { useToast } from '@/components/ui/toast/use-toast'
 import type { IpaginatedRespoinse } from '~/types/response';
 import type { IProduct } from '~/types/products';
-import ProductInfo from "~/components/master-admin/product/ProductInfo.vue"
+import ProductInfo from "~/components/Admin/Product/ProductInfo.vue"
 
 const { toast } = useToast()
 

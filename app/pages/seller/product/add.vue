@@ -133,11 +133,11 @@ const handleSubmit = async (e) => {
             formData.value.image.forEach((file, index) => {
                 body.append(`image[${index}]`, file);
             });
-        }else if(key === 'attributes') {
+        } else if (key === 'attributes') {
             formData.value.attributes.forEach((attribute, index) => {
                 body.append(attribute.key, attribute.value);
             });
-        }else {
+        } else {
             body.append(key, formData.value[key]);
         }
     });
@@ -151,7 +151,7 @@ const handleSubmit = async (e) => {
             },
             body
         });
-        errors.value = error.value.data.errors    
+        errors.value = error.value.data.errors
         if (error) {
             errors.value = error.value.data.errors
             toast({
@@ -242,7 +242,12 @@ watch(productOrService, () => {
 </script>
 
 <template>
-    <HeaderWithHr header="Add New Prouduct"></HeaderWithHr>
+    <div>
+        <div class="flex justify-between">
+            <h1 class="text-2xl font-bold">Add New Prouduct</h1>
+        </div>
+        <hr class="h-[2px] bg-slate-400 mt-4">
+    </div>
     <div>
         <div class="flex flex-col gap-8">
             <div class="my-3">
@@ -252,8 +257,8 @@ watch(productOrService, () => {
                 <div class="shadow-xl border p-4 mt-5">
                     <RadioTree v-model="formData.category_id" value="id" color="#f85606" label="name" name="category_id"
                         :list="categoryData.categories" />
-                        <span v-if="Object.keys(errors).includes('category_id')" class="text-sm text-red-500">{{
-                                errors.category_id[0] }}</span>
+                    <span v-if="Object.keys(errors).includes('category_id')" class="text-sm text-red-500">{{
+                        errors.category_id[0] }}</span>
                 </div>
             </div>
 
@@ -267,7 +272,7 @@ watch(productOrService, () => {
                         <td class="py-3">
                             <Input type="text" v-model="formData.title" placeholder="Product Name" />
                             <span v-if="Object.keys(errors).includes('title')" class="text-sm text-red-500">{{
-                                errors.title[0] }}</span>
+                        errors.title[0] }}</span>
                         </td>
                     </tr>
                     <tr>
@@ -280,7 +285,7 @@ watch(productOrService, () => {
                         <td class="py-3">
                             <Input id="unitPrice" type="number" v-model="formData.price" placeholder="Unit Price" />
                             <span v-if="Object.keys(errors).includes('price')" class="text-sm text-red-500">{{
-                                errors.price[0] }}</span>
+                        errors.price[0] }}</span>
                         </td>
                     </tr>
                     <tr>
@@ -289,7 +294,7 @@ watch(productOrService, () => {
                             <Input id="unitPrice" type="number" :min="0" v-model="formData.stock_amount"
                                 placeholder="Stock" />
                             <span v-if="Object.keys(errors).includes('stock_amount')" class="text-sm text-red-500">{{
-                            errors.stock_amount[0] }}</span>
+                        errors.stock_amount[0] }}</span>
                         </td>
                     </tr>
                     <tr class="align-top">
@@ -303,13 +308,13 @@ watch(productOrService, () => {
                                         :class="{ 'bg-primary text-white': isBn }" @click="isBn = true">BN</button>
                                 </div>
                                 <div>
-                                    <Textarea placeholder="Description BN" v-if="isBn" v-model="formData['bn[description]']"
-                                        rows="8"></Textarea>
+                                    <Textarea placeholder="Description BN" v-if="isBn"
+                                        v-model="formData['bn[description]']" rows="8"></Textarea>
                                     <Textarea placeholder="Description EN" v-else v-model="formData.description"
                                         rows="8"></Textarea>
                                     <span v-if="Object.keys(errors).includes('description')"
                                         class="text-sm text-red-500">{{
-                                            errors.description[0] }}</span>
+                        errors.description[0] }}</span>
                                 </div>
                             </div>
                         </td>
@@ -400,7 +405,7 @@ watch(productOrService, () => {
             </div>
             <div class="max-w-[600px] w-full">
                 <div class="py-3 border-b-2 border-dashed">
-                <h1 class="text-primary text-xl font-bold">Attributes</h1>
+                    <h1 class="text-primary text-xl font-bold">Attributes</h1>
                 </div>
                 <div>
                     <table class="table">
@@ -411,20 +416,24 @@ watch(productOrService, () => {
                             <td class="p-1"></td>
                         </tr>
                         <tr v-for="(attribute, index) in formData.attributes" :key="`attribute-${index}`">
-                            <td>{{ index+1 }}</td>
-                            <td><input class="border w-full p-1" placeholder="Key" v-model="attribute['key']" type="text"></td>
-                            <td><input class="border w-full p-1" placeholder="Value" v-model="attribute['value']" type="text"></td>
+                            <td>{{ index + 1 }}</td>
+                            <td><input class="border w-full p-1" placeholder="Key" v-model="attribute['key']"
+                                    type="text"></td>
+                            <td><input class="border w-full p-1" placeholder="Value" v-model="attribute['value']"
+                                    type="text"></td>
                             <td>
                                 <button @click="formData.attributes.splice(index, 1)">
-                                    <icon class="text-gray-500 hover:text-red-500 text-2xl" name="lets-icons:dell"/>
+                                    <icon class="text-gray-500 hover:text-red-500 text-2xl" name="lets-icons:dell" />
                                 </button>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <button @click="addAttribute" class="mt-3 border border-primary text-primary hover:text-orange-500 text-sm px-2 py-1 rounded-full">
-                    <icon class="text-xl" name="ic:baseline-plus"/>
-                    Add Attribute</button>
+                <button @click="addAttribute"
+                    class="mt-3 border border-primary text-primary hover:text-orange-500 text-sm px-2 py-1 rounded-full">
+                    <icon class="text-xl" name="ic:baseline-plus" />
+                    Add Attribute
+                </button>
             </div>
 
             <div class="w-full max-w-[600px]">
