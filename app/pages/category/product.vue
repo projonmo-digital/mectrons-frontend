@@ -33,14 +33,12 @@
     const getMake = async () => {
         const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
         secondSearchBar.make = data.value
-        console.log(secondSearchBar)
 
     }
     getMake()
     const getModel = async () => {
         const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}`)
         secondSearchBar.model = data.value
-        console.log(secondSearchBar.model)
     }
 
 
@@ -53,7 +51,6 @@
     const getCC = async () => {
         const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}`)
         secondSearchBar.cc = data.value
-        console.log(data.value)
     }
     const getEngyne = async () => {
         const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${selectedsecondSearchBar.make}&models=${selectedsecondSearchBar.model}&year=${selectedsecondSearchBar.year}&cc=${selectedsecondSearchBar.cc}`)

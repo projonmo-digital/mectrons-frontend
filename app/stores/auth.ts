@@ -21,6 +21,7 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async authenticateUser(formData: any) {
       try {
+        const router = useRouter()
         this.$state.errors = {};
         this.loading = true;
         const response = await $fetch<ILoginResponse>(
@@ -43,6 +44,9 @@ export const useAuthStore = defineStore("auth", {
           title: "Success",
           description: response?.message,
         });
+        if(response.user.type === 'seller'){
+          router.push('/seller/dashboard')
+        }
         location.reload()
         setTimeout(() => {
           if (response.user.type === "buyer") {

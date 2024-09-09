@@ -33,9 +33,7 @@ const fetchData = async (params = {}) => {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
-        })
-        // console.log(response.data);
-        
+        })        
         if (response && response.data) {
             responseParams.value.page = response.current_page
             data.value = response.data

@@ -5,7 +5,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), { loaderColor: '#f1f1f1' })
-
 </script>
 
 <template>

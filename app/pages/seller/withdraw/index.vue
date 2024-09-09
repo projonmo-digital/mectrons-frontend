@@ -116,8 +116,6 @@ const columns: ColumnDef<IPaymentHistory>[] = [
           {
             title: 'Edit',
             method: (row: IPaymentHistory) => {
-              console.log(row.status);
-
             },
           }
         ]

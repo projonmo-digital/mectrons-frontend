@@ -61,13 +61,11 @@ const getUrl = (data) => {
 onMounted(() => {
   preloader.value = true
   Promise.all([getPositions()]).then(res => {
-    console.log(res);
   })
 })
 
 // methods
 const change = (event) => {
-  console.log(event);
 }
 
 const chooseImageHandler = () => {

@@ -122,71 +122,61 @@ const removeFile = (index) => {
     formData.value.image.splice(index, 1)
 }
 
-const handleSubmit = async (e) => {
-    errors.value = {}
-    const token = useCookie('token');
-    const body = new FormData();
-    loading.value = true
-
-    Object.keys(formData.value).forEach(key => {
-        if (key === 'image') {
-            formData.value.image.forEach((file, index) => {
-                body.append(`image[${index}]`, file);
-            });
-        }else if(key === 'attributes') {
-            formData.value.attributes.forEach((attribute, index) => {
-                body.append(attribute.key, attribute.value);
-            });
-        }else {
-            body.append(key, formData.value[key]);
-        }
-    });
-
+const submit = async () => {
     try {
-        const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/product`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${token.value}`,
-            },
-            body
-        });
-        errors.value = error.value.data.errors    
-        if (error) {
-            errors.value = error.value.data.errors
-            toast({
-                class: 'bg-red-500',
-                title: 'Error',
-                description: error.value.data.message
-            });
-        }
-        if (data.value) {
-            toast({
-                class: 'bg-green-500',
-                title: 'Success',
-                description: data.value.message
-            });
-            router.go('/seller/product')
-        }
-    } catch (error) {
+        errors.value = {};
+        loading.value = true;
+        const token = useCookie('token');
+        let body = new FormData()
 
+        Object.keys(formData.value).forEach(key => {
+            if (key === 'image') {
+                formData.value.image.forEach((file, index) => {
+                    body.append(`image[${index}]`, file);
+                });
+            }else if(key === 'attributes') {
+                formData.value.attributes.forEach((attribute, index) => {
+                    body.append(attribute.key, attribute.value);
+                });
+            }else {
+                body.append(key, formData.value[key]);
+            }
+        });
+
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/product`,
+            {
+                method: "post",
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token.value}`,
+                },
+                body
+            }
+        );
+        toast({
+            title: "Success",
+            description: response?.message,
+        });
+        router.push('/seller/product')
+        isModalOpen.value = false
+    } catch (error) {
+        const err = error;
+        console.log(error);
+        
+        errors.value = err.response._data.errors
     } finally {
         loading.value = false
     }
-};
-
+}
 
 const getMake = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
     secondSearchBar.make = data.value
-    console.log(secondSearchBar)
-
 }
 getMake()
 const getModel = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${response.value.make}`)
     secondSearchBar.model = data.value
-    console.log(secondSearchBar.model)
 }
 
 
@@ -199,7 +189,6 @@ const getYear = async () => {
 const getCC = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${response.value.make}&models=${response.value.model}&year=${response.value.year}`)
     secondSearchBar.cc = data.value
-    console.log(data.value)
 }
 const getEngyne = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${response.value.make}&models=${response.value.model}&year=${response.value.year}&cc=${response.value.cc}`)
@@ -451,7 +440,7 @@ watch(productOrService, () => {
                 <hr class="my-5 w-full max-w-[600px] border-dashed border-b-2">
                 <div class="flex justify-end">
                     <div class="w-[200px]">
-                        <ButtonPrimary type="button" :disabled="loading" @click="handleSubmit">
+                        <ButtonPrimary type="button" :disabled="loading" @click="submit">
                             <div class="flex items-center justify-center gap-x-2">
                                 <div role="status" v-if="loading">
                                     <svg aria-hidden="true"

@@ -128,7 +128,6 @@ const columns: ColumnDef<IPaymentHistory>[] = [
             title: 'Complete',
             method: (row: IPaymentHistory) => {
               statusChange(row)
-              console.log(row.status);
             },
           }
         ]

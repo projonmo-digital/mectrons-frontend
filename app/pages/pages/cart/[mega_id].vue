@@ -24,7 +24,6 @@ const fetchData = async (mega_id: any, query = {}) => {
             },
         })
         data.value = response.map(i => ({ ...i, method: typeof i.method === 'string' ? { method: 'Cash on delivery', id: 0 } : i.method }))
-        console.log(response);
     } catch (error: any) {
         errorMessage.value = error.response._data.message
     } finally {

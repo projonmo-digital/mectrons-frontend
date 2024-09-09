@@ -21,17 +21,18 @@ import logo from '@/assets/images/logo.svg'
                         Queries</a>
                     <h1 class="mt-5 mb-2">Follow Us</h1>
                     <div class="flex flex-1 gap-4 hover:cursor-pointer mt-4">
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="https://www.facebook.com/profile.php?id=61559661892435&mibextid=JRoKGi">
                             <icon class="w-8 h-8" name="logos:facebook" />
                         </a>
-                        <a target="_blank" href="#">
+                        <a target="_blank" class="relative" href="https://m.facebook.com/groups/1155393332352922/?ref=share&mibextid=NSMWBT">
+                            <icon class="w-4 h-4 absolute bottom-1 right-1" name="logos:facebook" />
+                            <icon class="w-8 h-8 text-primary" name="vaadin:group" />
+                        </a>
+                        <a target="_blank" href="https://x.com/mectrons?t=JUrbwJfQO0B2xnkyBrbVmg&s=09">
                             <icon class="w-8 h-8" name="logos:twitter" />
                         </a>
-                        <a target="_blank" href="#">
+                        <a target="_blank" href="https://www.instagram.com/mectrons1?igsh=MXJ1emF5M3VvNzR2Zg==">
                             <icon class="w-8 h-8" name="skill-icons:instagram" />
-                        </a>
-                        <a target="_blank" href="#">
-                            <icon class="w-8 h-8" name="logos:tiktok-icon" />
                         </a>
                     </div>
                 </div>
@@ -43,6 +44,9 @@ import logo from '@/assets/images/logo.svg'
                         <a href="/pages/contact-us"
                             class="transition-colors duration-300 dark:text-gray-300 hover:underline hover:cursor-pointer hover:text-primary">
                             Contact Us</a>
+                        <a href="/pages/about-us"
+                            class="transition-colors duration-300 dark:text-gray-300 hover:underline hover:cursor-pointer hover:text-primary">
+                            About Us</a>
                         <a href="/pages/privacy-policy"
                             class="transition-colors duration-300 dark:text-gray-300 hover:underline hover:cursor-pointer hover:text-primary">
                             Privacy Policy</a>
