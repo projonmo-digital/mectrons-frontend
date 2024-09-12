@@ -1,25 +1,15 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-import { Modal, initFlowbite } from 'flowbite'
-
+import { ref } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
+import SafetyNote from '~/components/Common/SafetyNote.vue';
 const { toast } = useToast()
 
 useSeoMeta({
-    title: 'Register - My Amazing Site',
-    ogTitle: 'My Amazing Site',
-    description: 'This is my amazing site, let me tell you all about it.',
-    ogDescription: 'This is my amazing site, let me tell you all about it.',
-    ogImage: 'image',
-    twitterCard: 'image',
+    title: 'Register - Mectrons',
 })
 
-// definePageMeta({
-//     middleware: ["guest"]
-// })
 const router = useRouter()
 const auth = useAuthStore()
-const toaster = useToasterStore();
 const form = reactive({
     name: null,
     email: null,
@@ -83,44 +73,40 @@ const toggleSeller = () => {
     isSeller.value = !isSeller.value;
 };
 
-onMounted(() => {
-    initFlowbite();
-})
-
 </script>
 <template>
     <div class="mx-auto w-full max-w-3xl my-4">
-        <div>
-            <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center">Registation</h5>
-            <div class="flex justify-center items-center gap-x-3 text-gray-400 mt-2">
-                <hr class="border-gray-400 w-12">
-                <p class="text-center text-sm">&#10051;</p>
-                <hr class="border-gray-400 w-12">
-            </div>
-        </div>
-        <div class="flex gap-x-3 bg-white rounded shadow-lg border">
-            <div class="mx-auto w-full max-w-sm p-4">
+        <div class="grid lg:grid-cols-2 gap-3">
+            <div class="mx-auto space-y-6 w-full max-w-sm bg-transparent lg:bg-gray-100 border border-transparent lg:border-gray-200 p-5 rounded-lg lg:shadow">
+                <div>
+                    <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center">Registation</h5>
+                    <div class="flex justify-center items-center gap-x-3 text-gray-400 mt-2">
+                        <hr class="border-gray-400 w-12">
+                        <p class="text-center text-sm">&#10051;</p>
+                        <hr class="border-gray-400 w-12">
+                    </div>
+                </div>
                 <div class=" flex w-full justify-end">
                     <Button :class="`rounded-r-none ${buyerColor}`" @click="toggleSeller">Buyer</Button>
                     <Button :class="`rounded-l-none ${sellerColor}`" @click="toggleSeller">Seller</Button>
                 </div>
+                
                 <form class="space-y-6" @submit.prevent="handleSubmit">
-
                     <div>
-                        <FormLabel for="name">Name</FormLabel>
-                        <FormInput type="name" name="name" id="name" placeholder="Your name" v-model="form.name" />
+                        <label for="name">Name</label>
+                        <input class="w-full border p-2" type="name" name="name" id="name" placeholder="Your name" v-model="form.name" />
                         <span v-if="errors.name" class="text-sm text-red-500">{{ errors.name[0] }}</span>
                     </div>
                     <div>
-                        <FormLabel for="email">Email</FormLabel>
-                        <FormInput type="email" name="email" id="email" placeholder="name@gmail.com"
+                        <label for="email">Email</label>
+                        <input class="w-full border p-2" type="email" name="email" id="email" placeholder="name@gmail.com"
                             v-model="form.email" />
                         <span v-if="errors.email" class="text-sm text-red-500">{{ errors.email[0] }}</span>
                     </div>
                     <div>
-                        <FormLabel for="password">Your Password</FormLabel>
+                        <label for="password">Your Password</label>
                         <div class="relative">
-                            <FormInput :type="passHideShow ? 'text' : 'password'" class="pe-7" name="password"
+                            <input class="w-full border p-2" :type="passHideShow ? 'text' : 'password'" name="password"
                                 id="password" placeholder="password" v-model="form.password" />
                             <div v-if="passHideShow" @click="passHideShow = false"
                                 class="absolute inset-y-0 end-2 flex items-center ps-3 cursor-default">
@@ -145,9 +131,9 @@ onMounted(() => {
                         <span v-if="errors.password" class="text-sm text-red-500">{{ errors.password[0] }}</span>
                     </div>
                     <div>
-                        <FormLabel for="password_confirmation">Confirm Password</FormLabel>
+                        <label for="password_confirmation">Confirm Password</label>
                         <div class="relative">
-                            <FormInput :type="passHideShow1 ? 'text' : 'password'" class="pe-7"
+                            <input class="w-full border p-2" :type="passHideShow1 ? 'text' : 'password'"
                                 name="password_confirmation" id="password_confirmation"
                                 placeholder="password_confirmation" v-model="form.password_confirmation" />
                             <div v-if="passHideShow1" @click="passHideShow1 = false"
@@ -174,8 +160,8 @@ onMounted(() => {
                         <span v-if="errors.password_confirmation" class="text-sm text-red-500">{{
                             errors.password_confirmation[0] }}</span>
                         <div class="mt-4" v-if="isSeller">
-                            <FormLabel for="name">National Id</FormLabel>
-                            <FormInput type="name" name="name" id="name" placeholder="NID Number" v-model="form.nid" />
+                            <label for="name">National Id</label>
+                            <input class="w-full border p-2" type="name" name="name" id="name" placeholder="NID Number" v-model="form.nid" />
                             <span v-if="errors.name" class="text-sm text-red-500">{{ errors.name[0] }}</span>
                         </div>
                     </div>
@@ -199,18 +185,16 @@ onMounted(() => {
                     </ButtonPrimary>
                     <div class="text-sm font-medium text-center text-gray-500 dark:text-gray-300">
                         Already have an account? <nuxt-link to="/auth/login"
-                            class="text-blue-700 hover:underline dark:text-blue-500">Login</nuxt-link>
+                            class="text-primary hover:underline">Login</nuxt-link>
                     </div>
 
                     <!-- <SocialLogin/> -->
                 </form>
             </div>
-
-            <div class="mx-auto w-full max-w-sm">
-                <div class="flex flex-col gap-x-5 px-4 py-3 space-y-6">
-                    <!-- <SocialLogin></SocialLogin> -->
-                    <img class="w-60 mx-auto mb-6" src="assets/images/auth/auth.png" alt="Auth Image" />
-                </div>
+            <div class="hidden lg:block">
+                <div class="hidden lg:block">
+                <SafetyNote />
+            </div>
             </div>
         </div>
     </div>

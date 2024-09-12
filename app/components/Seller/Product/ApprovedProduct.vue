@@ -3,8 +3,7 @@ import { ref, onMounted, h } from 'vue'
 import type { ColumnDef } from "@tanstack/vue-table"
 import ProductInfo from "~/components/Admin/Product/ProductInfo.vue"
 
-import { useToast } from '@/components/ui/toast/use-toast'
-const { toast } = useToast()
+const { user } = storeToRefs(useAuthStore())
 
 const preloader = ref(false)
 
@@ -32,9 +31,7 @@ const fetchData = async (params = {}) => {
                 Accept: "application/json",
                 Authorization: `Bearer ${token.value}`,
             },
-        })
-        // console.log(response.data);
-        
+        })        
         if (response && response.data) {
             responseParams.value.page = response.current_page
             data.value = response.data
@@ -138,7 +135,7 @@ onMounted(() => {
 <template>
     <div class="my-5">
       <div class="my-5 grid grid-cols-2 gap-5">
-          <NuxtLink to="/seller/product/add" class="scale-100 hover:scale-105 transform transition duration-300 ease-in-out border rounded-lg cursor-pointer p-5 flex justify-center items-center shadow-lg" >
+          <NuxtLink v-if="user?.approved_at" to="/seller/product/add" class="scale-100 hover:scale-105 transform transition duration-300 ease-in-out border rounded-lg cursor-pointer p-5 flex justify-center items-center shadow-lg" >
             <div class="w-16 h-16 rounded-full flex items-center justify-center bg-primary p-2">
               <Icon class="text-white w-10 h-10" name="fa:plus" />
             </div>

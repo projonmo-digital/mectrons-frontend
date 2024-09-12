@@ -44,9 +44,9 @@ onMounted(() => {
 
 </script>
 <template>
-    <aside class="p-5">
+    <aside class="p-6">
         <div>
-            <h4 class="text-lg font-bold mb-5">Filters</h4>
+            <h4 class="text-2xl font-bold mb-5">Filters</h4>
 
             <!--<h4 class="text-sm font-medium mb-3">Brand</h4>
             <ul class="space-y-2 font-normal pb-3">
@@ -62,7 +62,7 @@ onMounted(() => {
             <ul class="space-y-2 font-normal pb-3">
                 <li v-for="(cat, index) in [...(categories[0]?.children || []),...(categories[1]?.children || []), ...(categories[2]?.children || [])]" :key="`filter-cat-${cat?.id}`">
                     <div class="flex items-center mb-2">
-                        <input type="checkbox" @input="handleList('category', cat.id.toString())" :value="cat.id"
+                        <input class=" accent-primary" type="checkbox" @input="handleList('category', cat.id.toString())" :value="cat.id"
                             :checked="filterData.category.includes(cat.id)">
                         <label for="default-checkbox" class="ms-2 text-xs">{{ cat?.name }}</label>
                     </div>

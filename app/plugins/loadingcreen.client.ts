@@ -67,8 +67,6 @@ export default defineNuxtPlugin((nuxt) => {
 
   nuxt.hook("page:loading:start", () => {
     if (!loading) {
-        console.log('call');
-        
       document.body.appendChild(loadingHtml);
       document.head.append(loadingStyle);
     }

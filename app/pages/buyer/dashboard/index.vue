@@ -3,7 +3,7 @@ import type { IuserDashboardResponse } from '~/types/dashboard';
 import Card1 from '@/components/Admin/Card1.vue'
 
 definePageMeta({
-    middleware: ["auth", "user"]
+    middleware: ["auth", "buyer"]
 })
 
 useHead({

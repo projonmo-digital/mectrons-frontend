@@ -18,12 +18,12 @@ const sidebarList: TSidebar = [
     },
     {
         header: 'Products',
-        icon: "eva:inbox-outline",
+        icon: "fluent-mdl2:production-floor-management",
         url: '/admin/product'
     },
     {
         header: "Categories",
-        icon: "eva:shopping-bag-outline",
+        icon: "carbon:category-new",
         url: '/admin/categories'
     },
     {
@@ -70,6 +70,11 @@ const sidebarList: TSidebar = [
         header: "Withdraw",
         icon: 'eva:people-outline',
         url: '/admin/withdraw'
+    },
+    {
+        header: "Subscriber",
+        icon: 'mdi:subscriber-identification-module',
+        url: '/admin/subscriber'
     },
     {
         header: "Settings",

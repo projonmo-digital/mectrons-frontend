@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import Invoice from '@/components/User/PurchaseHistory/Invoice.vue'
 
 definePageMeta({
-    middleware: ["auth", "user"]
+    middleware: ["auth", "buyer"]
 })
 
 useHead({

@@ -4,6 +4,8 @@ import type { ColumnDef } from "@tanstack/vue-table"
 import ProductInfo from "~/components/Admin/Product/ProductInfo.vue"
 import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
 
+const { user } = storeToRefs(useAuthStore())
+
 const preloader = ref(false)
 const responseParams = ref({
     page: 1,
@@ -105,13 +107,12 @@ const columns: ColumnDef<any>[] = [
         class: "text-right font-medium",
         row: row.original,
         action: [
-            {
-                title: 'Edit',
-                method: (row: any) => {
-                  router.push(`/seller/product/edit/${row.id}`)
-                    // approveProduct(row.id)
-                },
-            }
+            // {
+            //     title: 'Edit',
+            //     method: (row: any) => {
+            //       router.push(`/seller/product/edit/${row.id}`)
+            //     },
+            // }
         ]
       });
     }
@@ -128,7 +129,7 @@ onMounted(() => {
 <template>
     <div class="my-5">
         <div class="my-5 grid grid-cols-2 gap-5">
-          <NuxtLink to="/seller/product/add" class="scale-100 hover:scale-105 transform transition duration-300 ease-in-out border rounded-lg cursor-pointer p-5 flex justify-center items-center shadow-lg" >
+          <NuxtLink v-if="user?.approved_at" to="/seller/product/add" class="scale-100 hover:scale-105 transform transition duration-300 ease-in-out border rounded-lg cursor-pointer p-5 flex justify-center items-center shadow-lg" >
             <div class="w-16 h-16 rounded-full flex items-center justify-center bg-primary p-2">
               <Icon class="text-white w-10 h-10" name="fa:plus" />
             </div>

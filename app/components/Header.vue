@@ -8,9 +8,7 @@ import MobileMenu from '@/components/Common/MobileMenu.vue'
 const { categories, loading, local } = storeToRefs(useAppStore())
 const appStore = useAppStore()
 
-const { products } = storeToRefs(useCartStore())
-
-const productsCount = computed(() => products.value.map(p => p.qty || 1).reduce((r, c) => r += c, 0))
+const { productsCount } = storeToRefs(useCartStore())
 
 import {
     DropdownMenu,
@@ -78,8 +76,6 @@ const openMobileMenu = () => {
     isMenuOpen.value = true
 }
 const closeMobileMenu = (event: any, force: boolean = false) => {
-    console.log(event.target.nodeName);
-    
     if(['FONT', 'A', 'BUTTON'].includes(event.target.nodeName) || force){
         document.querySelector('#__nuxt')?.classList.remove('disable-scroll')
         isMenuOpen.value = false
@@ -142,7 +138,7 @@ const onChange = (value: any) => {
 
                     <div class="flex items-center gap-1 md:gap-6">
                         <div class="hidden md:inline-block">
-                            <DropdownMenu v-if="!auth.authenticated">
+                            <DropdownMenu v-if="!auth.authenticated" >
                                 <DropdownMenuTrigger @click="auth.errors = {}">
                                     <span class="text-sm hover:underline notranslate">
                                         <i class="fa-solid fa-user me-2 text-2xl sm:text-sm"></i><span
@@ -164,11 +160,11 @@ const onChange = (value: any) => {
                                 <DropdownMenuContent class="w-56">
                                     <div class="flex justify-center items-center p-5">
                                         <AvatarRoot
-                                            class="notranslate inline-flex h-[32px] bg-orange-100 border border-primary w-[32px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+                                            class="notranslate inline-flex h-[32px] bg-orange-100 w-[32px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
                                             <AvatarImage class="h-full w-full rounded-[inherit] object-cover"
                                                 :src="auth.user?.profile_picture ? getFileUrl(auth.user?.profile_picture) : ''"
                                                 alt="Colm Tuite" />
-                                            <AvatarFallback class="flex h-full w-full items-center justify-center"
+                                            <AvatarFallback class="flex h-full w-full items-center justify-center p-2 font-bold text-sm text-primary"
                                                 :delay-ms="600">
                                                 AV
                                             </AvatarFallback>
@@ -188,7 +184,6 @@ const onChange = (value: any) => {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
-
                         <button class="text-sm hover:underline hidden md:inline-block notranslate"
                             @click="onChange(local === 'bn' ? 'en' : 'bn')">{{ local === 'bn' ? 'EN' : 'BN' }}</button>
                         <nuxt-link to="/pages/cart"
@@ -218,11 +213,11 @@ const onChange = (value: any) => {
                                     <div v-if="auth.authenticated" class="px-3">
                                         <div class="flex items-center gap-3">
                                             <AvatarRoot
-                                                class="notranslate inline-flex h-[32px] bg-orange-100 border border-primary w-[32px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+                                                class="notranslate inline-flex h-[32px] bg-orange-100 w-[32px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
                                                 <AvatarImage class="h-full w-full rounded-[inherit] object-cover"
                                                     :src="auth.user?.profile_picture ? getFileUrl(auth.user?.profile_picture) : ''"
                                                     alt="Colm Tuite" />
-                                                <AvatarFallback class="flex h-full w-full items-center justify-center"
+                                                <AvatarFallback class="flex h-full w-full items-center justify-center p-2 font-bold text-sm text-primary"
                                                     :delay-ms="600">
                                                     AV
                                                 </AvatarFallback>

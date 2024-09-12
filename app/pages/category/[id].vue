@@ -6,7 +6,7 @@ import Product from '@/components/Common/Pertials/Product.vue'
 import ProductsByCategories from '~/components/Common/ProductsByCategories.vue'
 import type { IpaginatedRespoinse } from '~/types/response'
 import type { IProduct } from '~/types/products'
-import type { IAddvertisementPostion, IAdvertisement } from "~/types/advertisment";
+import type { IAdvertisement } from "~/types/advertisment";
 import ProductGridSkeleton from '@/components/Skeleton/ProductGridSkeleton.vue'
 import { discountCalculation } from '~/helper'
 
@@ -119,6 +119,9 @@ onMounted(() => {
             <ProductsByCategories :categories="categories" :params="{ marker: ['featured'] }" title="Featured products"></ProductsByCategories>
         </div>
     </div>
+    <div class="hidden lg:block mx-auto px-3 my-5 max-w-[800px]">
+        <Filter @search="search" />
+    </div>
     <div v-if="isFilterShow" class="mx-auto px-3 my-5 max-w-[800px]">
         <Filter @search="search" />
     </div>
@@ -138,8 +141,10 @@ onMounted(() => {
         <div class="col-span-12 md:col-span-9 p-3 relative">
             <div class="flex items-center justify-between">
                 <h1 class=" text-2xl font-bold">Others Product</h1>
-                <icon @click="isFilterShow = !isFilterShow" class="md:hidden w-8 h-8 rounded"
-                :class="{ 'text-primary': isFilterShow }" :name=" isFilterShow ? 'material-symbols:close' : 'mi:filter-1'"/>
+                <span class="inline-block md:hidden">
+                    <icon @click="isFilterShow = !isFilterShow" class="w-8 h-8 rounded"
+                    :class="{ 'text-primary': isFilterShow }" :name=" isFilterShow ? 'material-symbols:close' : 'mi:filter-1'"/>
+                </span>
             </div>
             <hr>
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 min-h-[300px]">

@@ -13,7 +13,7 @@ export type IAddvertisementPostion =
 export interface IAdvertisement {
     id: number
     position: IAddvertisementPostion
-    type: "image",
+    type: "image" | "youtube",
     url: string,
     created_at: string,
     updated_at: string

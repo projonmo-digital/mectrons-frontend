@@ -1,12 +1,37 @@
-<script setup>
-import { onMounted } from 'vue'
-import { Modal, initFlowbite } from 'flowbite';
+<script setup lang="ts">
+import { ref } from 'vue'
+const loading = ref<boolean>(true)
 
-onMounted(() => {
-    initFlowbite();
-})
+const submit = async(event: any) => {    
+    const formData = {
+        name: event.target.name.value,
+        phone: event.target.phone.value,
+        email: event.target.email.value,
+        message: event.target.message.value,
+    }
+
+    try {
+        loading.value = true
+        const response = await $fetch<any>(
+            `${useRuntimeConfig().public.baseUrl}/contact`,
+            {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                body: formData,
+            }
+        );
+        alert({ title: response.message })
+    } catch (error) {
+        const err = error as any;
+        if (err.response._data) {
+        }
+    } finally {
+        loading.value = false;
+    }
+}
 
 </script>
+
 <template>
     <div class="p-5 lg:p-8">
         <div class="max-w-screen-2xl block h-full mx-auto">
@@ -61,37 +86,37 @@ onMounted(() => {
                 </aside>
                 <div class="mx-auto w-full col-span-1 md:col-span-5 lg:col-span-6">
                     <div class="bg-white flex justify-center py-3">
-                        <form class="p-4 md:p-5 shadow-2xl rounded">
+                        <form @submit.prevent="submit" class="p-4 md:p-5 shadow-2xl rounded">
                             <div class="grid gap-4 mb-4 grid-cols-2">
                                 <div class="col-span-2 sm:col-span-1">
                                     <label for="name"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                                     <input type="text" name="name" placeholder="Name" autocomplete="off"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        required="">
+                                        required>
                                 </div>
                                 <div class="col-span-2 sm:col-span-1">
                                     <label for="phone"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
                                     <input type="tel" name="phone" placeholder="Phone number" autocomplete="off"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        required="">
+                                        required>
                                 </div>
                                 <div class="col-span-2">
                                     <label for="email"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">E-mail</label>
                                     <input type="email" name="email" placeholder="example@demo.com" autocomplete="off"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        required="">
+                                        required>
                                 </div>
                                 <div class="col-span-2">
                                     <label for="message"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Message</label>
-                                    <textarea rows="4" placeholder="Your message" autocomplete="off"
+                                    <textarea name="message" rows="4" placeholder="Your message" autocomplete="off" required
                                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                                 </div>
                             </div>
-                            <button type="button"
+                            <button type="submit"
                                 class="text-white flex justify-center items-center bg-primary hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Send
                                 Message</button>
                         </form>
@@ -102,7 +127,7 @@ onMounted(() => {
         <div class="google-maps mt-8 rounded-xl overflow-hidden">
             <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7303.803081458796!2d90.40272168770831!3d23.75089023487959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b888ad339cb5%3A0x20c70986185ad2ba!2sMogbazar%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1711012197350!5m2!1sen!2sbd"
-                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                width="100%" height="450" style="border:0;" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>

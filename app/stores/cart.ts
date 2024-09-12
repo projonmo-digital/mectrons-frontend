@@ -54,8 +54,8 @@ export const useCartStore = defineStore("cart", {
           }
           return resolve(SAVE_CARTS(this.products).then(() => {
             alert({
-              title: 'Added',
-              text: 'Product has been added to cart.'
+              title: 'Product has been added',
+              // text: 'Product has been added to cart.'
             })
           }));
         }, 500)
@@ -63,8 +63,12 @@ export const useCartStore = defineStore("cart", {
     },
     removeFromCart(product: ICartProduct) {
       confirmation({
-        icon: "question",
-        text: 'Would you like to remove this item from your cart?'
+        // icon: "question",
+        text: 'Would you like to remove this item from your cart?',
+        cancelButtonText: 'Cancel',
+        cancelButtonColor: 'green',
+        confirmButtonText: 'Remove',
+        confirmButtonColor: 'red'
       }).then(() => {
         this.products = this.products.filter((p) => p.id !== product.id);
         setTimeout(() => {
@@ -93,4 +97,7 @@ export const useCartStore = defineStore("cart", {
       });
     },
   },
+  getters: {
+    productsCount: (state): number => state.products.map(p => p.qty || 1).reduce((r, c) => r += c, 0)
+  }
 });

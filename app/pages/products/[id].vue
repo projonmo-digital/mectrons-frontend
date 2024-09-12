@@ -10,6 +10,7 @@ import SingleProductSkeleton from '@/components/Skeleton/SingleProductSkeleton.v
 
 const cartStore = useCartStore();
 const route = useRoute();
+const router = useRouter();
 
 const { categories } = storeToRefs(useAppStore())
 const { user } = storeToRefs(useAuthStore())
@@ -19,6 +20,7 @@ const suggestion = ref<IProduct[]>([])
 const quantity = ref(1)
 const preloader = ref(false);
 const loading = ref(false);
+const buyItNowLoader = ref(false);
 // methods
 const decrement = () => {
     if (quantity.value >= 2) {
@@ -32,10 +34,15 @@ const increment = () => {
     }
 }
 
-const addToCart = (product: IProduct, qty: number) => {
-    loading.value = true
+const addToCart = (product: IProduct, qty: number, isGoCart = false) => {
+    if (isGoCart) buyItNowLoader.value = true
+    else loading.value = true
     cartStore.addToCart(product, qty).then(() => {
         loading.value = false
+        buyItNowLoader.value = false
+        if (isGoCart) {
+            router.push('/pages/cart')
+        }
     })
 }
 
@@ -194,7 +201,8 @@ const features = [
                         <div class="flex flex-wrap gap-3">
                             <div class="shadow-lg w-32 h-32 overflow-hidden" v-for="(image, index) in product?.picture"
                                 :key="index">
-                                <img class="w-full h-full cursor-pointer object-cover rounded-xl" @click="showImage = image"
+                                <img class="w-full h-full cursor-pointer object-cover rounded-xl"
+                                    @click="showImage = image"
                                     :src="useRuntimeConfig().public.imageUrl + '/' + image?.replaceAll('public', 'storage')"
                                     alt="Ads" />
                             </div>
@@ -211,10 +219,11 @@ const features = [
                             <div class="flex flex-col gap-4">
                                 <div class="flex items-center flex-wrap gap-x-2">
                                     <span class="text-2xl font-bold  text-primary">{{ product?.currency?.symbol }} {{
-                                    product?.discount ? (product.price - (product?.price / 100 * product.discount)) :
-                                        product?.price }}</span>
+                                        product?.discount ? (product.price - (product?.price / 100 * product.discount))
+                                            :
+                                            product?.price }}</span>
                                     <span v-if="product?.discount" class="text-lg line-through text-gray-400">{{
-                                    product?.currency?.symbol }} {{ product?.price }}</span>
+                                        product?.currency?.symbol }} {{ product?.price }}</span>
                                 </div>
                                 <div class="flex gap-3"
                                     v-for="(ot, index) in product?.others.filter((o: any) => ['brand', 'model'].includes(o.name))"
@@ -226,8 +235,9 @@ const features = [
                                 <div class="flex gap-3" v-if="product">
                                     <span class="text-gray-500">Availability</span>
                                     <span class="text-gray-500">:</span>
-                                    <span class="text-green-500" :class="{ 'text-red-500': product?.stock_amount <= 0 }">{{
-                                    !(product?.stock_amount <= 0)  ? 'In Stock' : 'Out of Stock' }}</span>
+                                    <span class="text-green-500"
+                                        :class="{ 'text-red-500': product?.stock_amount <= 0 }">{{
+                                            !(product?.stock_amount <= 0) ? 'In Stock' : 'Out of Stock' }}</span>
                                 </div>
                                 <div class="flex items-center gap-3 text-gray-500">
                                     <span>Qty</span>
@@ -258,9 +268,10 @@ const features = [
                             </div>
                         </div>
                         <div v-if="product" class="flex items-center gap-3">
-                            <button class="flex-1 bg-primary hover:bg-orange-500 rounded-full text-white p-2 flex items-center justify-center"
-                                @click="addToCart(product, quantity)">
-                                <div role="status" v-if="!loading">
+                            <button
+                                class="flex-1 bg-primary hover:bg-orange-500 rounded-full text-white p-2 flex items-center justify-center"
+                                @click="addToCart(product, quantity, true)">
+                                <div role="status" v-if="!buyItNowLoader">
                                     <icon class="w-6 h-6 mr-2 mb-1" name="bi:bag-check-fill" />
                                 </div>
                                 <div v-else role="status">
@@ -304,10 +315,12 @@ const features = [
                             <div class="flex justify-between">
                                 <div class="flex items-center gap-3">
                                     <div class="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
-                                        <img v-if="product?.user?.profile_picture" class="w-full h-full" :src="product?.user?.profile_picture" alt="">
-                                        <img class="w-full h-full object-cover" v-else src="assets/images/dummy-image.jpg" alt="avatar" />
+                                        <img v-if="product?.user?.profile_picture" class="w-full h-full"
+                                            :src="product?.user?.profile_picture" alt="">
+                                        <img class="w-full h-full object-cover" v-else
+                                            src="assets/images/dummy-image.jpg" alt="avatar" />
                                     </div>
-                                    <h3>{{ product?.user?.name }}</h3>
+                                    <NuxtLink class="font-bold hover:underline capitalize" :to="`/seller-point/${product?.user.id}`">{{ product?.user.name }}</NuxtLink>
                                 </div>
                                 <button v-if="user?.type === 'buyer'" @click="messagePanelOpen"
                                     class="flex items-center gap-2 hover:bg-primary/10 rounded-xl p-3">
@@ -331,15 +344,13 @@ const features = [
                                 fill="#F8F8F8" />
                         </svg>
                     </div>
-                    <p class="text-sm">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto
-                        laborum,
-                        tempora, in cum tenetur
-                        enim voluptatibus beatae nobis saepe assumenda at eius voluptatum soluta ea incidunt
-                        quidem numquam
-                        a quos accusa</p>
-                    <a href="#" class="font-bold text-sm hover:text-primary">Read more <Icon name="mdi:chevron-right"
-                            class=" text-xl"></Icon>
-                    </a>
+                    <p class="text-sm">Regular vehicle maintenance, including checks on oil, brake fluids, tires, and
+                        lights, is crucial for safety and performance. Proper tire care and timely brake inspections
+                        prevent accidents. Following traffic rules, practicing defensive driving, and avoiding
+                        distractions and fatigue are essential for safe driving</p>
+                    <NuxtLink to="/pages/safety-note" class="font-bold text-sm hover:text-primary">Read more <Icon
+                            name="mdi:chevron-right" class=" text-xl"></Icon>
+                    </NuxtLink>
                 </div>
                 <div class="shadow-lg bg-white p-3 rounded-lg border">
                     <div v-for=" i in features " class=" flex gap-x-2">

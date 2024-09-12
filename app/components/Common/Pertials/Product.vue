@@ -12,6 +12,8 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const { user } = storeToRefs(useAuthStore())
+
 // Bookmark
 const loadingBookmark = ref(false);
 const bookmarkAdd = async (product: IProduct) => {
@@ -74,7 +76,7 @@ const addToCart = (product: IProduct) => {
                 alt="Product" />
             <img class="h-[200px] w-full object-cover" v-else src="assets/images/dummy-image.jpg" alt="Ads" />
         </nuxt-link>
-            <span
+            <span v-if="user?.type === 'buyer'"
                 @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product)"
                 class="w-8 h-8 absolute top-3 left-3 text-gray-300 rounded-full flex justify-center items-center cursor-pointer">
                 <Icon v-if="loadingBookmark" name="eos-icons:loading" class="w-8 h-8">

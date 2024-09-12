@@ -7,7 +7,7 @@ import type { IUserResponse } from '~/types/auth';
 const authStore = useAuthStore()
 
 definePageMeta({
-    middleware: ["auth", "user"]
+    middleware: ["auth", "buyer"]
 })
 
 useHead({

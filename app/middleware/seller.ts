@@ -3,7 +3,7 @@ import { useToast } from '@/components/ui/toast/use-toast'
 export default defineNuxtRouteMiddleware((to, from) => {
   const { toast } = useToast()
   const auth = useAuthStore();
-  if (auth.user.role != 'seller') {
+  if (auth.user?.type !== 'seller') {
     toast({
       class: 'bg-red-500',
       title: 'Unauthonticated',

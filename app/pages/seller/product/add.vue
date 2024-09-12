@@ -43,6 +43,7 @@ const categoryIdProxy = reactive({
 const loading = ref(false)
 const formData = ref({
     image: [],
+    video: [],
     attributes: []
 })
 const isBn = ref(false)
@@ -79,33 +80,6 @@ const response = ref({
     image: []
 });
 
-const proxyResponse = ref({
-    title: '',
-    description: "",
-    // tags: '',
-    // location: [''],
-    price: 1000,
-    currency_id: 12,
-    stock_amount: '5',
-    model: '',
-    make: '',
-    year: '',
-    cc: '',
-    engyne: '',
-    parts: '',
-
-    category_id: '',
-    // condition_id: "dfsadf",
-    // negotiable: '1',
-    // age: '500',
-    // origin: 'dsfsa',
-    // typeId: 'fasds',
-    bd: 'afs',
-    location: ['sdklf'],
-    type_id: 1,
-    image: []
-});
-
 const chooseImageHandler = () => {
     let input = document.createElement('input')
     input.type = 'file'
@@ -117,76 +91,84 @@ const chooseImageHandler = () => {
     }
     input.click()
 }
+const chooseVideoHandler = () => {
+    let input = document.createElement('input')
+    input.type = 'file'
+    input.multiple = true
+    input.accept = 'video/*'
+    input.onchange = (event) => {
+        let files = event.target.files
+        formData.value.video.push(...files)
+    }
+    input.click()
+}
 
 const removeFile = (index) => {
     formData.value.image.splice(index, 1)
 }
+const removeVideoFile = (index) => {
+    formData.value.video.splice(index, 1)
+}
 
-const handleSubmit = async (e) => {
-    errors.value = {}
-    const token = useCookie('token');
-    const body = new FormData();
-    loading.value = true
-
-    Object.keys(formData.value).forEach(key => {
-        if (key === 'image') {
-            formData.value.image.forEach((file, index) => {
-                body.append(`image[${index}]`, file);
-            });
-        } else if (key === 'attributes') {
-            formData.value.attributes.forEach((attribute, index) => {
-                body.append(attribute.key, attribute.value);
-            });
-        } else {
-            body.append(key, formData.value[key]);
-        }
-    });
-
+const submit = async () => {
     try {
-        const { data, pending, error } = await useFetch(`${useRuntimeConfig().public.baseUrl}/product`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${token.value}`,
-            },
-            body
-        });
-        errors.value = error.value.data.errors
-        if (error) {
-            errors.value = error.value.data.errors
-            toast({
-                class: 'bg-red-500',
-                title: 'Error',
-                description: error.value.data.message
-            });
-        }
-        if (data.value) {
-            toast({
-                class: 'bg-green-500',
-                title: 'Success',
-                description: data.value.message
-            });
-            router.go('/seller/product')
-        }
-    } catch (error) {
+        errors.value = {};
+        loading.value = true;
+        const token = useCookie('token');
+        let body = new FormData()
 
+        Object.keys(formData.value).forEach(key => {
+            if (key === 'image') {
+                formData.value.image.forEach((file, index) => {
+                    body.append(`image[${index}]`, file);
+                });
+            }else if (key === 'video') {
+                formData.value.video.forEach((file, index) => {
+                    body.append(`video[${index}]`, file);
+                });
+            }else if(key === 'attributes') {
+                formData.value.attributes.forEach((attribute, index) => {
+                    body.append(attribute.key, attribute.value);
+                });
+            }else {
+                body.append(key, formData.value[key]);
+            }
+        });
+
+        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/product`,
+            {
+                method: "post",
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token.value}`,
+                },
+                body
+            }
+        );
+        toast({
+            title: "Success",
+            description: response?.message,
+        });
+        router.push('/seller/product')
+        isModalOpen.value = false
+    } catch (error) {
+        const err = error;
+        console.log(error);
+        
+        errors.value = err.response._data.errors
     } finally {
         loading.value = false
     }
-};
-
+}
 
 const getMake = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data`)
     secondSearchBar.make = data.value
-    console.log(secondSearchBar)
-
 }
 getMake()
 const getModel = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${response.value.make}`)
     secondSearchBar.model = data.value
-    console.log(secondSearchBar.model)
 }
 
 
@@ -199,7 +181,6 @@ const getYear = async () => {
 const getCC = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${response.value.make}&models=${response.value.model}&year=${response.value.year}`)
     secondSearchBar.cc = data.value
-    console.log(data.value)
 }
 const getEngyne = async () => {
     const { data, pending } = await useFetch(`${useRuntimeConfig().public.baseUrl}/car-data?make=${response.value.make}&models=${response.value.model}&year=${response.value.year}&cc=${response.value.cc}`)
@@ -327,6 +308,7 @@ watch(productOrService, () => {
                     <h1 class="text-primary text-xl font-bold">File & Media</h1>
                 </div>
                 <div class="flex flex-col gap-3">
+                    <div>Images</div>
                     <div class="border rounded-lg flex flex-wrap gap-3 p-5 items-center min-h-[132px]">
                         <template class="w-full h-full" v-for="(file, index) in formData.image" :key="index">
                             <div class="w-20 h-20 relative border">
@@ -344,26 +326,25 @@ watch(productOrService, () => {
                     <span v-if="Object.keys(errors).includes('image')" class="text-sm text-red-500">{{ errors.image[0]
                         }}</span>
                 </div>
-                <!-- <div class="flex gap-8">
-                    <div class="w-full max-w-sm flex text-nowrap items-center gap-2">
-                        <Label for="videoProvider">Video Provider</Label>
-                        <Select v-model="response.extra_field_1">
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select a provider" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Providers</SelectLabel>
-                                    <SelectItem value="youtube">YouTube</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                <div class="flex flex-col gap-3">
+                    <div>Videos</div>
+                    <div class="border rounded-lg flex flex-wrap gap-3 p-5 items-center min-h-[132px]">
+                        <template class="w-full h-full" v-for="(file, index) in formData.video" :key="index">
+                            <div class="w-20 h-20 relative border">
+                                <video :src="getUrl(file)" class="min-w-full min-h-full object-cover"></video>
+                                <button @click="removeVideoFile(index)"
+                                    class="w-4 h-4 absolute flex items-center justify-center -top-2 -right-2 bg-red-500 rounded-full p-[2px] text-white"
+                                    v-if="typeof file !== 'string'">
+                                    <Icon name="material-symbols:close" />
+                                </button>
+                            </div>
+                        </template>
+                        <Icon name="fluent:add-circle-16-filled" @click="chooseVideoHandler"
+                            class="text-6xl text-gray-700 cursor-pointer hover:text-gray-900"></Icon>
                     </div>
-                    <div class="flex text-nowrap w-full max-w-sm items-center gap-1.5">
-                        <Label for="videoLinks">Video Links</Label>
-                        <Input id="videoLinks" type="text" v-model="response.extra_field_2" placeholder="Video Links" />
-                    </div>
-                </div> -->
+                    <span v-if="Object.keys(errors).includes('image')" class="text-sm text-red-500">{{ errors.image[0]
+                        }}</span>
+                </div>
             </div>
 
             <div v-if="isDisabled" class="max-w-[600px] w-full">
@@ -460,7 +441,7 @@ watch(productOrService, () => {
                 <hr class="my-5 w-full max-w-[600px] border-dashed border-b-2">
                 <div class="flex justify-end">
                     <div class="w-[200px]">
-                        <ButtonPrimary type="button" :disabled="loading" @click="handleSubmit">
+                        <ButtonPrimary type="button" :disabled="loading" @click="submit">
                             <div class="flex items-center justify-center gap-x-2">
                                 <div role="status" v-if="loading">
                                     <svg aria-hidden="true"

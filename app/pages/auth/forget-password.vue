@@ -1,26 +1,12 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-import { Modal, initFlowbite } from 'flowbite';
-
-onMounted(() => {
-    initFlowbite();
-})
-
+import { ref } from 'vue'
+import SafetyNote from '~/components/Common/SafetyNote.vue';
 
 useSeoMeta({
-  title: 'Forget Password - My Amazing Site',
-  ogTitle: 'My Amazing Site',
-  description: 'This is my amazing site, let me tell you all about it.',
-  ogDescription: 'This is my amazing site, let me tell you all about it.',
-  ogImage: 'image',
-  twitterCard: 'image',
+  title: 'Forget Password - Mectrons',
 })
 
-const toaster = useToasterStore();
 const auth = useAuthStore();
-definePageMeta({
-  middleware: ["guest"]
-})
 
 const form = reactive({
     email: null,
@@ -47,8 +33,8 @@ const handleSubmit = async() => {
 
 <template>
     <div class="mx-auto w-full max-w-3xl my-4">
-        <div class="flex gap-x-3 bg-white rounded shadow">
-            <div class="mx-auto w-full max-w-sm bg-gray-100 border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div class="grid lg:grid-cols-2 gap-3">
+            <div class="bg-transparent w-full lg:bg-gray-100 border border-transparent lg:border-gray-200 p-5 rounded-lg lg:shadow">
                 <form class="space-y-6" @submit.prevent="handleSubmit">
                     <div>
                         <h5 class="text-xl font-medium text-gray-900 dark:text-white text-center">Forget Password</h5>
@@ -65,8 +51,8 @@ const handleSubmit = async() => {
                         <span class="font-medium">{{ success_msg }}</span>
                     </div>
                     <div>
-                        <FormLabel for="email">Email</FormLabel>
-                        <FormInput type="email" name="email" id="email" placeholder="name@gmail.com" v-model="form.email"/>
+                        <label for="email">Email</label>
+                        <input class="border p-2 w-full" type="email" name="email" id="email" placeholder="name@gmail.com" v-model="form.email"/>
                         <span v-if="errors.email" class="text-sm text-red-500">{{ errors.email[0] }}</span>
                     </div>
 
@@ -84,21 +70,8 @@ const handleSubmit = async() => {
                     </ButtonPrimary>
                 </form>
             </div>
-
-            <div class="mx-auto w-full max-w-sm ">
-                <div class="flex flex-col gap-x-5 px-4 py-3">
-                    <img class="w-60 mx-auto mb-6" src="assets/images/auth/auth.png" alt="Auth Image"/>
-                    <div class="shadow-md p-4 rounded-lg bg-gray-100">
-                        <h4 class="text-md font-semibold mb-2">Stay Safe</h4>
-                        <hr class="h-px my-3 bg-gray-300 border-0 dark:bg-gray-700">
-                        <p class="mb-2 text-sm leading-6 text-gray-500">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
-                        <p class="mb-2 text-sm leading-6 text-gray-500">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-                        </p>
-                    </div>
-                </div>
+            <div class="hidden lg:block">
+                <SafetyNote />
             </div>
         </div>
     </div>

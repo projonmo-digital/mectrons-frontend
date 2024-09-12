@@ -64,7 +64,7 @@ onMounted(() => {
     <div class="w-full p-8 bg-[#D9D9D9]/40 flex flex-col">
         <div class="flex justify-center w-full">
             <div class="w-full max-w-[800px] flex items-center gap-3">
-                <div class="flex-1 flex items-end flex-col gap-4">
+                <div class="flex-1 flex items-end flex-col gap-1">
                     <hr class="w-[70%] border-2 border-gray-300">
                     <hr class="w-full translate-x-2 border-2 border-gray-300">
                     <hr class="w-[70%] border-2 border-gray-300">
@@ -84,7 +84,7 @@ onMounted(() => {
                         fill="black" />
                     </svg>
                 </div>
-                <div class="flex-1 flex items-start flex-col gap-4">
+                <div class="flex-1 flex items-start flex-col gap-1">
                     <hr class="w-[70%] border-2 border-gray-300">
                     <hr class="w-full border-2 -translate-x-2 border-gray-300">
                     <hr class="w-[70%] border-2 border-gray-300">

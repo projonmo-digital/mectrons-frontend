@@ -33,7 +33,6 @@ const fetchData = async (params = {}) => {
         })        
         if (response && response.data) {
             responseParams.value.page = response.data.current_page
-            console.log(response.data.data);
             data.value = response.data.data
             moreData.value = response.data.last_page === response.data.current_page
             return response.data.data

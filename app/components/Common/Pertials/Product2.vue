@@ -8,6 +8,7 @@ interface Props {
     product: IProduct
 }
 
+const { user } = storeToRefs(useAuthStore())
 const props = defineProps<Props>()
 const loading = ref(false);
 
@@ -74,7 +75,7 @@ const addToCart = (product: IProduct) => {
                 <img class="object-cover rounded-t-lg w-28 h-36 md:h-36 md:w-44 md:rounded-none md:rounded-s-lg" v-else
                     src="assets/images/dummy-image.jpg" alt="Ads" />
             </nuxt-link>
-            <span @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product)"
+            <span v-if="user?.type === 'buyer'" @click="!!product?.is_bookmarked ? bookmarkRemove(product) : bookmarkAdd(product)"
                 class="w-8 h-8 absolute top-3 left-3 text-gray-300 rounded-full flex justify-center items-center cursor-pointer">
                 <Icon v-if="loadingBookmark" name="eos-icons:loading" class="w-8 h-8">
                 </Icon>

@@ -18,5 +18,6 @@ useHead({
     <HomeBestSale></HomeBestSale>
     <HomeDealsofMonth></HomeDealsofMonth>
     <ProductsByCategories :categories="(categories[1]?.children || [])" :params="{ marker: ['electric'] }" title="Electronics Products"></ProductsByCategories>
+    <HomePopulerAdd></HomePopulerAdd>
     <HomeBrands></HomeBrands>
 </template>

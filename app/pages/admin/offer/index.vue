@@ -31,7 +31,6 @@ const fetchData = async (params = {}) => {
         Authorization: `Bearer ${token.value}`,
       },
     })
-    console.log(response)
     data.value = response
   } catch (error) {
     console.error(error)

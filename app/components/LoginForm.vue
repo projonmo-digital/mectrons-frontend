@@ -1,6 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-import { Modal, initFlowbite } from 'flowbite';
+import { ref } from 'vue'
 const props = defineProps(['toggleBtn']);
 const emit = defineEmits(['loginToggleBtn']);
 
@@ -23,45 +22,28 @@ const toggleBtnFun = () => {
     emit('loginToggleBtn', props.toggleBtn);
 }
 
-onMounted(() => {
-    initFlowbite();
-})
-
 </script>
 
 <template>
-    <div
-        class="mx-auto w-full bg-gray-100 border border-gray-200 rounded-lg shadow px-4 py-6 dark:bg-gray-800 dark:border-gray-700">
+    <div class="p-5">
         <form class="space-y-6" @submit.prevent="handleSubmit">
-            <div>
-                <FormLabel for="email">Email</FormLabel>
-                <FormInput type="email" name="email" id="email" placeholder="name@gmail.com" v-model="form.email" />
-                <span v-if="Object.keys(auth.errors).includes('email')" class="text-sm text-red-500">{{ auth.errors.email[0] }}</span>
+            <div class="flex flex-col">
+                <label for="email">Email</label>
+                <input tabindex="0" class="border p-2" type="email" name="email" id="email" placeholder="name@gmail.com"
+                    v-model="form.email" />
+                <span v-if="Object.keys(auth.errors).includes('email')" class="text-sm text-red-500">{{
+                    auth.errors.email[0] }}</span>
             </div>
             <div>
-                <FormLabel for="password">Password</FormLabel>
+                <label for="password">Password</label>
                 <div class="relative">
-                    <FormInput :type="passHideShow ? 'text' : 'password'" class="pe-7" name="password" id="password"
-                        placeholder="password" v-model="form.password" />
-                    <div v-if="passHideShow" @click="passHideShow = false"
-                        class="absolute inset-y-0 end-2 flex items-center ps-3 cursor-default">
-                        <svg class="w-5 h-5 text-gray-500 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 14c-.5-.6-.9-1.3-1-2 0-1 4-6 9-6m7.6 3.8A5 5 0 0 1 21 12c0 1-3 6-9 6h-1m-6 1L19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        </svg>
-                    </div>
-                    <div v-else @click="passHideShow = true"
-                        class="absolute inset-y-0 end-2 flex items-center ps-3 cursor-default">
-                        <svg class="w-5 h-5 text-gray-500 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-width="2"
-                                d="M21 12c0 1.2-4 6-9 6s-9-4.8-9-6c0-1.2 4-6 9-6s9 4.8 9 6Z" />
-                            <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        </svg>
-                    </div>
+                    <input tabindex="0" :type="passHideShow ? 'text' : 'password'" class="pe-7 border p-2" name="password"
+                        id="password" placeholder="password" v-model="form.password" />
+                    <icon class="w-6 h-6 absolute top-2 right-2 text-gray-500 cursor-default"
+                        @click="passHideShow = !passHideShow" :name="passHideShow ? 'mdi:eye' : 'mdi:eye-off'" />
                 </div>
-                <span v-if="Object.keys(auth.errors).includes('password')" class="text-sm text-red-500">{{ auth.errors.password[0] }}</span>
+                <span v-if="Object.keys(auth.errors).includes('password')" class="text-sm text-red-500">{{
+                    auth.errors.password[0] }}</span>
             </div>
             <div class="flex items-start">
                 <div class="flex items-start">
@@ -69,7 +51,7 @@ onMounted(() => {
                         <input id="remember" type="checkbox" value=""
                             class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
                     </div>
-                    <FormLabel for="remember" class="ml-2">Remember me</FormLabel>
+                    <label for="remember" class="ml-2">Remember me</label>
                 </div>
                 <nuxt-link to="/auth/forget-password" @click="toggleBtnFun"
                     class="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500">Lost Password?</nuxt-link>

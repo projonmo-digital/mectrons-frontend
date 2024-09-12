@@ -28,7 +28,7 @@ const onSlideChange = (e) => {
                 </nav>
             </div>
         </aside>
-        <swiper class="flex-1 bg-blue-300" :modules="[Autoplay]" :autoplay="{ delay: 5000, disableOnInteraction: false, }"
+        <swiper class="flex-1 bg-blue-300 min-h-[300px]" :modules="[Autoplay]" :autoplay="{ delay: 5000, disableOnInteraction: false, }"
             :slides-per-view="1" :space-between="0" @swiper="onSwiper" @slideChange="onSlideChange">
             <swiper-slide><img class="min-w-full min-h-full object-cover" src="assets/images/slide.png" alt=""></swiper-slide>
             <swiper-slide><img class="min-w-full min-h-full object-cover" src="assets/images/slide.png" alt=""></swiper-slide>
