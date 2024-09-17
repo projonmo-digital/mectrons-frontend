@@ -60,7 +60,7 @@ const columns: ColumnDef<any>[] = [
     header: () => h("div", { class: "text-start" }, "Taken By"),
     cell: ({ row }) => {
       return h('span', {
-        innerHTML: row.original.taken_at ? row.original.taken_at.name : 'Not Yet'
+        innerHTML: row.original.user ? row.original.user.name : 'Not Yet'
       })
     },
   },

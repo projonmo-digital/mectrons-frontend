@@ -21,6 +21,7 @@ const quantity = ref(1)
 const preloader = ref(false);
 const loading = ref(false);
 const buyItNowLoader = ref(false);
+
 // methods
 const decrement = () => {
     if (quantity.value >= 2) {
@@ -187,16 +188,23 @@ const features = [
                 <div class="grid grid-cols-1 lg:grid-cols-7 gap-5">
                     <div class="col-span-1 lg:col-span-4 flex flex-col gap-3">
                         <div class="h-96 rounded-lg shadow-lg overflow-hidden">
-                            <img class="w-full h-full rounded-lg object-cover transition duration-150 ease-out cursor-zoom-in"
-                                @mouseenter="imageMouseEnter" @mouseleave="imageMouseLeave" @mousemove="imageMouseMove"
-                                v-if="productview?.picture"
-                                :src="useRuntimeConfig().public.imageUrl + '/' + showImage?.replaceAll('public', 'storage')"
-                                alt="Product"
-                                :style="`transform: scale(${transformScale}); transform-origin: ${xBy} ${yBy};`" />
-                            <img class="w-full h-[405px] rounded-lg object-contain transition duration-150 ease-out cursor-zoom-in"
-                                @mouseenter="imageMouseEnter" @mouseleave="imageMouseLeave" @mousemove="imageMouseMove"
-                                v-else src="assets/images/dummy-image.jpg" alt="Product"
-                                :style="`transform: scale(${transformScale}); transform-origin: ${xBy} ${yBy};`" />
+                            <template v-if="!['mp4'].includes(showImage?.split('.').at(-1))">
+                                <img class="w-full h-full rounded-lg object-cover transition duration-150 ease-out cursor-zoom-in"
+                                    @mouseenter="imageMouseEnter" @mouseleave="imageMouseLeave" @mousemove="imageMouseMove"
+                                    v-if="productview?.picture"
+                                    :src="useRuntimeConfig().public.imageUrl + '/' + showImage?.replaceAll('public', 'storage')"
+                                    alt="Product"
+                                    :style="`transform: scale(${transformScale}); transform-origin: ${xBy} ${yBy};`" />
+                                <img class="w-full h-[405px] rounded-lg object-contain transition duration-150 ease-out cursor-zoom-in"
+                                    @mouseenter="imageMouseEnter" @mouseleave="imageMouseLeave" @mousemove="imageMouseMove"
+                                    v-else src="assets/images/dummy-image.jpg" alt="Product"
+                                    :style="`transform: scale(${transformScale}); transform-origin: ${xBy} ${yBy};`" />
+                            </template>
+                            <template v-else>
+                                <div class="bg-black h-full flex items-center">
+                                    <video class="w-full" controls autoplay :src="useRuntimeConfig().public.imageUrl + '/' + showImage?.replaceAll('public', 'storage')"></video>
+                                </div>
+                            </template>
                         </div>
                         <div class="flex flex-wrap gap-3">
                             <div class="shadow-lg w-32 h-32 overflow-hidden" v-for="(image, index) in product?.picture"
@@ -204,6 +212,16 @@ const features = [
                                 <img class="w-full h-full cursor-pointer object-cover rounded-xl"
                                     @click="showImage = image"
                                     :src="useRuntimeConfig().public.imageUrl + '/' + image?.replaceAll('public', 'storage')"
+                                    alt="Ads" />
+                            </div>
+                            <div class="shadow-lg w-32 h-32 overflow-hidden relative" v-for="(video, index) in product?.video"
+                                :key="index">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <Icon class="w-12 h-12 text-primary" name="octicon:video-16" />
+                                </div>
+                                <video class="w-full h-full cursor-pointer object-cover rounded-xl"
+                                    @click="showImage = video"
+                                    :src="useRuntimeConfig().public.imageUrl + '/' + video?.replaceAll('public', 'storage')"
                                     alt="Ads" />
                             </div>
                         </div>

@@ -76,19 +76,10 @@ const downloadSubscribeList = async (params = {}) => {
   const token = useCookie('token')
   try {
     let url = `${useRuntimeConfig().public.baseUrl}/subscribe/all?${new URLSearchParams(params).toString()}`;
-    const response = await $fetch<any>(url, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token.value}`,
-      },
-    })
-    console.log(response);
-    if (response) {
-    }
+    window.open(url)
   } catch (error) {
     return []
-  } finally {}
+  } finally { }
 }
 
 onMounted(() => {

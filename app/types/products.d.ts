@@ -50,6 +50,7 @@ export interface IProduct {
   status: "pending" | "ok";
   approved_at: string;
   picture: string[];
+  video: string[];
   marker: IMarker[];
   others?: any;
   discount?: number

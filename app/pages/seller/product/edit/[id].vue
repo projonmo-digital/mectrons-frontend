@@ -1,8 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { getUrl } from '~/helper'
 import { RadioTree } from '@shishir0019/radio-tree'
+import type { IProduct } from '@/types/products';
+import type { IpaginatedRespoinse } from '@/types/response';
 import '@shishir0019/radio-tree/style.css'
 const { toast } = useToast()
 
@@ -11,13 +13,14 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Add Product - Mectrons Seller',
+    title: 'Update Product - Mectrons Seller',
     meta: [
         { name: 'description', content: 'Mectrons' }
     ]
 })
 
 const router = useRouter()
+const route = useRoute()
 const secondSearchBar = reactive({
     model: '',
     make: '',
@@ -27,26 +30,16 @@ const secondSearchBar = reactive({
     parts: ''
 })
 
-const categoryId = reactive({
-    grandparentCategoryId: '',
-    parentCategoryId: '',
-    childrenCategoryId: ''
-})
-
-const categoryIdProxy = reactive({
-    grandparentCategoryId: '',
-    parentCategoryId: '',
-    childrenCategoryId: ''
-
-})
-
 const loading = ref(false)
-const formData = ref({
+const formData = ref<any>({
     image: [],
+    video: [],
+    removed: [],
+    removedAttr: [],
     attributes: []
 })
 const isBn = ref(false)
-const errors = ref({})
+const errors = ref<any>({})
 
 const addAttribute = () => {
     formData.value.attributes.push({ key: '', value: '' })
@@ -74,34 +67,6 @@ const response = ref({
     origin: 'dsfsa',
     typeId: 'fasds',
     bd: 'afs',
-    location: ['sdklf'],
-    type_id: 1,
-    image: []
-});
-
-const proxyResponse = ref({
-    title: '',
-    description: "",
-    // tags: '',
-    // location: [''],
-    price: 1000,
-    currency_id: 12,
-    stock_amount: '5',
-    model: '',
-    make: '',
-    year: '',
-    cc: '',
-    engyne: '',
-    parts: '',
-
-    category_id: '',
-    // condition_id: "dfsadf",
-    // negotiable: '1',
-    // age: '500',
-    // origin: 'dsfsa',
-    // typeId: 'fasds',
-    bd: 'afs',
-    location: ['sdklf'],
     type_id: 1,
     image: []
 });
@@ -111,15 +76,48 @@ const chooseImageHandler = () => {
     input.type = 'file'
     input.multiple = true
     input.accept = 'image/png, image/gif, image/jpeg, image/webp'
-    input.onchange = (event) => {
+    input.onchange = (event: any) => {
         let files = event.target.files
         formData.value.image.push(...files)
     }
     input.click()
 }
+const chooseVideoHandler = () => {
+    let input = document.createElement('input')
+    input.type = 'file'
+    input.multiple = true
+    input.accept = 'video/*'
+    input.onchange = (event) => {
+        let files = event.target.files
+        formData.value.video.push(...files)
+    }
+    input.click()
+}
 
-const removeFile = (index) => {
-    formData.value.image.splice(index, 1)
+const removeFile = (index: number) => {
+    let item = formData.value.image[index]
+    if (item instanceof File) {
+        formData.value.image.splice(index, 1)
+    } else {
+        formData.value.removed.push(item)
+        formData.value.image.splice(index, 1)
+    }
+}
+const removeVideoFile = (index: number) => {
+    let item = formData.value.video[index]
+    if (item instanceof File) {
+        formData.value.video.splice(index, 1)
+    } else {
+        formData.value.removed.push(item)
+        formData.value.video.splice(index, 1)
+    }
+}
+const removeAtt = (index: number) => {
+    let item = formData.value.attributes[index]
+    if (item.id) {
+        formData.value.removedAttr.push(item.id)
+    }
+    formData.value.attributes.splice(index, 1)
 }
 
 const submit = async () => {
@@ -128,22 +126,45 @@ const submit = async () => {
         loading.value = true;
         const token = useCookie('token');
         let body = new FormData()
+        body.append('_method', 'PUT')
 
         Object.keys(formData.value).forEach(key => {
             if (key === 'image') {
-                formData.value.image.forEach((file, index) => {
-                    body.append(`image[${index}]`, file);
+                formData.value.image.forEach((file: any, index: any) => {
+                    if (file instanceof File) {
+                        body.append(`image[${index}]`, file);
+                    }
                 });
-            }else if(key === 'attributes') {
-                formData.value.attributes.forEach((attribute, index) => {
-                    body.append(attribute.key, attribute.value);
+            } else if (key === 'video') {
+                formData.value.video.forEach((file: any, index: any) => {
+                    if (file instanceof File) {
+                        body.append(`video[${index}]`, file);
+                    }
                 });
-            }else {
+            } else if (key === 'attributes') {
+                body.append(`attributes`, JSON.stringify(formData.value.attributes
+                    .map((i: any) => {
+                        let item: any = { name: i.key, value: i.value }
+                        if (i.id) {
+                            item.id = i.id
+                            item.category_id = i.category_id
+                            item.product_id = i.product_id
+                        }
+                        return item
+                    })));
+                // formData.value.attributes.forEach((attribute: any) => {
+                //     // if(attribute.id){
+                //     //     body.append(`attribute[${attribute.id}]`, attribute.value);
+                //     // }else {
+                //     //     body.append(attribute.key, attribute.value);
+                //     // }
+                // });
+            } else {
                 body.append(key, formData.value[key]);
             }
         });
 
-        const response = await $fetch(`${useRuntimeConfig().public.baseUrl}/product`,
+        const response = await $fetch<any>(`${useRuntimeConfig().public.baseUrl}/product/${route.params.id}`,
             {
                 method: "post",
                 headers: {
@@ -158,11 +179,8 @@ const submit = async () => {
             description: response?.message,
         });
         router.push('/seller/product')
-        isModalOpen.value = false
     } catch (error) {
-        const err = error;
-        console.log(error);
-        
+        const err = error as any;
         errors.value = err.response._data.errors
     } finally {
         loading.value = false
@@ -200,9 +218,7 @@ const getParts = async () => {
     secondSearchBar.parts = data.value
 }
 
-const service = ref('')
-const category = ref('')
-const categoryData = ref('')
+const categoryData = ref<any>('')
 
 const getCetagories = async () => {
     const res = await useFetch(`${useRuntimeConfig().public.baseUrl}/general-categories`)
@@ -210,30 +226,66 @@ const getCetagories = async () => {
 }
 
 getCetagories()
-const formRester = ref('')
+
 
 const isDisabled = ref(true);
 
-const toggleDisabled = () => {
-    isDisabled.value = !isDisabled.value;
-};
+const preloader = ref(true);
 
-const productOrService = ref('product');
+const getProduct = async () => {
+    preloader.value = true
+    try {
+        const token = useCookie('token')
+        const response = await $fetch<{ product: IProduct, suggestion: IpaginatedRespoinse<IProduct> }>(`${useRuntimeConfig().public.baseUrl}/view-product/${route.params.id}`, {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token.value}`,
+            },
+        });
+        console.log(response.product);
+        formData.value = JSON.parse(JSON.stringify({
+            category_id: response.product.category_id,
+            title: response.product.title,
+            brand: response.product.others.filter((i: any) => i.name === 'brand').name,
+            price: response.product.price,
+            stock_amount: response.product.stock_amount,
+            description: response.product.description,
+            // 'bn[description]': response.product
+            // meta_title: response.product.meta_title,
+            // meta_description: response.product.meta_description,
 
-watch(productOrService, () => {
-    if (productOrService.value === 'product') {
-        isDisabled.value = true
-
-    } else {
-        isDisabled.value = false
+            image: response.product.picture,
+            video: response.product.video,
+            removed: [],
+            removedAttr: [],
+            attributes: response.product.others.filter((i: any) => i.name !== 'brand').map((i: any) => ({
+                id: i.id,
+                product_id: i.product_id,
+                category_id: i.category_id,
+                key: i.name,
+                value: i.value
+            }))
+        }))
+    } catch (error) {
+        console.log('Somthing Wrong!');
+    } finally {
+        preloader.value = false
     }
+}
+onMounted(() => {
+    getProduct()
 })
 </script>
 
 <template>
-    <HeaderWithHr header="Add New Prouduct"></HeaderWithHr>
     <div>
-        <div class="flex flex-col gap-8">
+        <div class="flex justify-between">
+            <h1 class="text-2xl font-bold">Update Prouduct</h1>
+        </div>
+        <hr class="h-[2px] bg-slate-400 mt-4">
+    </div>
+    <div>
+        <div v-if="!preloader" class="flex flex-col gap-8">
             <div class="my-3">
                 <div class="py-3 border-b-2 border-dashed">
                     <h1 class="text-primary text-xl font-bold">Product information</h1>
@@ -241,8 +293,8 @@ watch(productOrService, () => {
                 <div class="shadow-xl border p-4 mt-5">
                     <RadioTree v-model="formData.category_id" value="id" color="#f85606" label="name" name="category_id"
                         :list="categoryData.categories" />
-                        <span v-if="Object.keys(errors).includes('category_id')" class="text-sm text-red-500">{{
-                                errors.category_id[0] }}</span>
+                    <span v-if="Object.keys(errors).includes('category_id')" class="text-sm text-red-500">{{
+                        errors.category_id[0] }}</span>
                 </div>
             </div>
 
@@ -259,11 +311,15 @@ watch(productOrService, () => {
                                 errors.title[0] }}</span>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td class="py-3"><Label for="productName">Brand Name</Label></td>
-                        <td class="py-3"><Input id="brandName" type="text" v-model="formData.brand"
-                                placeholder="Brand" /></td>
-                    </tr>
+                        <td class="py-3">
+                            <select disabled class="w-full p-2"v-model="formData.brand">
+                                <option disabled>Choose brand</option>
+                                <option v-for="(brand, index) in secondSearchBar.make" :value="brand.make">{{ brand.make }}</option>
+                            </select>
+                        </td>
+                    </tr> -->
                     <tr>
                         <td class="py-3"><Label for="unitPrice">Unit Price</Label></td>
                         <td class="py-3">
@@ -278,7 +334,7 @@ watch(productOrService, () => {
                             <Input id="unitPrice" type="number" :min="0" v-model="formData.stock_amount"
                                 placeholder="Stock" />
                             <span v-if="Object.keys(errors).includes('stock_amount')" class="text-sm text-red-500">{{
-                            errors.stock_amount[0] }}</span>
+                                errors.stock_amount[0] }}</span>
                         </td>
                     </tr>
                     <tr class="align-top">
@@ -292,8 +348,8 @@ watch(productOrService, () => {
                                         :class="{ 'bg-primary text-white': isBn }" @click="isBn = true">BN</button>
                                 </div>
                                 <div>
-                                    <Textarea placeholder="Description BN" v-if="isBn" v-model="formData['bn[description]']"
-                                        rows="8"></Textarea>
+                                    <Textarea placeholder="Description BN" v-if="isBn"
+                                        v-model="formData['bn[description]']" rows="8"></Textarea>
                                     <Textarea placeholder="Description EN" v-else v-model="formData.description"
                                         rows="8"></Textarea>
                                     <span v-if="Object.keys(errors).includes('description')"
@@ -311,13 +367,13 @@ watch(productOrService, () => {
                     <h1 class="text-primary text-xl font-bold">File & Media</h1>
                 </div>
                 <div class="flex flex-col gap-3">
+                    <div>Images</div>
                     <div class="border rounded-lg flex flex-wrap gap-3 p-5 items-center min-h-[132px]">
                         <template class="w-full h-full" v-for="(file, index) in formData.image" :key="index">
                             <div class="w-20 h-20 relative border">
                                 <img :src="getUrl(file)" class="min-w-full min-h-full object-cover"></img>
                                 <button @click="removeFile(index)"
-                                    class="w-4 h-4 absolute flex items-center justify-center -top-2 -right-2 bg-red-500 rounded-full p-[2px] text-white"
-                                    v-if="typeof file !== 'string'">
+                                    class="w-4 h-4 absolute flex items-center justify-center -top-2 -right-2 bg-red-500 rounded-full p-[2px] text-white">
                                     <Icon name="material-symbols:close" />
                                 </button>
                             </div>
@@ -328,29 +384,27 @@ watch(productOrService, () => {
                     <span v-if="Object.keys(errors).includes('image')" class="text-sm text-red-500">{{ errors.image[0]
                         }}</span>
                 </div>
-                <!-- <div class="flex gap-8">
-                    <div class="w-full max-w-sm flex text-nowrap items-center gap-2">
-                        <Label for="videoProvider">Video Provider</Label>
-                        <Select v-model="response.extra_field_1">
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select a provider" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Providers</SelectLabel>
-                                    <SelectItem value="youtube">YouTube</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                <div class="flex flex-col gap-3">
+                    <div>Videos</div>
+                    <div class="border rounded-lg flex flex-wrap gap-3 p-5 items-center min-h-[132px]">
+                        <template class="w-full h-full" v-for="(file, index) in formData.video" :key="index">
+                            <div class="w-20 h-20 relative border">
+                                <video :src="getUrl(file)" class="min-w-full min-h-full object-cover"></video>
+                                <button @click="removeVideoFile(index)"
+                                    class="w-4 h-4 absolute flex items-center justify-center -top-2 -right-2 bg-red-500 rounded-full p-[2px] text-white">
+                                    <Icon name="material-symbols:close" />
+                                </button>
+                            </div>
+                        </template>
+                        <Icon name="fluent:add-circle-16-filled" @click="chooseVideoHandler"
+                            class="text-6xl text-gray-700 cursor-pointer hover:text-gray-900"></Icon>
                     </div>
-                    <div class="flex text-nowrap w-full max-w-sm items-center gap-1.5">
-                        <Label for="videoLinks">Video Links</Label>
-                        <Input id="videoLinks" type="text" v-model="response.extra_field_2" placeholder="Video Links" />
-                    </div>
-                </div> -->
+                    <span v-if="Object.keys(errors).includes('image')" class="text-sm text-red-500">{{ errors.image[0]
+                        }}</span>
+                </div>
             </div>
 
-            <div v-if="isDisabled" class="max-w-[600px] w-full">
+            <!-- <div v-if="isDisabled" class="max-w-[600px] w-full">
                 <div class="py-3 border-b-2 border-dashed">
                     <h1 class="text-primary text-xl font-bold">Others</h1>
                 </div>
@@ -386,10 +440,10 @@ watch(productOrService, () => {
                         <option v-for="i in categoryData.categories">{{ i.name }}</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
             <div class="max-w-[600px] w-full">
                 <div class="py-3 border-b-2 border-dashed">
-                <h1 class="text-primary text-xl font-bold">Attributes</h1>
+                    <h1 class="text-primary text-xl font-bold">Attributes</h1>
                 </div>
                 <div>
                     <table class="table">
@@ -400,20 +454,24 @@ watch(productOrService, () => {
                             <td class="p-1"></td>
                         </tr>
                         <tr v-for="(attribute, index) in formData.attributes" :key="`attribute-${index}`">
-                            <td>{{ index+1 }}</td>
-                            <td><input class="border w-full p-1" placeholder="Key" v-model="attribute['key']" type="text"></td>
-                            <td><input class="border w-full p-1" placeholder="Value" v-model="attribute['value']" type="text"></td>
+                            <td>{{ index + 1 }}</td>
+                            <td><input class="border w-full p-1" placeholder="Key" v-model="attribute['key']"
+                                    type="text"></td>
+                            <td><input class="border w-full p-1" placeholder="Value" v-model="attribute['value']"
+                                    type="text"></td>
                             <td>
-                                <button @click="formData.attributes.splice(index, 1)">
-                                    <icon class="text-gray-500 hover:text-red-500 text-2xl" name="lets-icons:dell"/>
+                                <button @click="removeAtt(index)">
+                                    <icon class="text-gray-500 hover:text-red-500 text-2xl" name="lets-icons:dell" />
                                 </button>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <button @click="addAttribute" class="mt-3 border border-primary text-primary hover:text-orange-500 text-sm px-2 py-1 rounded-full">
-                    <icon class="text-xl" name="ic:baseline-plus"/>
-                    Add Attribute</button>
+                <button @click="addAttribute"
+                    class="mt-3 border border-primary text-primary hover:text-orange-500 text-sm px-2 py-1 rounded-full">
+                    <icon class="text-xl" name="ic:baseline-plus" />
+                    Add Attribute
+                </button>
             </div>
 
             <div class="w-full max-w-[600px]">

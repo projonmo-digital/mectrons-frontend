@@ -107,12 +107,12 @@ const columns: ColumnDef<any>[] = [
         class: "text-right font-medium",
         row: row.original,
         action: [
-            // {
-            //     title: 'Edit',
-            //     method: (row: any) => {
-            //       router.push(`/seller/product/edit/${row.id}`)
-            //     },
-            // }
+            {
+                title: 'Edit',
+                method: (row: any) => {
+                  router.push(`/seller/product/edit/${row.id}`)
+                },
+            }
         ]
       });
     }

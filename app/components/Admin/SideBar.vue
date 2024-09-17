@@ -41,11 +41,11 @@ const sidebarList: TSidebar = [
         icon: 'eva:people-outline',
         url: '/admin/seller'
     },
-    {
-        header: "Report",
-        icon: 'eva:people-outline',
-        url: '/admin/report'
-    },
+    // {
+    //     header: "Report",
+    //     icon: 'eva:people-outline',
+    //     url: '/admin/report'
+    // },
     {
         header: "Offer",
         icon: "eva:gift-outline",

@@ -5,6 +5,7 @@ import type { ColumnDef } from "@tanstack/vue-table"
 import DatatableDropdownAction from '~/components/Common/DatatableDropdownAction.vue'
 
 import { useToast } from '@/components/ui/toast/use-toast'
+import UserListViewItem from '~/components/Common/UserListViewItem.vue'
 const { toast } = useToast()
 
 const router = useRouter()
