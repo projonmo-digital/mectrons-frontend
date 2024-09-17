@@ -81,6 +81,11 @@ const sidebarList: TSidebar = [
         icon: 'eva:people-outline',
         url: '/admin/settings'
     },
+    {
+        header: "Password Change",
+        icon: 'eva:people-outline',
+        url: '/admin/password-change'
+    },
 ]
 
 </script>

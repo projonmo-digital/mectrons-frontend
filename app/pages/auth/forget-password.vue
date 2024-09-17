@@ -1,6 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import SafetyNote from '~/components/Common/SafetyNote.vue';
+import { useToast } from "@/components/ui/toast/use-toast";
+
+const { toast } = useToast();
 
 useSeoMeta({
   title: 'Forget Password - Mectrons',
@@ -8,25 +11,44 @@ useSeoMeta({
 
 const auth = useAuthStore();
 
+const loading = ref<boolean>(false)
 const form = reactive({
     email: null,
 })
 
-const errors = ref([]);
+const errors = ref<any>([]);
 const loadbtn = ref(false);
 const success_msg = ref(null);
 
-const handleSubmit = async() => {
-    loadbtn.value = true;
-    try{
-        const data = await auth.forgetpass(form);
-        loadbtn.value = false;
-        success_msg.value = data.message;
-        toaster.addSuccess(data.message);
-    }catch(error){
-        toaster.addWrong(error.data.message);
-        errors.value = error.data.errors;
-        loadbtn.value = false;
+const handleSubmit = async () => {
+    try {
+        loading.value = true
+        const response = await $fetch<any>(
+            `${useRuntimeConfig().public.baseUrl}/forgot-password`,
+            {
+                method: "post",
+                headers: {
+                    Accept: "application/json"
+                },
+                body: JSON.stringify(form),
+            }
+        );
+        toast({
+            class: "bg-green-500",
+            title: "Success",
+            description: response.message,
+        });
+    } catch (error) {
+        const err = error as any;
+        if (err.response._data) {
+            toast({
+                class: "bg-red-500",
+                title: "Error",
+                description: err.response._data.message,
+            });
+        }
+    } finally {
+        loading.value = false;
     }
 }
 </script>

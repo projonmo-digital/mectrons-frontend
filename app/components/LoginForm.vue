@@ -25,11 +25,11 @@ const toggleBtnFun = () => {
 </script>
 
 <template>
-    <div class="p-5">
+    <div class="p-5 w-[400px]">
         <form class="space-y-6" @submit.prevent="handleSubmit">
             <div class="flex flex-col">
                 <label for="email">Email</label>
-                <input tabindex="0" class="border p-2" type="email" name="email" id="email" placeholder="name@gmail.com"
+                <input tabindex="0" class="border p-2 w-full" type="email" name="email" id="email" placeholder="name@gmail.com"
                     v-model="form.email" />
                 <span v-if="Object.keys(auth.errors).includes('email')" class="text-sm text-red-500">{{
                     auth.errors.email[0] }}</span>
@@ -37,7 +37,7 @@ const toggleBtnFun = () => {
             <div>
                 <label for="password">Password</label>
                 <div class="relative">
-                    <input tabindex="0" :type="passHideShow ? 'text' : 'password'" class="pe-7 border p-2" name="password"
+                    <input tabindex="0" :type="passHideShow ? 'text' : 'password'" class="pe-7 border w-full p-2" name="password"
                         id="password" placeholder="password" v-model="form.password" />
                     <icon class="w-6 h-6 absolute top-2 right-2 text-gray-500 cursor-default"
                         @click="passHideShow = !passHideShow" :name="passHideShow ? 'mdi:eye' : 'mdi:eye-off'" />

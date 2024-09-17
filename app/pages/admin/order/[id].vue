@@ -105,6 +105,16 @@ onMounted(() => {
                 <h1 class=" text-2xl font-bold">Address</h1>
                 <p>{{ order?.to_address }}</p>
             </div>
+            <div v-if="order?.billing_information">
+                <div class="flex flex-col">
+                    <label class="font-bold">Email:</label>
+                    <label>{{ order?.billing_information.email }}</label>
+                </div>
+                <div class="flex flex-col">
+                    <label class="font-bold">Email:</label>
+                    <label>{{ order?.billing_information.number }}</label>
+                </div>
+            </div>
             <div>
                 <h1 class=" text-2xl font-bold">Payment Method</h1>
                 <p>{{ order?.method }}</p>

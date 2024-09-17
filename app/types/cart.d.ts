@@ -18,6 +18,10 @@ export interface ICartItem {
   delivery_status: "placed";
   method: string;
   to_address: string;
+  billing_information: {
+    email: string
+    number: string
+  }
   cost_fields: {
     price: any;
     quantity: any;

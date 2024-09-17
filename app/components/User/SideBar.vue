@@ -30,7 +30,12 @@ const sidebarList: TSidebar = [
         header: "Settings",
         icon: "mdi:tools",
         url: '/buyer/settings'
-    }
+    },
+    {
+        header: "Password Change",
+        icon: 'eva:people-outline',
+        url: '/buyer/password-change'
+    },
 ]
 
 </script>

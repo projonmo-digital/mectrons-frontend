@@ -1,55 +1,62 @@
-<script setup>
-import { onMounted, ref } from 'vue'
-import { Modal, initFlowbite } from 'flowbite';
+<script setup lang="ts">
+import { ref } from 'vue'
+import SafetyNote from '~/components/Common/SafetyNote.vue';
+import { useToast } from "@/components/ui/toast/use-toast";
 
-onMounted(() => {
-    initFlowbite();
-})
-
-
-useSeoMeta({
-  title: 'Reset Password - My Amazing Site',
-  ogTitle: 'My Amazing Site',
-  description: 'This is my amazing site, let me tell you all about it.',
-  ogDescription: 'This is my amazing site, let me tell you all about it.',
-  ogImage: 'image',
-  twitterCard: 'image',
-})
-
-const toaster = useToasterStore();
 const auth = useAuthStore();
 const route = useRoute();
-definePageMeta({
-    middleware: ["guest"]
-});
+const loading = ref<boolean>(false)
+
+const { toast } = useToast();
 
 const form = reactive({
     password: null,
     password_confirmation: null,
-    linkPeram: route.fullPath.split("?")[1],
+    token: route.params.token,
+    email: route.query.email,
 })
 
-const errors = ref([]);
+const errors = ref<any>([]);
 const loadbtn = ref(false);
 const success_msg = ref(null);
 
-const handleSubmit = async() => {
-    loadbtn.value = true;
-    try{
-        const data = await auth.resetPassword(form);
-        loadbtn.value = false;
-        success_msg.value = data.message;
-        toaster.addSuccess(data.message);
-    }catch(error){
-        toaster.addWrong(error.data.message);
-        errors.value = error.data.errors;
-        loadbtn.value = false;
+const handleSubmit = async () => {
+    try {
+        loading.value = true
+        const token = useCookie("token");
+        const response = await $fetch<any>(
+            `${useRuntimeConfig().public.baseUrl}/reset-password`,
+            {
+                method: "post",
+                headers: {
+                    Accept: "application/json",
+                    Authorization: `Bearer ${token.value}`,
+                },
+                body: JSON.stringify(form),
+            }
+        );
+        toast({
+            class: "bg-green-500",
+            title: "Success",
+            description: response.message,
+        });
+    } catch (error) {
+        const err = error as any;
+        if (err.response._data) {
+            toast({
+                class: "bg-red-500",
+                title: "Error",
+                description: err.response._data.message,
+            });
+        }
+    } finally {
+        loading.value = false;
     }
 }
 </script>
 <template>
     <div class="mx-auto w-full max-w-3xl my-4">
-        <div class="flex gap-x-3 bg-white rounded shadow">
+        <div class="grid lg:grid-cols-2 gap-3">
             <div class="mx-auto w-full max-w-sm bg-gray-100 border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
                 <form class="space-y-6" @submit.prevent="handleSubmit">
                     <div>
@@ -67,13 +74,13 @@ const handleSubmit = async() => {
                         <span class="font-medium">{{ success_msg }}</span>
                     </div>
                     <div>
-                        <FormLabel for="password">New Password</FormLabel>
-                        <FormInput type="password" name="password" id="password" placeholder="password" v-model="form.password"/>
+                        <label for="password">New Password</label>
+                        <input class="p-3 w-full" type="password" name="password" id="password" placeholder="password" v-model="form.password"/>
                         <span v-if="errors.password" class="text-sm text-red-500">{{ errors.password[0] }}</span>
                     </div>
                     <div>
-                        <FormLabel for="password_confirmation">Confirm Password</FormLabel>
-                        <FormInput type="password" name="password_confirmation" id="password_confirmation" placeholder="password_confirmation" v-model="form.password_confirmation"/>
+                        <label for="password_confirmation">Confirm Password</label>
+                        <input class="p-3 w-full" type="password" name="password_confirmation" id="password_confirmation" placeholder="password_confirmation" v-model="form.password_confirmation"/>
                         <span v-if="errors.password_confirmation" class="text-sm text-red-500">{{ errors.password_confirmation[0] }}</span>
                     </div>
 
@@ -94,21 +101,8 @@ const handleSubmit = async() => {
                     </div>
                 </form>
             </div>
-
-            <div class="mx-auto w-full max-w-sm ">
-                <div class="flex flex-col gap-x-5 px-4 py-3">
-                    <img class="w-60 mx-auto mb-6" src="assets/images/auth/auth.png" alt="Auth Image"/>
-                    <div class="shadow-md p-4 rounded-lg bg-gray-100">
-                        <h4 class="text-md font-semibold mb-2">Stay Safe</h4>
-                        <hr class="h-px my-3 bg-gray-300 border-0 dark:bg-gray-700">
-                        <p class="mb-2 text-sm leading-6 text-gray-500">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </p>
-                        <p class="mb-2 text-sm leading-6 text-gray-500">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
-                        </p>
-                    </div>
-                </div>
+            <div class="hidden lg:block">
+                <SafetyNote />
             </div>
         </div>
     </div>

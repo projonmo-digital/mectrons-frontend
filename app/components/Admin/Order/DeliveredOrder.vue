@@ -51,7 +51,7 @@ const fetchData = async (params = {}) => {
 
 const orderDetail = (row: any) => {
   let generatedId = getGeneratedID(row)
-  router.push(`/admin/order/${generatedId}`)
+  router.push(`/seller/order/${generatedId}`)
 }
 
 const sentToSeller = async (row: any) => {

@@ -145,7 +145,7 @@ const onChange = (value: any) => {
                                             class="hidden sm:inline-block">Login</span>
                                     </span>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent class="w-100 p-0">
+                                <DropdownMenuContent>
                                     <LoginForm @loginToggleBtn="loginToggleBtnFun($event)">
                                     </LoginForm>
                                 </DropdownMenuContent>

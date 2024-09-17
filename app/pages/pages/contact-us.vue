@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 const loading = ref<boolean>(true)
+import { useAlert } from '@/composables/sweetalert'
+const alert = useAlert()
 
 const submit = async(event: any) => {    
     const formData = {

@@ -65,6 +65,10 @@ const submit = () => {
                         price,
                         quantity,
                     },
+                    billing_information: {
+                        email: cartFromBody.value.email,
+                        number: cartFromBody.value.number
+                    },
                     coupon: cartFromBody.value.coupon_code,
                     mega_id: generatedId
                 }
@@ -103,6 +107,8 @@ const submitInvoice = async (formData: ICartItem) => {
 onMounted(() => {
     cartFromBody.value = {
         address: user.value?.profile?.address || '',
+        email: user.value?.email || '',
+        number: user.value?.mobile || '',
     }
 })
 
@@ -142,6 +148,22 @@ onMounted(() => {
                                     Apply
                                 </button>
                             </form>
+                        </li>
+                        <li class="pb-3 flex gap-3">
+                            <div>
+                                <h4 class="block mt-3 mb-3 text-md font-medium text-gray-900 dark:text-white">
+                                    Number*
+                                </h4>
+                                <input type="tel" v-model="cartFromBody.number" placeholder="Number"
+                                    class="w-full border border-gray-400 ps-4 p-2.5" required />
+                            </div>
+                            <div>
+                                <h4 class="block mt-3 mb-3 text-md font-medium text-gray-900 dark:text-white">
+                                    Email
+                                </h4>
+                                <input type="email" v-model="cartFromBody.email" placeholder="Email"
+                                    class="w-full border border-gray-400 ps-4 p-2.5" />
+                            </div>
                         </li>
                         <li class="pb-3">
                             <h4 class="block mt-3 mb-3 text-md font-medium text-gray-900 dark:text-white">Delivery
